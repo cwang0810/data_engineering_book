@@ -1,1 +1,80 @@
-site_name: My Docs
+site_name: 我的开源书籍
+site_url: https://your-site.com
+site_author: 作者名
+site_description: 这是一个关于技术的开源书籍
+
+# 仓库信息 (右上角显示 GitHub 图标)
+repo_name: GitHub
+repo_url: https://github.com/your-username/your-repo
+
+theme:
+  name: material
+  language: zh
+  # 禁用默认的 favicon，可以换成自己的 logo
+  # logo: assets/logo.png 
+  # favicon: assets/favicon.png
+  
+  # 关键：书籍模式的特性配置
+  features:
+    - navigation.sections    # 侧边栏按章节分组
+    - navigation.expand      # 默认展开所有目录 (像纸质书目录一样一览无余)
+    - navigation.indexes     # 允许点击章节标题页
+    - navigation.top         # 返回顶部按钮
+    - navigation.footer      # 底部显示 [上一章] [下一章] (书籍核心体验)
+    - toc.follow             # 右侧小目录随滚动自动高亮
+    - search.suggest         # 搜索建议
+    - content.code.copy      # 代码块复制按钮
+
+  # 调色盘：提供护眼模式
+  palette:
+    # 日间模式 (亮色)
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white         # 配合 CSS 将顶栏变白，降低干扰
+      accent: red            # 链接高亮色 (类似红笔批注)
+      toggle:
+        icon: material/weather-sunny
+        name: 切换至夜间模式
+    
+    # 夜间模式 (深色)
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: red
+      toggle:
+        icon: material/weather-night
+        name: 切换至日间模式
+
+# 必选插件：增强书籍排版能力
+markdown_extensions:
+  - admonition               # 提示框
+  - footnotes                # 脚注
+  - attr_list                # 图片/元素属性控制
+  - md_in_html               # 支持 HTML 混排
+  - pymdownx.details         # 折叠块
+  - pymdownx.superfences     # 高级代码块
+  - pymdownx.arithmatex:     # 数学公式
+      generic: true
+  - pymdownx.highlight:      # 代码高亮
+      anchor_linenums: true
+  - toc:
+      permalink: true        # 标题生成锚点链接
+
+# 引入自定义样式
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+# 目录结构示例 (书籍通常是树状结构)
+nav:
+  - 封面: index.md
+  - 第一部分：基础设施与核心理念:
+      - 第1章：大模型时代的数据变革: chapter1/1_1_data_change.md
+      - 第2章：数据基础设施选型: chapter1/1_2_data_infra.md
+  - 第二部分 实战演练:
+      - 2.1 第一个项目: chapter2/project.md
+      - 2.2 进阶技巧: chapter2/advanced.md
