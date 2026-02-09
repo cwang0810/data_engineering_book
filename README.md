@@ -103,7 +103,7 @@ git clone https://github.com/datascale-ai/data_engineering_book.git
 cd data_engineering_book
 
 # 安装依赖
-pip install mkdocs-material pymdown-extensions
+pip install mkdocs-material mkdocs-glightbox pymdown-extensions
 
 # 本地预览
 mkdocs serve
@@ -125,12 +125,12 @@ mkdocs build
 data_engineering_book/
 ├── docs/                    # 书籍内容
 │   ├── index.md            # 首页/目录
-│   ├── chapter1/           # 第一部分：基础设施
-│   ├── chapter2/           # 第二部分：文本预训练
-│   ├── chapter3/           # 第三部分：多模态
-│   ├── chapter4/           # 第四部分：对齐与合成
-│   ├── chapter5/           # 第五部分：RAG
-│   ├── chapter6/           # 第六部分：实战项目
+│   ├── part1/              # 第一部分：基础设施与核心理念
+│   ├── part2/              # 第二部分：文本预训练数据工程
+│   ├── part3/              # 第三部分：多模态数据工程
+│   ├── part4/              # 第四部分：对齐与合成数据工程
+│   ├── part5/              # 第五部分：应用级数据工程
+│   ├── part6/              # 第六部分：实战项目集
 │   ├── images/             # 图片资源
 │   ├── stylesheets/        # 自定义样式
 │   └── javascripts/        # JavaScript (MathJax等)

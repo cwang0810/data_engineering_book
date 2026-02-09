@@ -1,7 +1,5 @@
 # **《大模型数据工程：架构、算法及项目实战》**
 
-(Large Model Data Engineering: A Practical Guide from Pre-training to Multimodal Alignment)*
-
 ------
 
 # 全书目录概览
