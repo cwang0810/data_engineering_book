@@ -24,7 +24,7 @@ Beyond in-depth theoretical explanations, the book includes **5 end-to-end capst
 
 ## Book Architecture
 
-![Book Architecture](框架图.png)
+![Book Architecture](images/structure_en.png)
 
 *A complete data engineering pipeline from raw data to end-to-end applications*
 
@@ -137,8 +137,10 @@ data_engineering_book/
 │   ├── stylesheets/         # Custom styles
 │   └── javascripts/         # JavaScript (MathJax etc.)
 ├── .github/workflows/       # GitHub Actions CI/CD
+├── images/                  # Project image assets
+│   ├── structure_cn.png     # Book architecture diagram (Chinese)
+│   └── structure_en.png     # Book architecture diagram (English)
 ├── mkdocs.yml               # MkDocs configuration
-├── 框架图.png                # Book architecture diagram
 ├── LICENSE                  # License
 ├── README.md                # 中文说明
 └── README_en.md             # English README (this file)

@@ -24,7 +24,7 @@
 
 ## 全书架构
 
-![大模型数据工程全书架构](框架图.png)
+![大模型数据工程全书架构](images/structure_cn.png)
 
 *从原始数据到端到端应用的完整数据工程流水线*
 
@@ -137,8 +137,10 @@ data_engineering_book/
 │   ├── stylesheets/         # 自定义样式
 │   └── javascripts/         # JavaScript (MathJax等)
 ├── .github/workflows/       # GitHub Actions 自动部署
+├── images/                  # 项目图片资源
+│   ├── structure_cn.png     # 全书架构图（中文）
+│   └── structure_en.png     # 全书架构图（英文）
 ├── mkdocs.yml               # MkDocs 配置文件
-├── 框架图.png                # 全书架构图
 ├── LICENSE                  # 开源协议
 ├── README.md                # 中文说明（本文件）
 └── README_en.md             # English README
