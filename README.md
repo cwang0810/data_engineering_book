@@ -3,7 +3,7 @@
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://datascale-ai.github.io/data_engineering_book/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-**[English](README_en.md) | 中文**
+**[English](README_en.md) | 中文 | [日本語](README_ja.md)**
 
 ## 简介
 
@@ -112,7 +112,7 @@ pip install mkdocs-material mkdocs-glightbox pymdown-extensions "mkdocs-static-i
 mkdocs serve
 ```
 
-访问 http://127.0.0.1:8000 即可预览书籍（支持中英文切换）。
+访问 http://127.0.0.1:8000 即可预览书籍（支持中/英/日切换）。
 
 ### 构建静态站点
 
@@ -132,6 +132,9 @@ data_engineering_book/
 │   │   └── part1/ ~ part6/  # 各章节
 │   ├── en/                  # 英文内容
 │   │   ├── index.md         # 英文首页
+│   │   └── part1/ ~ part6/  # 各章节
+│   ├── ja/                  # 日文内容
+│   │   ├── index.md         # 日文首页
 │   │   └── part1/ ~ part6/  # 各章节
 │   ├── images/              # 图片资源（中英共享）
 │   ├── stylesheets/         # 自定义样式
