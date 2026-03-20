@@ -80,6 +80,7 @@ plugins:
                   name: Switch to light mode
           nav_translations:
             目录: Table of Contents
+            序言: Preface
             第一部分：基础设施与核心理念: "Part 1: Infrastructure & Core Concepts"
             第1章：大模型时代的数据变革: "Chapter 1: Data Revolution in the LLM Era"
             第2章：数据基础设施选型: "Chapter 2: Data Infrastructure Selection"
@@ -126,6 +127,7 @@ plugins:
                   name: ライトモードに切り替え
           nav_translations:
             目录: 目次
+            序言: 序文
             第一部分：基础设施与核心理念: "第1部: インフラとコアコンセプト"
             第1章：大模型时代的数据变革: "第1章: LLM時代のデータ革命"
             第2章：数据基础设施选型: "第2章: データインフラ選定"
@@ -177,6 +179,7 @@ extra_javascript:
 # 目录结构
 nav:
   - 目录: index.md
+  - 序言: preface.md
   - 第一部分：基础设施与核心理念:
       - 第1章：大模型时代的数据变革: part1/1_1_data_change.md
       - 第2章：数据基础设施选型: part1/1_2_data_infra.md
