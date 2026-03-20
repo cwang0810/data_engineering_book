@@ -4,6 +4,7 @@
 
 # Book Overview
 
+- [**Preface**](preface.md)
 - **Part 1: Infrastructure & Core Concepts** (Building the Data Foundation)
 - **Part 2: Large-Scale Text Pre-training Engineering** (Cleaning, Deduplication & Quality Control)
 - **Part 3: Multimodal Data Engineering** (Image-Text, Video & Audio)
