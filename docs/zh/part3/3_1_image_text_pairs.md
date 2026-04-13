@@ -82,7 +82,7 @@ import os
 def run_distributed_download():
     """
     配置项的调优是吞吐量的关键。
-    process_count: 每个 Spark Executor 的进程数。
+    process_count: 每个节点 Spark Executor 进程数。
     thread_count: 每个进程内的异步线程数。
     对于 10Gbps 网卡的节点，通常建议 total_concurrency 在 1000 左右。
     """
@@ -96,7 +96,7 @@ def run_distributed_download():
         pass
 
     download(
-        processes_count=4,          # 每个节点使用 4 个 CPU 核
+        processes_count=4,          # 每个节点使用 4 个 Spark Executor
         thread_count=64,            # 每个核并发 64 个下载线程
         url_list="s3a://multimodal-lake/meta/laion-urls.parquet",
         image_size=256,             # 预训练阶段 256x256 足够，节省带宽
