@@ -1,0 +1,7 @@
+name: p4-synth
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - tqdm=4.67.1
