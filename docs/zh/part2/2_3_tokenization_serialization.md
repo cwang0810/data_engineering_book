@@ -139,7 +139,7 @@ def apply_bpe(text: str, merges: dict) -> list:
     return tokens
 ```
 
-### 5.1.6 Byte-Level BPE：深入解析
+### 5.1.3 Byte-Level BPE：深入解析
 
 BPE 的一个重要变体是 **Byte-level BPE**，由 GPT-2 首先引入。传统 BPE 在字符级别操作，需要处理 Unicode 编码问题——不同语言的字符集差异巨大，且某些字符（如 Emoji、特殊符号）可能不在训练数据中出现，导致 UNK。
 
@@ -208,7 +208,7 @@ def analyze_byte_level_impact(text: str, tokenizer_name: str):
     return {'num_tokens': num_tokens, 'chars_per_token': chars_per_token}
 ```
 
-### 5.1.3 WordPiece：BERT 的选择
+### 5.1.4 WordPiece：BERT 的选择
 
 WordPiece 是 Google 为 BERT 开发的分词算法，与 BPE 非常相似，主要区别在于选择合并对的标准。
 
@@ -241,7 +241,7 @@ output = tokenizer.encode("unhappiness")
 print(output.tokens)  # ['un', '##happi', '##ness']
 ```
 
-### 5.1.4 Unigram：概率视角的分词
+### 5.1.5 Unigram：概率视角的分词
 
 Unigram 分词由 Kudo 在 2018 年提出，采用了与 BPE/WordPiece 完全不同的思路。BPE 和 WordPiece 都是自底向上的方法——从小的单元开始，逐步合并成大的单元。Unigram 则是自顶向下的方法——从一个包含所有可能子词的大词表开始，逐步删减到目标大小。
 
@@ -253,7 +253,7 @@ $$P(x_1, x_2, ..., x_n) = \prod_{i=1}^{n} P(x_i)$$
 
 Unigram 的一个独特优势是它天然支持多种分词结果的概率建模。对于一个给定的文本，可能存在多种合法的分词方式，Unigram 可以为每种方式赋予一个概率。这在某些应用场景（如语音识别中的多假设处理）中非常有用。
 
-### 5.1.5 三种算法的对比
+### 5.1.6 三种算法的对比
 
 三种主流子词分词算法各有特点，选择时需要根据具体场景权衡。
 
