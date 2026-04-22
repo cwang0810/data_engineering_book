@@ -1,0 +1,10 @@
+name: p2-legal-sft
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - tqdm=4.67.1
+  - pip:
+      - pdfplumber==0.11.7
+      - openai==2.1.0

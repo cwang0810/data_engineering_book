@@ -1,0 +1,7 @@
+name: p8-chapter-preview
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - markdown-it-py
+  - weasyprint

@@ -58,6 +58,47 @@ plugins:
           name: 简体中文
           build: true
           site_name: 大模型数据工程：架构、算法及项目实战
+          nav:
+            - 目录: index.md
+            - 序言: preface.md
+            - 第一部分：基础设施与核心理念:
+                - 第1章：大模型时代的数据变革（从 Data Ops 到 AI Ops）: part1/1_1_data_change.md
+                - 第2章：AI 原生数据栈（向量库、对象存储、Ray/Spark 分布式计算）: part1/1_2_data_infra.md
+            - 第二部分：文本预训练数据工程:
+                - 第3章：数据获取（CommonCrawl 解析与高并发爬虫）: part2/2_1_data_acquisition.md
+                - 第4章：清洗与质量控制（去重、PII 脱敏、防基准污染）: part2/2_2_cleaning_denoising.md
+                - 第5章：分词、序列化与高效加载（DataLoader 优化）: part2/2_3_tokenization_serialization.md
+            - 第三部分：多模态数据工程:
+                - 第6章：图文对数据处理: part3/3_1_image_text_pairs.md
+                - 第7章：数据重描述: part3/3_2_recaptioning.md
+                - 第8章：视频与音频数据: part3/3_3_video_audio.md
+            - 第四部分：对齐与合成数据工程:
+                - 第9章：指令微调数据: part4/4_1_sft_data.md
+                - 第10章：合成数据: part4/4_2_synthetic_data.md
+                - 第11章：人类偏好数据: part4/4_3_preference_data.md
+            - 第五部分：应用级数据工程:
+                - 第12章：RAG 数据流水线: part5/5_1_rag_pipeline.md
+                - 第13章：多模态 RAG: part5/5_2_mm_rag.md
+            - 第六部分：实战项目集:
+                - 项目一：基于 Ray 构建分布式 Mini-C4 数据流水线: part6/6_1_mini_c4.md
+                - 项目二：垂直领域专家 SFT（法律）: part6/6_2_legal_sft.md
+                - 项目三：LLaVA 多模态指令数据工厂: part6/6_3_llava_instruct.md
+                - 项目四：合成数学与代码教材工厂: part6/6_4_synthetic_textbook.md
+                - 项目五：多模态 RAG 企业财报助手: part6/6_5_mm_rag.md
+            - 第九篇：隐私合规与数据安全:
+                - 第27章：数据合规框架与治理: part9/Ch27_compliance_framework_and_governance.md
+                - 第28章：联邦学习与隐私保护技术: part9/Ch28_federated_learning_and_privacy_preserving_technologies.md
+            - 第十篇：项目集（P01-P10）:
+                - 项目一：基于 Ray 构建分布式 Mini-C4 数据流水线: part10/10_1_mini_c4.md
+                - 项目二：垂直领域专家 SFT（法律）: part10/10_2_legal_sft.md
+                - 项目三：LLaVA 多模态指令数据工厂: part10/10_3_llava_instruct.md
+                - 项目四：合成数学与代码教材工厂: part10/10_4_synthetic_textbook.md
+                - 项目五：多模态 RAG 企业财报助手: part10/10_5_mm_rag.md
+                - 项目六：CoT 推理数据集构建与 PRM 训练: part10/10_6_PRM.md
+                - 项目七：Agent Tool-Use 数据工厂: part10/10_7_Agent_Tooluse.md
+                - 10-8 企业级 DataOps 平台搭建：从数据项目到组织级治理能力: part10/10_8_dataops.md
+                - 项目九：隐私保护数据流水线: part10/10_9_privacy_pipline.md
+                - 项目十：端到端 LLM 数据飞轮: part10/10_10_flywheel.md
         - locale: en
           name: English
           build: true
@@ -80,6 +121,7 @@ plugins:
                   name: Switch to light mode
           nav_translations:
             目录: Table of Contents
+            序言: Preface
             第一部分：基础设施与核心理念: "Part 1: Infrastructure & Core Concepts"
             第1章：大模型时代的数据变革: "Chapter 1: Data Revolution in the LLM Era"
             第2章：数据基础设施选型: "Chapter 2: Data Infrastructure Selection"
@@ -104,6 +146,53 @@ plugins:
             项目三：构建LLaVA多模态指令集: "Project 3: Building LLaVA Multimodal Instruction Set"
             项目四：合成数学代码教科书: "Project 4: Synthetic Math/Code Textbook"
             项目五：多模态RAG企业财报助手: "Project 5: Multimodal RAG Financial Report Assistant"
+        - locale: ja
+          name: 日本語
+          build: true
+          site_name: "大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト"
+          theme:
+            palette:
+              - media: "(prefers-color-scheme: light)"
+                scheme: default
+                primary: white
+                accent: red
+                toggle:
+                  icon: material/weather-sunny
+                  name: ダークモードに切り替え
+              - media: "(prefers-color-scheme: dark)"
+                scheme: slate
+                primary: black
+                accent: red
+                toggle:
+                  icon: material/weather-night
+                  name: ライトモードに切り替え
+          nav_translations:
+            目录: 目次
+            序言: 序文
+            第一部分：基础设施与核心理念: "第1部: インフラとコアコンセプト"
+            第1章：大模型时代的数据变革: "第1章: LLM時代のデータ革命"
+            第2章：数据基础设施选型: "第2章: データインフラ選定"
+            第二部分：文本预训练数据工程: "第2部: テキスト事前学習データエンジニアリング"
+            第3章：数据获取与采集: "第3章: データ取得と収集"
+            第4章：清洗与去噪: "第4章: クリーニングとノイズ除去"
+            第5章：分词与序列化: "第5章: Tokenizationとシリアライズ"
+            第三部分：多模态数据工程: "第3部: マルチモーダルデータエンジニアリング"
+            第6章：图文对数据处理: "第6章: 画像・テキストペア処理"
+            第7章：数据重描述: "第7章: Recaptioning"
+            第8章：视频与音频数据: "第8章: 動画と音声データ"
+            第四部分：对齐与合成数据工程: "第4部: アライメントと合成データエンジニアリング"
+            第9章：指令微调数据: "第9章: SFTデータ"
+            第10章：合成数据: "第10章: 合成データ"
+            第11章：人类偏好数据: "第11章: 人間嗜好データ"
+            第五部分：应用级数据工程: "第5部: アプリケーション級データエンジニアリング"
+            第12章：RAG数据流水线: "第12章: RAGデータパイプライン"
+            第13章：多模态RAG: "第13章: マルチモーダルRAG"
+            第六部分：实战项目集: "第6部: 実践プロジェクト集"
+            项目一：构建Mini-C4预训练集: "プロジェクト1: Mini-C4事前学習セット構築"
+            项目二：垂直领域专家SFT: "プロジェクト2: 垂直領域エキスパートSFT"
+            项目三：构建LLaVA多模态指令集: "プロジェクト3: LLaVAマルチモーダル指示セット構築"
+            项目四：合成数学代码教科书: "プロジェクト4: 数学/コード教科書合成"
+            项目五：多模态RAG企业财报助手: "プロジェクト5: マルチモーダルRAG企業財務レポートアシスタント"
 
 # 必选插件：增强书籍排版能力
 markdown_extensions:
@@ -131,6 +220,7 @@ extra_javascript:
 # 目录结构
 nav:
   - 目录: index.md
+  - 序言: preface.md
   - 第一部分：基础设施与核心理念:
       - 第1章：大模型时代的数据变革: part1/1_1_data_change.md
       - 第2章：数据基础设施选型: part1/1_2_data_infra.md

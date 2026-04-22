@@ -1,0 +1,8 @@
+name: p3-llava
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - tqdm=4.67.1
+  - pillow=11.1.0

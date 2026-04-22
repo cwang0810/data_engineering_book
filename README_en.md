@@ -3,7 +3,7 @@
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://datascale-ai.github.io/data_engineering_book/en/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-**English | [中文](README.md)**
+**English | [中文](README.md) | [日本語](README_ja.md)**
 
 ## Introduction
 
@@ -112,7 +112,7 @@ pip install mkdocs-material mkdocs-glightbox pymdown-extensions "mkdocs-static-i
 mkdocs serve
 ```
 
-Visit http://127.0.0.1:8000 to preview the book (with Chinese/English language switcher).
+Visit http://127.0.0.1:8000 to preview the book (with Chinese/English/Japanese language switcher).
 
 ### Build Static Site
 
@@ -133,6 +133,9 @@ data_engineering_book/
 │   ├── en/                  # English content
 │   │   ├── index.md         # English homepage
 │   │   └── part1/ ~ part6/  # All chapters
+│   ├── ja/                  # Japanese content
+│   │   ├── index.md         # Japanese homepage
+│   │   └── part1/ ~ part6/  # All chapters
 │   ├── images/              # Image assets (shared)
 │   ├── stylesheets/         # Custom styles
 │   └── javascripts/         # JavaScript (MathJax etc.)
@@ -152,6 +155,15 @@ data_engineering_book/
 - Data Engineers / MLOps Engineers
 - AI Product Managers (Technical)
 - Researchers interested in LLM data pipelines
+
+## Main Author
+
+Professor Jun Yu's Team
+
+**Laboratory Information:**  
+National Engineering Laboratory for Speech and Language Information Processing, University of Science and Technology of China;  
+Multimedia Computing and Intelligent Robotics Research Center, Department of Automation, University of Science and Technology of China;  
+Joint Research Center for Multi-Modal Intelligent Agents, Department of Automation, University of Science and Technology of China
 
 ## Contributing
 
