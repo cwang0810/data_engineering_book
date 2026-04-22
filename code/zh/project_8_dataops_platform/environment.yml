@@ -1,0 +1,6 @@
+name: p8-dataops
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip

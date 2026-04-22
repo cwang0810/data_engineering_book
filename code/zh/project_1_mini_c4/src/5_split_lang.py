@@ -1,64 +1,81 @@
+from __future__ import annotations
+
 import json
-import fasttext
-import re
 import os
 
+import fasttext
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
+from pipeline_utils import normalize_text
 
-model_path = os.path.join(current_dir, '..', 'models', 'lid.176.ftz')
-
-model = fasttext.load_model(model_path)
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(CURRENT_DIR)
 DATA_DIR = os.path.join(PROJECT_ROOT, "data", "processed")
+MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "lid.176.ftz")
 
-INPUT_FILE = os.path.join(DATA_DIR, "deduplicated_data.jsonl")  
-OUTPUT_DIR = os.path.join(current_dir, '..', 'data', 'processed')
-# 定义输出文件句柄
-files = {
-    'en': open(os.path.join(OUTPUT_DIR, 'data_en.jsonl'), 'w', encoding='utf-8'),
-    'zh': open(os.path.join(OUTPUT_DIR, 'data_zh.jsonl'), 'w', encoding='utf-8'), # 包含简繁
-    'others': open(os.path.join(OUTPUT_DIR, 'data_others.jsonl'), 'w', encoding='utf-8')
+INPUT_FILE = os.path.join(DATA_DIR, "deduplicated_data.jsonl")
+OUTPUT_FILES = {
+    "en": os.path.join(DATA_DIR, "data_en.jsonl"),
+    "zh": os.path.join(DATA_DIR, "data_zh.jsonl"),
+    "others": os.path.join(DATA_DIR, "data_others.jsonl"),
 }
 
-print("开始处理数据...")
-count = 0
+MIN_TEXT_CHARS = 40
 
-with open(INPUT_FILE, 'r', encoding='utf-8') as f:
-    for line in f:
-        try:
-            data = json.loads(line)
-            text = data.get('text', '').replace('\n', ' ')
-            
-            if not text:
+
+def main() -> None:
+    if not os.path.exists(INPUT_FILE):
+        print(f"❌ 找不到输入文件: {INPUT_FILE}")
+        return
+
+    if not os.path.exists(MODEL_PATH):
+        print(f"❌ 找不到 FastText 模型: {MODEL_PATH}")
+        return
+
+    model = fasttext.load_model(MODEL_PATH)
+    stats = {"total": 0, "en": 0, "zh": 0, "others": 0, "skipped": 0}
+
+    with open(INPUT_FILE, "r", encoding="utf-8") as f_in, \
+         open(OUTPUT_FILES["en"], "w", encoding="utf-8") as f_en, \
+         open(OUTPUT_FILES["zh"], "w", encoding="utf-8") as f_zh, \
+         open(OUTPUT_FILES["others"], "w", encoding="utf-8") as f_others:
+
+        writers = {"en": f_en, "zh": f_zh, "others": f_others}
+
+        for line in f_in:
+            try:
+                data = json.loads(line)
+            except json.JSONDecodeError:
+                stats["skipped"] += 1
                 continue
 
-            # 使用 FastText 预测语言
-            # k=1 表示取可能性最大的那个
-            predictions = model.predict(text, k=1) 
-            lang_label = predictions[0][0] # 例如 __label__en
-            lang = lang_label.replace('__label__', '')
-            
-            # 简单的分类逻辑
-            if lang == 'en':
-                files['en'].write(json.dumps(data, ensure_ascii=False) + '\n')
-            elif lang == 'zh':
-                files['zh'].write(json.dumps(data, ensure_ascii=False) + '\n')
+            text = normalize_text(data.get("text", ""))
+            if len(text) < MIN_TEXT_CHARS:
+                stats["skipped"] += 1
+                continue
+
+            labels, scores = model.predict(text.replace("\n", " "), k=1)
+            detected_lang = labels[0].replace("__label__", "")
+            confidence = float(scores[0])
+
+            data["text"] = text
+            data["detected_lang"] = detected_lang
+            data["lang_confidence"] = round(confidence, 6)
+
+            if detected_lang == "en":
+                bucket = "en"
+            elif detected_lang == "zh":
+                bucket = "zh"
             else:
-                # 俄语和其他语言去这里
-                data['detected_lang'] = lang # 顺便标记一下是什么语言
-                files['others'].write(json.dumps(data, ensure_ascii=False) + '\n')
-                
-            count += 1
-            if count % 1000 == 0:
-                print(f"已处理 {count} 行...")
-                
-        except Exception as e:
-            print(f"Skipping line due to error: {e}")
+                bucket = "others"
 
-# 关闭文件
-for f in files.values():
-    f.close()
+            writers[bucket].write(json.dumps(data, ensure_ascii=False) + "\n")
 
-print("处理完成！生成了 data_en.jsonl, data_zh.jsonl 和 data_others.jsonl")
+            stats["total"] += 1
+            stats[bucket] += 1
+
+    print("语言切分完成！")
+    print(json.dumps(stats, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()
