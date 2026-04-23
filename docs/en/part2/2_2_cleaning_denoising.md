@@ -957,15 +957,15 @@ An industrial-grade cleaning pipeline typically includes the following stages, e
 
 **Phase 5: PII cleaning.** Identify and anonymize sensitive personal information.
 
-**Phase 6: Benchmark decontamination.** Use N-gram overlap detection to remove documents highly overlapping with benchmark test sets.
+**Phase 7: Benchmark decontamination.** Use N-gram overlap detection to remove documents highly overlapping with benchmark test sets.
 
-**Phase 7: Quality scoring.** Use fastText/BERT quality classifiers for refined quality scoring of data.
+**Phase 8: Quality scoring.** Use fastText/BERT quality classifiers for refined quality scoring of data.
 
-**Phase 8: Perplexity scoring.** Compute quality metrics like perplexity to provide basis for subsequent quality stratification.
+**Phase 9: Perplexity scoring.** Compute quality metrics like perplexity to provide basis for subsequent quality stratification.
 
-**Phase 9: Inter-document deduplication.** Use MinHash LSH for large-scale fuzzy deduplication to remove highly similar documents.
+**Phase 10: Inter-document deduplication.** Use MinHash LSH for large-scale fuzzy deduplication to remove highly similar documents.
 
-**Phase 10: Quality stratification and sampling.** Stratify data by quality score, determine sampling weights for each tier.
+**Phase 11: Quality stratification and sampling.** Stratify data by quality score, determine sampling weights for each tier.
 
 ```python
 import ray
