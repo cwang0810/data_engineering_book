@@ -94,6 +94,43 @@
 
 为了让多轮数据真正可训练，状态表示不能停留在“有几个字段”这一层，而应进一步明确一个最小闭环单元。所谓最小闭环单元，是指模型完成一次多轮决策所必须观察和输出的最小结构。对任务型 Agent 而言，这个闭环通常包括四个部分：当前状态快照、触发输入、决策动作、更新后状态。
 
+**代码示例：多轮样本的“前态—触发—动作—后态”结构（最小闭环）**
+
+下面示例用一个“会议安排”线程演示：本轮触发是用户补充了时区；动作为调用日历工具；后态更新了 `pending_slots` 与 `last_action_result`。
+
+```json
+{
+  "episode_id": "ep_0012",
+  "thread_id": "t_calendar",
+  "before_state": {
+    "active_state": "collecting_info",
+    "pending_slots": ["timezone"],
+    "confirmed": {"date": "2026-04-29", "duration_min": 90},
+    "memory_refs": ["pref_language=zh"]
+  },
+  "trigger": {"type": "user_message", "text": "用上海时区。"},
+  "action": {
+    "type": "tool_call",
+    "name": "calendar_search",
+    "arguments": {
+      "start_time": "2026-04-29T13:00:00",
+      "end_time": "2026-04-29T18:00:00",
+      "timezone": "Asia/Shanghai",
+      "mode": "freebusy"
+    }
+  },
+  "tool_observation": {
+    "status": "ok",
+    "conflicts": [{"start": "2026-04-29T15:00:00", "end": "2026-04-29T15:30:00"}]
+  },
+  "after_state": {
+    "active_state": "waiting_for_user_confirmation",
+    "pending_slots": ["choose_slot"],
+    "last_action_result": "found_conflicts"
+  }
+}
+```
+
 当前状态快照说明系统此刻知道什么、正在做什么、缺什么；触发输入可以是用户新消息、工具观测或反馈信号；决策动作包括回复、调用工具、写入记忆、切换线程、挂起任务等；更新后状态则记录这一步之后系统内部应发生的变化。只有把这四个部分串起来，数据才真正形成“观察—决策—更新”的学习单元。若样本里只有触发输入和回复文本，而没有前后状态，模型学到的就只是“给定一句话怎么接一句话”，而不是“给定状态怎么推进任务”。
 
 这种最小闭环单元还有一个重要作用：它让多轮数据具备天然的可回放性。因为一旦每一步都存在前态和后态，团队就可以在回放测试中检查状态是否正确迁移，哪里开始漂移，哪一步把错误写进了记忆，哪一步在反馈后没有更新状态。没有这一层，多轮数据虽然也能训练，但很难诊断。
@@ -138,6 +175,29 @@
 为了让记忆写入从经验行为变成可训练、可审计的数据动作，团队通常需要明确一组写入判定标准。第一类标准是稳定性判定，即该信息是否大概率跨轮、跨任务仍然成立。第二类标准是可复用性判定，即该信息是否会显著降低未来交互成本或提升任务成功率。第三类标准是可确认性判定，即该信息是否已经被用户显式确认、被工具可靠返回，或被多轮一致性证据支撑。第四类标准是低风险性判定，即该信息被错误保留时是否会造成明显副作用。
 
 这意味着，记忆写入不是一个单独的存储动作，而是一种决策动作。系统在每轮交互后实际上都面临一个判断：这条信息只是当下可见内容，还是未来应该持续利用的结构化知识。如果这一判断在数据中完全不可见，只在系统实现里黑箱完成，那么模型很难学到稳定的写入边界。相反，若训练样本明确呈现“为何写入”“写入到哪一层”“写入后置信度如何”“何时需要复核”，模型就更可能学会像一个有纪律的数据系统那样管理记忆，而不是像一个机械缓存器那样囤积文本。
+
+**代码示例：一条“长期偏好记忆”的写入记录（带置信度与衰减策略）**
+
+```json
+{
+  "memory_event": "upsert",
+  "memory_id": "pref_format_table_first",
+  "key": "preference_format",
+  "value": {"default": "先表格后总结", "language": "zh"},
+  "evidence": {
+    "source": "user_confirmed",
+    "episode_id": "ep_0009",
+    "occurrence_count": 3
+  },
+  "confidence": 0.85,
+  "decay": {
+    "policy": "time_decay",
+    "half_life_days": 60,
+    "override_on_conflict": true
+  },
+  "created_at": "2026-04-24"
+}
+```
 
 #### 记忆写入与任务闭环的关系
 
@@ -220,6 +280,44 @@
 状态漂移评测则专门检查模型是否在长程交互中偏离原始任务目标或角色定位。一个常见现象是，模型在前几轮推进得很好，但在交互变长、信息变杂之后，开始逐渐忘记当前线程的目标，或者在不同线程之间串味。状态漂移评测的价值就在于把这种“慢性偏离”从总体成功率中剥离出来，单独测量。它不只是问“最终是否完成任务”，还要问“完成前是否长期走在正确轨道上”。因为很多系统最后之所以还能完成任务，只是依赖用户不断纠偏，而不是系统本身保持了稳定状态。
 
 记忆依赖评测则关注系统是否真正学会利用记忆。很多模型在短轨迹中表现不错，是因为它还能凭局部上下文硬撑；一旦任务恢复依赖旧偏好或先前状态，它就开始失败。因此，评测集应故意设计那些必须依赖历史记忆、但当前窗口中不再显式给出的场景，以区分“会读长上下文”和“会用记忆”这两种不同能力。前者更多是一种语言处理能力，后者则是真正的跨轮执行能力。对于长程任务型 Agent 而言，后者显然更接近部署所需。
+
+**代码示例：在回放评测中检测“线程污染”的一个简化规则**
+
+如果某线程的状态字段突然出现了另一个线程的专属字段（比如邮件线程的 `recipient` 出现在简历线程），通常就是串线信号。下面脚本演示如何对回放日志做这种检查。
+
+```python
+from typing import Dict, List
+
+
+THREAD_FIELDS = {
+    "t_mail": {"recipient", "subject", "body"},
+    "t_resume": {"resume_file", "target_role", "bullet_style"},
+}
+
+
+def detect_contamination(events: List[Dict]) -> List[Dict]:
+    findings = []
+    for e in events:
+        tid = e["thread_id"]
+        state = e.get("after_state", {})
+        keys = set(state.keys())
+        # 如果出现其他线程的专属字段，记录为污染
+        for other_tid, fields in THREAD_FIELDS.items():
+            if other_tid == tid:
+                continue
+            leaked = keys & fields
+            if leaked:
+                findings.append({"event_id": e.get("id"), "thread_id": tid, "leaked_fields": sorted(leaked)})
+    return findings
+
+
+if __name__ == "__main__":
+    replay = [
+        {"id": "e1", "thread_id": "t_resume", "after_state": {"resume_file": "a.docx", "recipient": "x@y.com"}},
+        {"id": "e2", "thread_id": "t_mail", "after_state": {"recipient": "x@y.com", "subject": "hi"}}
+    ]
+    print(detect_contamination(replay))
+```
 
 #### 回放评测的基本单位不是回复，而是状态迁移
 

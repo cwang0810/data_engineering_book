@@ -46,6 +46,51 @@
 
 教师模型输出并不天然等于高价值样本。即便教师整体能力远强于学生，它也仍然可能输出冗余内容、局部错误、风格失衡、边界过度自信甚至不符合业务规范的答案。如果团队把教师输出视为“自动真值”，那么蒸馏过程就会退化成错误与噪声的高效复制机制。
 
+**代码示例：把“长教师答案”压缩成学生友好的结构化监督**
+
+下面示例演示一个常见的“表示映射”做法：把教师长答拆成 `final/理由/限制条件` 三段（更利于小模型学稳边界），并保留最关键的元信息（教师来源、裁判分、是否进入主训练集）。
+
+```python
+from dataclasses import dataclass
+
+
+@dataclass
+class DistillSample:
+    prompt: str
+    final: str
+    rationale: str
+    limits: str
+    meta: dict
+
+
+def compress_teacher_answer(prompt: str, teacher_text: str, *, teacher_id: str, judge_score: int) -> DistillSample:
+    # 教材示例：用简单分隔符演示“结构化裁剪”
+    # 工业实践中通常由审稿任务/裁判模型/规则系统生成这些字段
+    parts = [p.strip() for p in teacher_text.split("###") if p.strip()]
+    final = parts[0] if parts else teacher_text.strip()
+    rationale = parts[1] if len(parts) > 1 else ""
+    limits = parts[2] if len(parts) > 2 else ""
+
+    return DistillSample(
+        prompt=prompt,
+        final=final,
+        rationale=rationale,
+        limits=limits,
+        meta={
+            "teacher": teacher_id,
+            "judge_score": judge_score,
+            "use_for_training": judge_score >= 4
+        }
+    )
+
+
+if __name__ == "__main__":
+    p = "用户：信息不足时应该怎么答？"
+    t = "结论：先说明限制条件，再提出最小必要追问。###理由：避免在证据不足时强答。###限制：高风险场景优先安全分流。"
+    s = compress_teacher_answer(p, t, teacher_id="teacher_v5", judge_score=5)
+    print(s)
+```
+
 这一点在实际项目里很常见。团队一开始往往会对强教师有一种天然信任，觉得既然它整体表现远好于学生，那把它的输出直接留下来，总归比人工一点点重写更划算。这个判断并不完全错，但它少了一步很关键的过滤：教师强，不等于教师在任何任务上、任何表达形式上都适合作为学生的学习材料。教师模型本身也有自己的生成习惯，有时喜欢铺陈，有时偏好过度解释，有时为了让答案显得完整，会补上一些学生其实不该学的语气和结构。要是这些东西都不加筛选地原样保留，学生学到的就不只是任务能力，还有一整套并不一定适合自己的表达负担。
 
 因此，在蒸馏链路中，一个很重要但又常被忽略的判断是：教师的哪些部分值得保留，哪些部分应该被压缩，哪些部分应该被删除，哪些部分甚至应该被改写。教师模型的长链式解释可能对研究者有启发，但未必适合学生吸收；教师模型的复杂修辞可能显得高级，但未必利于小模型形成稳定行为；教师模型对边界问题的自信表述可能提高可读性，却可能把本不应确定的判断强行固定下来。
@@ -197,6 +242,31 @@
 裁判的作用通常体现在三个层面。第一是过滤，即识别明显错误、格式不合规、工具调用失败、事实冲突或幻觉严重的样本。第二是打分，即从正确性、可读性、一致性、覆盖度、风格匹配度等维度给出细粒度评价。第三是排序，即在多个教师给出的候选结果中，选择最适合当前学生目标的样本版本。这里尤其要注意，裁判不是为了追求最“像教师”的答案，而是为了选出最适合学生学习的答案。
 
 在工程实践中，裁判模型往往比教师更需要稳定性。教师可以探索多样化表达，但裁判必须保持评价口径尽量一致，否则训练集会出现隐形分布抖动。同样一个回答，如果在不同批次被裁判赋予完全不同的标准，学生学到的将是混乱的边界。也正因为如此，很多团队会把裁判策略与规则系统结合起来，用规则保证底线，用模型处理复杂判断。
+
+**代码示例：蒸馏样本的“候选—裁判—入库”结构（JSONL）**
+
+这类结构能同时服务“多教师竞争”“失败样本保留”“按置信度加权采样”等工程需求。
+
+```json
+{
+  "id": "distill_000781",
+  "prompt": "（任务输入）",
+  "candidates": [
+    {"teacher": "teacher_A", "text": "（候选A）"},
+    {"teacher": "teacher_B", "text": "（候选B）"}
+  ],
+  "judge": {
+    "winner_teacher": "teacher_B",
+    "scores": {"teacher_A": 3, "teacher_B": 5},
+    "reason_tags": ["边界更清楚", "结构更可执行"]
+  },
+  "store": {
+    "train": {"teacher_B": true, "teacher_A": false},
+    "failure_pool": {"teacher_A": true}
+  },
+  "meta": {"task_unit": "boundary_answering", "version": "v0.2.0"}
+}
+```
 
 更进一步说，裁判模型在多模型协作中承担的是“系统记忆”的角色。教师可以变化，专家可以替换，学生可以迭代，但裁判标准如果能保持相对稳定，整个样本仓库就不至于在不同周期中出现口径漂移。这一点在长周期蒸馏项目里尤其关键。没有稳定裁判的系统，很容易出现第一期样本强调正确性，第二期样本强调表达性，第三期样本又强调长度压缩，最后学生学到的是互相冲突的信号。
 
@@ -429,6 +499,41 @@
 蒸馏是一项系统性投资，必须把收益与成本放在一起计算。单看质量提升，很容易得出“值得蒸馏”的乐观结论；但如果教师生成成本极高、裁判成本极高、样本维护成本长期存在，而学生上线后的成本节约有限，那么项目的真实 ROI 可能并不理想。相反，有些蒸馏项目即使质量只提升不多，但如果大幅降低了延迟和单位请求成本，也具有很强的工程价值。
 
 因此，收益核算至少应覆盖三个维度。第一是质量收益，即准确率、事实一致性、工具成功率、格式合规率、用户满意度等。第二是系统收益，即平均延迟、峰值吞吐、资源占用、部署复杂度。第三是运营收益，即是否减少人工审核量、是否降低对教师模型在线调用的依赖、是否缩短交付周期。只有把这三类收益同时拉出来看，团队才能判断蒸馏到底是在创造价值，还是在制造一个昂贵的中间层。
+
+**代码示例：一个极简 ROI 估算器（把“节省的线上成本”与“蒸馏投入”放在同一张账上）**
+
+```python
+def distill_roi(
+    *,
+    qps: float,
+    teacher_cost_per_1k: float,
+    student_cost_per_1k: float,
+    avg_tokens: int,
+    days: int,
+    offline_total_cost: float
+) -> float:
+    """
+    返回 ROI = (节省的线上推理成本 - 离线投入) / 离线投入
+    仅用于工程估算：实际还应计入质量差异带来的人工兜底成本变化。
+    """
+    requests = qps * 86400 * days
+    cost_teacher = requests * (avg_tokens / 1000) * teacher_cost_per_1k
+    cost_student = requests * (avg_tokens / 1000) * student_cost_per_1k
+    saved = cost_teacher - cost_student
+    return (saved - offline_total_cost) / max(offline_total_cost, 1e-9)
+
+
+if __name__ == "__main__":
+    roi = distill_roi(
+        qps=20,
+        teacher_cost_per_1k=0.06,
+        student_cost_per_1k=0.01,
+        avg_tokens=800,
+        days=30,
+        offline_total_cost=2000
+    )
+    print("ROI =", round(roi, 3))
+```
 
 下面给出一张适合书稿使用的蒸馏收益与成本对照表，帮助团队做更系统的决策。
 
