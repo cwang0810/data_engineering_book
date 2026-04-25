@@ -72,23 +72,22 @@ plugins:
                 - 第6章：图文对数据处理: part3/3_1_image_text_pairs.md
                 - 第7章：数据重描述: part3/3_2_recaptioning.md
                 - 第8章：视频与音频数据: part3/3_3_video_audio.md
-            - 第四部分：对齐与合成数据工程:
-                - 第9章：指令微调数据: part4/4_1_sft_data.md
-                - 第10章：合成数据: part4/4_2_synthetic_data.md
-                - 第11章：人类偏好数据: part4/4_3_preference_data.md
-            - 第五部分：应用级数据工程:
-                - 第12章：RAG 数据流水线: part5/5_1_rag_pipeline.md
-                - 第13章：多模态 RAG: part5/5_2_mm_rag.md
-            - 第六部分：实战项目集:
-                - 项目一：基于 Ray 构建分布式 Mini-C4 数据流水线: part6/6_1_mini_c4.md
-                - 项目二：垂直领域专家 SFT（法律）: part6/6_2_legal_sft.md
-                - 项目三：LLaVA 多模态指令数据工厂: part6/6_3_llava_instruct.md
-                - 项目四：合成数学与代码教材工厂: part6/6_4_synthetic_textbook.md
-                - 项目五：多模态 RAG 企业财报助手: part6/6_5_mm_rag.md
-            - 第九篇：隐私合规与数据安全:
+            - 第四部分：指令微调与偏好数据:
+                - 第9章：SFT数据设计与指令体系: part4/4_1_SFT.md
+                - 第10章：偏好数据与奖励信号: part4/4_2_preference.md
+                - 第11章：标注平台、QA体系与数据运营: part4/4_3_qa.md
+            - 第五部分：合成数据工程:
+                - 第12章：合成数据工厂：从种子到验证: part5/5_1_data_synthesis.md
+                - 第13章：知识蒸馏与模型协作: part5/5_2_distillation.md
+                - 第14章：合成数据质量控制与模型坍缩: part5/5_3_quality.md
+            - 第六部分：推理与 Agent 数据工程:
+                - 第15章：思维链与推理数据工程: part6/6_1_COT.md
+                - 第16章：Tool-Use 与函数调用数据: part6/6_2_tool.md
+                - 第17章：Agent 记忆与多轮交互数据: part6/6_3_agent.md
+            - 第九部分：隐私合规与数据安全:
                 - 第27章：数据合规框架与治理: part9/Ch27_compliance_framework_and_governance.md
                 - 第28章：联邦学习与隐私保护技术: part9/Ch28_federated_learning_and_privacy_preserving_technologies.md
-            - 第十篇：项目集（P01-P10）:
+            - 第十部分：项目集（P01-P10）:
                 - 项目一：基于 Ray 构建分布式 Mini-C4 数据流水线: part10/10_1_mini_c4.md
                 - 项目二：垂直领域专家 SFT（法律）: part10/10_2_legal_sft.md
                 - 项目三：LLaVA 多模态指令数据工厂: part10/10_3_llava_instruct.md

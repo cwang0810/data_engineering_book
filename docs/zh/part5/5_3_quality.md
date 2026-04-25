@@ -1,4 +1,4 @@
-## Ch17 合成数据质量控制与模型坍缩
+## Ch14 合成数据质量控制与模型坍缩
 
 当团队开始大规模使用合成数据时，最初感受到的往往是效率红利：数据生产速度更快，长尾场景覆盖更广，标注成本明显下降，样本结构也更容易统一。这些优势使得合成数据迅速成为现代模型工程中的核心基础设施之一。但也正因为它看起来高效、可控、可扩展，团队很容易在没有足够治理机制的情况下，把更多训练责任交给合成数据体系，最终让原本用于加速模型进化的工具，反过来侵蚀模型能力本身。
 
@@ -331,11 +331,91 @@
 
 重复率检测不仅要看文本重合，更要看结构重复和语义重复。许多合成数据集表面上经过了去重，但仍存在大量“换词不换骨架”的样本。对此，团队应当同时监控 n-gram 重复、嵌入相似度聚类比例、模板骨架重复率等指标，避免把表面多样性误判为真实多样性。
 
+**代码示例：用“嵌入相似度 + 近邻比例”粗测样本自相似增长**
+
+下面用一个非常朴素的方式演示“自相似监控”的思路：把文本向量化后，统计有多少样本与其最近邻相似度超过阈值（比例越高，说明数据越容易内卷到少数模式）。
+
+```python
+from typing import List
+import math
+
+
+def cosine(a: List[float], b: List[float]) -> float:
+    dot = sum(x * y for x, y in zip(a, b))
+    na = math.sqrt(sum(x * x for x in a))
+    nb = math.sqrt(sum(y * y for y in b))
+    return dot / max(na * nb, 1e-9)
+
+
+def nearest_neighbor_sim(vs: List[List[float]]) -> List[float]:
+    sims = []
+    for i, v in enumerate(vs):
+        best = -1.0
+        for j, u in enumerate(vs):
+            if i == j:
+                continue
+            best = max(best, cosine(v, u))
+        sims.append(best)
+    return sims
+
+
+if __name__ == "__main__":
+    # 教材演示：这里用“假向量”代替真实 embedding
+    vectors = [
+        [1, 0, 0],
+        [0.98, 0.05, 0],
+        [0, 1, 0],
+        [0, 0.99, 0.02],
+        [0, 0, 1]
+    ]
+    sims = nearest_neighbor_sim(vectors)
+    threshold = 0.95
+    ratio = sum(1 for s in sims if s >= threshold) / len(sims)
+    print("近邻相似度>=阈值的比例:", ratio)
+```
+
 困惑度与评测退化指标则提供了另一个角度。若模型在合成数据上的困惑度持续下降，但在真实验证集、长尾验证集或跨分布验证集上的表现没有同步提升，甚至开始下降，这通常说明模型正在过度适应合成分布。真正健康的合成数据系统，应当让“在真实任务上更好”与“在训练集上更熟练”保持基本一致，而不是两者逐步背离。
 
 #### 合成比例梯度实验与 ablation 设计
 
 要判断合成数据是否在制造风险，最有效的方法之一不是继续争论“比例高低是否合理”，而是系统地做比例梯度实验。例如，将训练数据中的合成比例设置为 0%、10%、30%、50%、70% 乃至更高，并在同一套评测体系上观察主指标、长尾指标、鲁棒性指标和线上代理指标的变化趋势。真正重要的不是某个单点分数，而是曲线形态：收益何时开始放缓，风险何时开始放大，拐点出现在什么位置。
+
+**代码示例：把“合成比例梯度实验”做成可重复的实验矩阵**
+
+```python
+from dataclasses import dataclass
+from typing import List, Dict
+
+
+@dataclass
+class MixPlan:
+    synth_ratio: float   # 0.0 ~ 1.0
+    real_ratio: float
+
+
+def build_mix_plans(ratios: List[float]) -> List[MixPlan]:
+    return [MixPlan(synth_ratio=r, real_ratio=1 - r) for r in ratios]
+
+
+def run_experiment(plans: List[MixPlan]) -> List[Dict]:
+    results = []
+    for p in plans:
+        # 这里用占位符演示：实际应调用训练脚本 + 评测脚本
+        results.append({
+            "synth_ratio": p.synth_ratio,
+            "real_ratio": p.real_ratio,
+            "main_metric": None,
+            "tail_metric": None,
+            "robust_metric": None,
+            "notes": "TODO: 填入训练与评测结果"
+        })
+    return results
+
+
+if __name__ == "__main__":
+    plans = build_mix_plans([0.0, 0.1, 0.3, 0.5, 0.7])
+    print(run_experiment(plans))
+```
 
 ablation 设计也必须围绕风险机制展开，而不只是围绕模型结构展开。例如，可以分别去掉裁判筛选、去掉模板多样化、去掉真实数据回灌、去掉失败样本保留，观察系统退化方式。这样做的目的，是识别“哪一个治理环节在真正抑制坍缩”。如果没有这些对照实验，团队即使观察到退化，也很难知道问题究竟来自合成比例过高，还是来自裁判偏置、模板固化或验证集老化。
 
