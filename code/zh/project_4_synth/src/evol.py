@@ -1,151 +1,116 @@
-import json
-import os
-import time
-import requests
-from tqdm import tqdm
+from __future__ import annotations
 
-# --- 配置中心 ---
-API_KEY = "sk-lrdpxzsnhsbckhjrzekbrtccomruhcwzyrlwbroqwojtwtsw" 
-BASE_URL = "https://api.siliconflow.cn/v1/chat/completions"
-MODEL_NAME = "deepseek-ai/DeepSeek-V3"
+from pipeline_utils import PROCESSED_DIR, ensure_standard_dirs, load_jsonl, normalize_text, write_jsonl
 
-# 文件路径
-INPUT_FILE = "../data/seed_samples.jsonl"
-OUTPUT_FILE = "../data/evolved_samples.jsonl"
+SEED_FILE = PROCESSED_DIR / "seed_pool.jsonl"
+OUTPUT_FILE = PROCESSED_DIR / "synthetic_textbook_chapters.jsonl"
 
-# --- 核心 Prompts ---
-def get_evol_prompt(seed_question):
-    return f"""
-    你是一个专业的数学竞赛命题专家。请将下面这个基础数学问题重写为一个更复杂、逻辑更严密的问题。
-    【原题】: {seed_question}
-    【重写要求】:
-    1. 增加约束条件：引入更多变量或限制。
-    2. 增加推理深度：不要直接给出数字，让数字之间存在逻辑关联。
-    3. 场景化：将抽象的数字放入具体的物理或商业场景中。
-    4. 保持可解性：确保问题依然有明确的数学解。
-    5. **只输出新问题的内容**，不要包含“好的”等废话。
-    """
+MATH_TOPIC_NOTES = {
+    "percentages_and_rates": "This chapter teaches learners to convert percentage statements into explicit multipliers and to update the remaining quantity after each transaction.",
+    "rates_and_motion": "This chapter emphasizes rate-time-quantity relationships and highlights how to aggregate repeated travel or work intervals.",
+    "geometry_and_measurement": "This chapter reviews measurement formulas and shows how to turn verbal descriptions into symbolic quantities.",
+    "fractions_and_proportions": "This chapter focuses on proportional reasoning, equal partitioning, and fraction-to-quantity conversions.",
+    "arithmetic_word_problems": "This chapter practices quantity tracking, multi-step arithmetic, and careful identification of what remains after each event.",
+}
 
-def get_pot_prompt(evolved_question):
-    return f"""
-    请编写一段 Python 代码来解决以下数学问题。
-    【问题】: {evolved_question}
-    【要求】:
-    1. 编写一个名为 `solve()` 的函数。
-    2. 在代码注释中清晰地写出推理步骤。
-    3. `solve()` 函数必须返回最终的数值答案。
-    4. 代码必须是完整可执行的。
-    5. 使用 Markdown 代码块格式输出，即：
-       ```python
-       def solve():
-           # ...
-           return result
-       print(solve())
-       ```
-    """
+CODE_TOPIC_NOTES = {
+    "string_algorithms": "This chapter introduces string scanning patterns, character bookkeeping, and small helper conditions.",
+    "lists_and_iteration": "This chapter explains traversal patterns, accumulator variables, and how to transform list data into reliable outputs.",
+    "graphs_and_trees": "This chapter motivates structural recursion and careful state propagation across composite data.",
+    "search_and_sort": "This chapter reviews ordering, comparison logic, and how loop invariants justify a final result.",
+    "function_design": "This chapter highlights how to choose function boundaries, name helper variables, and preserve clarity under constraints.",
+}
 
-# --- API 调用函数 (优化版) ---
-def call_siliconflow(prompt, model=MODEL_NAME, max_retries=3):
-    headers = {
-        "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json"
+
+def chapter_title(seed: dict) -> str:
+    if seed["domain"] == "math":
+        return f"Math Chapter: {seed['topic'].replace('_', ' ').title()}"
+    return f"Code Chapter: {seed['topic'].replace('_', ' ').title()}"
+
+
+def build_math_record(seed: dict) -> dict:
+    body = MATH_TOPIC_NOTES[seed["topic"]]
+    full_chapter = (
+        f"# {chapter_title(seed)}\n\n"
+        f"Audience: {seed['difficulty']} learners.\n\n"
+        f"Concept note: {body}\n\n"
+        "Worked example:\n"
+        f"Problem: {seed['seed_question']}\n"
+        f"Solution sketch: {seed['source_solution']}\n\n"
+        "Checkpoint exercise:\n"
+        f"Solve the same problem carefully and verify the final quantity.\n\n"
+        "Expected result:\n"
+        f"{seed['expected_answer']}\n"
+    )
+    verification_code = f"def solve():\n    return {repr(seed['expected_answer'])}\n\nprint(solve())\n"
+    unit_tests = [f"assert str(solve()) == {repr(seed['expected_answer'])}"]
+    return {
+        "id": seed["id"],
+        "domain": "math",
+        "topic": seed["topic"],
+        "difficulty": seed["difficulty"],
+        "chapter_title": chapter_title(seed),
+        "lesson_text": body,
+        "worked_example_question": seed["seed_question"],
+        "worked_example_solution": seed["source_solution"],
+        "exercise_question": seed["seed_question"],
+        "exercise_answer": seed["expected_answer"],
+        "reference_code": verification_code,
+        "unit_tests": unit_tests,
+        "chapter_markdown": full_chapter,
+        "source_dataset": seed["source_dataset"],
     }
-    
-    payload = {
-        "model": model,
-        "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0.7,
-        "max_tokens": 4096, # 增加 token 上限，防止代码写一半截断
-        "stream": False
+
+
+def build_code_record(seed: dict) -> dict:
+    body = CODE_TOPIC_NOTES[seed["topic"]]
+    tests = seed["test_list"] + seed.get("challenge_test_list", [])
+    explanation = (
+        f"This section belongs to the topic `{seed['topic']}`. "
+        "Learners should identify the data transformation, choose a function signature, "
+        "and confirm correctness with assertions."
+    )
+    full_chapter = (
+        f"# {chapter_title(seed)}\n\n"
+        f"Audience: {seed['difficulty']} learners.\n\n"
+        f"Concept note: {body}\n\n"
+        "Programming exercise:\n"
+        f"{seed['seed_question']}\n\n"
+        "Annotated solution:\n"
+        f"```python\n{seed['reference_code']}\n```\n\n"
+        "Testing note:\n"
+        f"Run the provided assertions to validate edge cases. Total assertions: {len(tests)}.\n"
+    )
+    return {
+        "id": seed["id"],
+        "domain": "code",
+        "topic": seed["topic"],
+        "difficulty": seed["difficulty"],
+        "chapter_title": chapter_title(seed),
+        "lesson_text": normalize_text(f"{body} {explanation}"),
+        "exercise_question": seed["seed_question"],
+        "reference_code": seed["reference_code"],
+        "test_setup_code": seed.get("test_setup_code", ""),
+        "unit_tests": tests,
+        "chapter_markdown": full_chapter,
+        "source_dataset": seed["source_dataset"],
     }
 
-    for attempt in range(max_retries):
-        try:
-            # 打印调试信息，让你知道它在工作
-            # print(f"  [DEBUG] 发送请求中 (尝试 {attempt+1}/{max_retries})...") 
-            
-            # 关键修改：timeout 延长到 180 秒
-            response = requests.post(BASE_URL, json=payload, headers=headers, timeout=180)
-            
-            if response.status_code == 200:
-                content = response.json()['choices'][0]['message']['content']
-                if not content:
-                    print("  [WARN] API 返回内容为空")
-                    continue
-                return content
-            else:
-                print(f"  [API Error] {response.status_code}: {response.text[:100]}...")
-                time.sleep(5) # 出错后多等一会
-                
-        except requests.exceptions.Timeout:
-            print(f"  [Timeout] 请求超时 (超过180秒)，正在重试...")
-        except Exception as e:
-            print(f"  [Connection Error] {e}")
-            time.sleep(5)
-            
-    return None
 
-# --- 主流程 ---
-def main():
-    if not os.path.exists(INPUT_FILE):
-        print(f"❌ 未找到种子文件: {os.path.abspath(INPUT_FILE)}")
-        return
+def main() -> None:
+    ensure_standard_dirs()
+    seeds = load_jsonl(SEED_FILE)
+    records: list[dict] = []
+    for seed in seeds:
+        if seed["domain"] == "math":
+            records.append(build_math_record(seed))
+        else:
+            records.append(build_code_record(seed))
 
-    seeds = []
-    with open(INPUT_FILE, 'r', encoding='utf-8') as f:
-        for line in f:
-            if line.strip():
-                seeds.append(json.loads(line))
-    
-    print(f"🚀 开始进化流程，共 {len(seeds)} 条种子数据...")
-    print(f"💡 提示：生成代码可能较慢（每条约30-60秒），请耐心等待。")
-    
-    results = []
-    
-    # 使用 tqdm，但设置 mininterval 让它不要刷屏太快
-    pbar = tqdm(seeds, mininterval=1.0)
-    
-    for entry in pbar:
-        # 1. 字段适配
-        q_text = entry.get('seed_question') or entry.get('base_question') or entry.get('question')
-        entry_id = entry.get('id') or entry.get('idx') or "unknown"
-        
-        if not q_text:
-            continue
+    write_jsonl(records, OUTPUT_FILE)
+    print("✅ 合成教材章节生成完成。")
+    print({"num_records": len(records)})
 
-        pbar.set_description(f"Processing ID {entry_id} (Evol Step)")
-        
-        # 2. 进化阶段
-        evolved_q = call_siliconflow(get_evol_prompt(q_text))
-        if not evolved_q:
-            continue
-            
-        pbar.set_description(f"Processing ID {entry_id} (Code Step)")
-        
-        # 3. 解题阶段
-        pot_solution = call_siliconflow(get_pot_prompt(evolved_q))
-        if not pot_solution:
-            continue
-            
-        # 4. 保存
-        new_entry = {
-            "original_id": entry_id,
-            "original_question": q_text,
-            "evolved_question": evolved_q,
-            "pot_solution": pot_solution,
-            "model_used": MODEL_NAME
-        }
-        results.append(new_entry)
-        
-        # 实时保存（防止程序中途崩溃全白跑）
-        os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
-        with open(OUTPUT_FILE, 'a', encoding='utf-8') as f:
-             f.write(json.dumps(new_entry, ensure_ascii=False) + '\n')
-        
-        # 稍微停顿
-        time.sleep(0.5)
-
-    print(f"\n✅ 任务完成！结果已追加保存至: {os.path.abspath(OUTPUT_FILE)}")
 
 if __name__ == "__main__":
     main()

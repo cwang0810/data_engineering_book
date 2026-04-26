@@ -139,7 +139,7 @@ def apply_bpe(text: str, merges: dict) -> list:
     return tokens
 ```
 
-### 5.1.6 Byte-Level BPE: Deep Dive
+### 5.1.3 Byte-Level BPE: Deep Dive
 
 An important variant of BPE is **Byte-level BPE**, first introduced by GPT-2. Traditional BPE operates at the character level and needs to handle Unicode encoding issues—character sets differ enormously across languages, and some characters (such as Emoji, special symbols) may not appear in training data, leading to UNK.
 
@@ -208,7 +208,7 @@ def analyze_byte_level_impact(text: str, tokenizer_name: str):
     return {'num_tokens': num_tokens, 'chars_per_token': chars_per_token}
 ```
 
-### 5.1.3 WordPiece: BERT's Choice
+### 5.1.4 WordPiece: BERT's Choice
 
 WordPiece is the tokenization algorithm developed by Google for BERT, very similar to BPE, with the main difference in the criterion for selecting merge pairs.
 
@@ -241,7 +241,7 @@ output = tokenizer.encode("unhappiness")
 print(output.tokens)  # ['un', '##happi', '##ness']
 ```
 
-### 5.1.4 Unigram: A Probabilistic Perspective on Tokenization
+### 5.1.5 Unigram: A Probabilistic Perspective on Tokenization
 
 Unigram tokenization was proposed by Kudo in 2018, adopting a completely different approach from BPE/WordPiece. BPE and WordPiece are bottom-up methods—starting from small units and gradually merging into larger units. Unigram is top-down—starting from a large vocabulary containing all possible subwords and gradually pruning to target size.
 
@@ -253,7 +253,7 @@ The training process uses the EM algorithm: E-step computes expected occurrence 
 
 A unique advantage of Unigram is its natural support for probability modeling of multiple tokenization results. For a given text, there may be multiple valid segmentation ways; Unigram can assign a probability to each. This is very useful in certain application scenarios (e.g., multi-hypothesis processing in speech recognition).
 
-### 5.1.5 Comparison of the Three Algorithms
+### 5.1.6 Comparison of the Three Algorithms
 
 The three mainstream subword tokenization algorithms each have their characteristics; selection requires trade-offs based on specific scenarios.
 
