@@ -73,17 +73,17 @@ plugins:
                 - 第7章：数据重描述: part3/3_2_recaptioning.md
                 - 第8章：视频与音频数据: part3/3_3_video_audio.md
             - 第四部分：指令微调与偏好数据:
-                - 第9章：SFT数据设计与指令体系: part4/4_1_SFT.md
-                - 第10章：偏好数据与奖励信号: part4/4_2_preference.md
-                - 第11章：标注平台、QA体系与数据运营: part4/4_3_qa.md
+                - 第12章：SFT数据设计与指令体系: part4/4_1_SFT.md
+                - 第13章：偏好数据与奖励信号: part4/4_2_preference.md
+                - 第14章：标注平台、QA体系与数据运营: part4/4_3_qa.md
             - 第五部分：合成数据工程:
-                - 第12章：合成数据工厂：从种子到验证: part5/5_1_data_synthesis.md
-                - 第13章：知识蒸馏与模型协作: part5/5_2_distillation.md
-                - 第14章：合成数据质量控制与模型坍缩: part5/5_3_quality.md
+                - 第15章：合成数据工厂：从种子到验证: part5/5_1_data_synthesis.md
+                - 第16章：知识蒸馏与模型协作: part5/5_2_distillation.md
+                - 第17章：合成数据质量控制与模型坍缩: part5/5_3_quality.md
             - 第六部分：推理与 Agent 数据工程:
-                - 第15章：思维链与推理数据工程: part6/6_1_COT.md
-                - 第16章：Tool-Use 与函数调用数据: part6/6_2_tool.md
-                - 第17章：Agent 记忆与多轮交互数据: part6/6_3_agent.md
+                - 第18章：思维链与推理数据工程: part6/6_1_COT.md
+                - 第19章：Tool-Use 与函数调用数据: part6/6_2_tool.md
+                - 第20章：Agent 记忆与多轮交互数据: part6/6_3_agent.md
             - 第七部分：应用级数据工程:
                 - 第21章：RAG 数据流水线: part7/7_1_rag_pipeline.md
                 - 第22章：多模态 RAG 与视觉检索: part7/7_2_multimodal_rag_visual_retrieval.md
