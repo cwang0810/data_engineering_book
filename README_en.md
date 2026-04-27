@@ -36,19 +36,22 @@ Beyond in-depth theoretical explanations, the book includes **10 end-to-end caps
 ```
 📖 10 Parts, 28 Chapters + 10 Capstone Projects
 │
-├── Part 1: Infrastructure & Core Concepts
-│   ├── Chapter 1: Data Revolution in the LLM Era (From Data Ops to AI Ops)
-│   └── Chapter 2: AI-Native Data Stack (Vector DBs, Object Storage, Ray/Spark)
+├── Part 1: Overview & Infrastructure
+│   ├── Chapter 1: Data Revolution in the LLM Era
+│   ├── Chapter 2: LLM Data Lifecycle & Quality Assessment Framework
+│   └── Chapter 3: AI-Native Data Stack & Cost Governance
 │
-├── Part 2: Large-Scale Text Pre-training Engineering
-│   ├── Chapter 3: Data Acquisition (CommonCrawl Parsing & High-Concurrency Crawlers)
-│   ├── Chapter 4: Cleaning & Quality Control (Dedup, PII Scrubbing, Benchmark Decontamination)
-│   └── Chapter 5: Tokenization, Serialization & Efficient Loading (DataLoader Optimization)
+├── Part 2: Text Pre-training Data Engineering
+│   ├── Chapter 4: Data Sources, Acquisition & Copyright
+│   ├── Chapter 5: Cleaning, Deduplication & Decontamination
+│   ├── Chapter 6: Tokenization, Serialization & Efficient Loading
+│   └── Chapter 7: Data Evaluation, Quality Loop & Operational Iteration
 │
 ├── Part 3: Multimodal Data Engineering
-│   ├── Chapter 6: Image-Text Pair Processing
-│   ├── Chapter 7: Recaptioning
-│   └── Chapter 8: Video & Audio Data
+│   ├── Chapter 8: Image-Text Pair Data Engineering
+│   ├── Chapter 9: Recaptioning & Document Understanding
+│   ├── Chapter 10: Video & Audio Data Engineering
+│   └── Chapter 11: Cross-Modal Alignment & Fusion
 │
 ├── Part 4: Instruction Fine-tuning & Preference Data
 │   ├── Chapter 12: SFT Data Design & Instruction Taxonomy
@@ -65,7 +68,7 @@ Beyond in-depth theoretical explanations, the book includes **10 end-to-end caps
 │   ├── Chapter 19: Tool-Use & Function-Calling Data
 │   └── Chapter 20: Agent Memory & Multi-turn Interaction Data
 │
-├── Part 7: Application-level Data Engineering
+├── Part 7: Application-Level Data Engineering
 │   ├── Chapter 21: RAG Data Pipeline
 │   ├── Chapter 22: Multimodal RAG & Visual Retrieval
 │   └── Chapter 23: Online Feedback Loop & Knowledge Update
@@ -87,7 +90,7 @@ Beyond in-depth theoretical explanations, the book includes **10 end-to-end caps
     ├── Project 5: Multimodal RAG Financial Report Assistant
     ├── Project 6: CoT Reasoning Dataset & PRM Training
     ├── Project 7: Agent Tool-Use Data Factory
-    ├── Project 8: Enterprise DataOps Platform
+    ├── Project 8: Enterprise DataOps Platform: From Data Projects to Org-Level Governance
     ├── Project 9: Privacy-Preserving Data Pipeline
     └── Project 10: End-to-End LLM Data Flywheel
 ```
