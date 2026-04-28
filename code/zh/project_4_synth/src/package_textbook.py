@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from collections import Counter, defaultdict
 
 from pipeline_utils import BOOKS_DIR, PROCESSED_DIR, ensure_standard_dirs, load_json, load_jsonl, write_json, write_jsonl
@@ -250,7 +251,8 @@ def main() -> None:
             enriched_records.append(record)
 
         book_text = build_book(domain, title, subtitle, chapter_records)
-        output_path.write_text(book_text, encoding="utf-8")
+        if os.environ.get("PROJECT_SMOKE") != "1" or not output_path.exists():
+            output_path.write_text(book_text, encoding="utf-8")
         catalog["books"].append(
             {
                 "domain": domain,
@@ -302,7 +304,8 @@ def main() -> None:
         "- Use the code volume for lab sessions centered on assertions and debugging.\n"
         "- Assign one checkpoint exercise and one end-of-chapter reflection for each lesson.\n"
     )
-    TEACHER_GUIDE_FILE.write_text(teacher_guide, encoding="utf-8")
+    if os.environ.get("PROJECT_SMOKE") != "1" or not TEACHER_GUIDE_FILE.exists():
+        TEACHER_GUIDE_FILE.write_text(teacher_guide, encoding="utf-8")
 
     write_json(curriculum, CURRICULUM_FILE)
     write_json(catalog, CATALOG_FILE)

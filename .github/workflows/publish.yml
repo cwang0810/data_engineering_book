@@ -16,10 +16,13 @@ jobs:
       - name: Configure Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.x
+          python-version: "3.11"
           
       - name: Install dependencies
-        run: pip install mkdocs-material mkdocs-glightbox "mkdocs-static-i18n[material]"
+        run: pip install -r requirements-docs.txt
+
+      - name: Build site
+        run: mkdocs build --strict --clean
 
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force

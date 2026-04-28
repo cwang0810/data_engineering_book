@@ -4,7 +4,7 @@ import json
 import subprocess
 import sys
 from collections import Counter
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -194,7 +194,7 @@ def main() -> None:
 
     all_checks = command_checks + dataset_checks
     results = {
-        "timestamp_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "overall_passed": all(check["passed"] for check in all_checks),
         "total_checks": len(all_checks),
         "passed_checks": sum(1 for check in all_checks if check["passed"]),

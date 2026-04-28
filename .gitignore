@@ -7,6 +7,21 @@
 # MkDocs 构建输出
 site/
 smoke_reports/
+code/zh/project_*/data/processed/
+code/zh/project_*/data/training/
+code/zh/project_*/data/reports/
+code/zh/project_*/data/eval/
+code/zh/project_*/data/console/
+code/zh/project_*/data/page_images/
+code/zh/project_*/data/derived/
+code/zh/project_*/data/qa_viz/
+code/zh/project_1_mini_c4/data/raw/
+code/zh/project_2_sft_data/data/raw/smoke_law.txt
+code/zh/project_3_llava_data/data/images/
+code/zh/project_3_llava_data/data/annotations/
+code/zh/project_4_synth/data/gsm8k_train.jsonl
+code/zh/project_4_synth/data/mbpp_train.jsonl
+code/zh/project_5_rag/data/annual_report_2024_cn.txt
 
 # Python
 __pycache__/
