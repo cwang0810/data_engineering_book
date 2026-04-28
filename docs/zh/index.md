@@ -101,5 +101,5 @@
 - [项目六：CoT 推理数据集构建与 PRM 训练](part10/10_6_PRM.md)
 - [项目七：Agent Tool-Use 数据工厂](part10/10_7_Agent_Tooluse.md)
 - [项目八：企业级 DataOps 平台搭建：从数据项目到组织级治理能力](part10/10_8_dataops.md)
-- [项目九：隐私保护数据流水线](part10/10_9_privacy_pipline.md)
+- [项目九：隐私保护数据流水线](part10/10_9_privacy_pipeline.md)
 - [项目十：端到端 LLM 数据飞轮](part10/10_10_flywheel.md)
