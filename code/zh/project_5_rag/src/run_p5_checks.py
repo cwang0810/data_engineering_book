@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from pipeline_utils import EVAL_DIR, PROCESSED_DIR, REPORTS_DIR, ROOT_DIR, load_json, load_jsonl
 
@@ -77,7 +77,7 @@ def main() -> None:
     ]
 
     results = {
-        "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "timestamp_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "overall_passed": all(item["passed"] for item in command_checks) and all(item["passed"] for item in dataset_checks),
         "total_checks": len(command_checks) + len(dataset_checks),
         "passed_checks": sum(item["passed"] for item in command_checks) + sum(item["passed"] for item in dataset_checks),

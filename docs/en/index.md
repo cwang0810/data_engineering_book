@@ -1,5 +1,8 @@
 # Data Engineering for Large Models
 
+!!! warning "Translation in progress"
+    The English edition lags the Chinese 2026 mainline by 19 chapters. Browse the Chinese site for the canonical table of contents; consult the [translation status page](translation-status.md) for per-chapter availability.
+
 ## Current Edition Status
 
 The Chinese 2026 edition is the mainline edition of this book. It now covers 28 chapters and 10 runnable project chapters.

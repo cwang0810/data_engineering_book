@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import subprocess
-import sys
 from pathlib import Path
 
 from pipeline_utils import PROCESSED_DIR, REPORTS_DIR, TRAINING_DIR, ensure_standard_dirs, load_json, load_jsonl, write_json
@@ -45,8 +44,8 @@ def main() -> None:
 
     py_files = sorted(str(path) for path in SRC_DIR.glob("*.py"))
     command_checks = [
-        run_command([sys.executable, "-m", "py_compile", *py_files], "py_compile"),
-        run_command([sys.executable, str(SRC_DIR / "evaluate_tooluse.py")], "evaluate_tooluse"),
+        run_command(["python", "-m", "py_compile", *py_files], "py_compile"),
+        run_command(["python", str(SRC_DIR / "evaluate_tooluse.py")], "evaluate_tooluse"),
     ]
 
     dataset_checks = []

@@ -1,4 +1,7 @@
+import requests
+import gzip
 import os
+from tqdm import tqdm
 
 # ================= 配置部分 =================
 # 1. 选择 Crawl ID (这是 2023 年第 50 周的抓取数据)
@@ -18,9 +21,6 @@ def get_warc_file_paths(crawl_id, num_files):
     """
     获取指定 Crawl ID 的 WARC 文件下载路径列表
     """
-    import gzip
-    import requests
-
     # 路径索引文件地址
     paths_url = f"{BASE_URL}/crawl-data/{crawl_id}/warc.paths.gz"
     print(f"📡 正在获取文件索引: {paths_url} ...")
@@ -46,9 +46,6 @@ def download_file(url, output_dir):
     """
     下载单个文件并显示进度条
     """
-    import requests
-    from tqdm import tqdm
-
     local_filename = url.split('/')[-1]
     local_path = os.path.join(output_dir, local_filename)
     
@@ -87,10 +84,6 @@ def main():
     # 确保输出目录存在
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
-
-    if os.environ.get("PROJECT_SMOKE") == "1":
-        print("PROJECT_SMOKE=1，跳过 Common Crawl 下载，后续步骤会生成本地小样例。")
-        return
     
     # 1. 获取文件路径列表
     warc_paths = get_warc_file_paths(CRAWL_ID, NUM_FILES_TO_DOWNLOAD)

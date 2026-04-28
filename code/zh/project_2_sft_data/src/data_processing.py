@@ -5,6 +5,7 @@ import re
 from collections import Counter
 from pathlib import Path
 
+import pdfplumber
 from tqdm import tqdm
 
 from pipeline_utils import (
@@ -48,8 +49,6 @@ def clean_pdf_text(text: str) -> str:
 
 
 def extract_pdf_text(file_path: Path) -> str:
-    import pdfplumber
-
     full_text = []
     with pdfplumber.open(file_path) as pdf:
         for page in tqdm(pdf.pages, desc=f"读取 {file_path.name}", leave=False):
@@ -63,10 +62,6 @@ def extract_pdf_text(file_path: Path) -> str:
             except Exception:
                 continue
     return clean_pdf_text("\n".join(full_text))
-
-
-def extract_text_file(file_path: Path) -> str:
-    return clean_pdf_text(file_path.read_text(encoding="utf-8"))
 
 
 def split_legal_articles(full_text: str, law_name: str, source_filename: str) -> list[dict]:
@@ -130,16 +125,16 @@ def build_taxonomy(seeds: list[dict]) -> dict:
 
 def main() -> None:
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
-    source_files = sorted(RAW_DATA_DIR.glob("*.pdf")) + sorted(RAW_DATA_DIR.glob("*.txt"))
-    if not source_files:
-        raise FileNotFoundError(f"No PDF or TXT files found in {RAW_DATA_DIR}")
+    pdf_files = sorted(RAW_DATA_DIR.glob("*.pdf"))
+    if not pdf_files:
+        raise FileNotFoundError(f"No PDF files found in {RAW_DATA_DIR}")
 
     all_seeds = []
-    print(f"🚀 开始构建法律种子数据，共 {len(source_files)} 个源文件。")
+    print(f"🚀 开始构建法律种子数据，共 {len(pdf_files)} 个 PDF。")
 
-    for file_path in source_files:
+    for file_path in pdf_files:
         law_name = law_name_from_source(file_path.name)
-        full_text = extract_pdf_text(file_path) if file_path.suffix.lower() == ".pdf" else extract_text_file(file_path)
+        full_text = extract_pdf_text(file_path)
         seeds = split_legal_articles(full_text, law_name, file_path.name)
         all_seeds.extend(seeds)
         print(f"⚖️ {file_path.name}: 提取 {len(seeds)} 条法条种子")
