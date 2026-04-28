@@ -46,48 +46,48 @@
 
 围绕模型对齐数据，展开 SFT 指令体系、偏好数据、奖励信号、标注平台与质量运营。
 
-- [第12章：SFT数据设计与指令体系](part4/4_1_SFT.md)
-- [第13章：偏好数据与奖励信号](part4/4_2_preference.md)
-- [第14章：标注平台、QA体系与数据运营](part4/4_3_qa.md)
+- [第12章：SFT数据设计与指令体系](part4/ch12_sft.md)
+- [第13章：偏好数据与奖励信号](part4/ch13_preference.md)
+- [第14章：标注平台、QA体系与数据运营](part4/ch14_qa.md)
 
 ## 第五部分：合成数据工程
 
 讲解从种子样本到合成数据工厂的流程，包括知识蒸馏、模型协作、质量控制和模型坍缩风险。
 
-- [第15章：合成数据工厂：从种子到验证](part5/5_1_data_synthesis.md)
-- [第16章：知识蒸馏与模型协作](part5/5_2_distillation.md)
-- [第17章：合成数据质量控制与模型坍缩](part5/5_3_quality.md)
+- [第15章：合成数据工厂：从种子到验证](part5/ch15_data_synthesis.md)
+- [第16章：知识蒸馏与模型协作](part5/ch16_distillation.md)
+- [第17章：合成数据质量控制与模型坍缩](part5/ch17_quality.md)
 
 ## 第六部分：推理与 Agent 数据工程
 
 覆盖思维链、推理轨迹、Tool-Use、函数调用、Agent 记忆和多轮交互数据的构建与验证。
 
-- [第18章：思维链与推理数据工程](part6/6_1_COT.md)
-- [第19章：Tool-Use 与函数调用数据](part6/6_2_tool.md)
-- [第20章：Agent 记忆与多轮交互数据](part6/6_3_agent.md)
+- [第18章：思维链与推理数据工程](part6/ch18_cot.md)
+- [第19章：Tool-Use 与函数调用数据](part6/ch19_tool.md)
+- [第20章：Agent 记忆与多轮交互数据](part6/ch20_agent.md)
 
 ## 第七部分：应用级数据工程
 
 面向 RAG 和在线知识系统，说明文档解析、视觉检索、多模态 RAG、在线反馈闭环与知识更新。
 
-- [第21章：RAG 数据流水线](part7/7_1_rag_pipeline.md)
-- [第22章：多模态 RAG 与视觉检索](part7/7_2_multimodal_rag_visual_retrieval.md)
-- [第23章：在线反馈闭环与知识更新](part7/7_3_online_feedback_knowledge_update.md)
+- [第21章：RAG 数据流水线](part7/ch21_rag_pipeline.md)
+- [第22章：多模态 RAG 与视觉检索](part7/ch22_multimodal_rag_visual_retrieval.md)
+- [第23章：在线反馈闭环与知识更新](part7/ch23_online_feedback_knowledge_update.md)
 
 ## 第八部分：数据运营与平台建设
 
 从团队组织、版本管理、实验追踪和可观测性角度，构建可持续演进的数据平台能力。
 
-- [第24章：DataOps 飞轮与团队组织](part8/8_1_dataops_flywheel_team.md)
-- [第25章：数据版本管理与实验追踪](part8/8_2_data_versioning_experiment_tracking.md)
-- [第26章：数据平台可观测性](part8/8_3_data_platform_observability.md)
+- [第24章：DataOps 飞轮与团队组织](part8/ch24_dataops_flywheel_team.md)
+- [第25章：数据版本管理与实验追踪](part8/ch25_data_versioning_experiment_tracking.md)
+- [第26章：数据平台可观测性](part8/ch26_data_platform_observability.md)
 
 ## 第九部分：隐私合规与数据安全
 
 说明数据合规治理、隐私保护、联邦学习和安全边界，强调工程流程中的合规门禁。
 
-- [第27章：数据合规框架与治理](part9/Ch27_compliance_framework_and_governance.md)
-- [第28章：联邦学习与隐私保护技术](part9/Ch28_federated_learning_and_privacy_preserving_technologies.md)
+- [第27章：数据合规框架与治理](part9/ch27_compliance_framework_and_governance.md)
+- [第28章：联邦学习与隐私保护技术](part9/ch28_federated_learning_and_privacy_preserving_technologies.md)
 
 ## 第十部分：项目实战
 
