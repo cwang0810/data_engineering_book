@@ -32,9 +32,8 @@ jobs:
       - name: Check image sizes
         run: python scripts/check_image_sizes.py --root docs/images --limit-mb 5 --total-budget-mb 400
 
-      # TODO(phase-3.2): drop --warn-only after Part 3 tone cleanup is merged.
-      - name: Check tone (warn-only until Part 3 cleanup)
-        run: python scripts/check_tone.py --warn-only
+      - name: Check tone
+        run: python scripts/check_tone.py
 
       - name: Run project smoke tests
         run: python scripts/run_all_project_smoke_tests.py
