@@ -19,6 +19,7 @@ from pipeline_utils import (
     write_jsonl,
 )
 
+TEXT_FALLBACK_PATH = PDF_PATH.with_suffix(".txt")
 PAGE_FILE = PROCESSED_DIR / "page_units.jsonl"
 BLOCK_FILE = PROCESSED_DIR / "block_units.jsonl"
 INDEX_FILE = PROCESSED_DIR / "rag_index.json"
@@ -31,11 +32,25 @@ def run_command(command: list[str]) -> str:
 
 
 def extract_pdf_text() -> list[str]:
+    if TEXT_FALLBACK_PATH.exists():
+        return split_pages(TEXT_FALLBACK_PATH.read_text(encoding="utf-8"))
     output = run_command(["pdftotext", "-layout", str(PDF_PATH), "-"])
     return split_pages(output)
 
 
 def render_page_images(num_pages: int) -> None:
+    if TEXT_FALLBACK_PATH.exists() and not PDF_PATH.exists():
+        from PIL import Image, ImageDraw
+
+        PAGE_IMAGE_DIR.mkdir(parents=True, exist_ok=True)
+        for page_num in range(1, num_pages + 1):
+            image = Image.new("RGB", (900, 1200), color=(250, 250, 248))
+            draw = ImageDraw.Draw(image)
+            draw.text((80, 100), f"Smoke financial report page {page_num}", fill=(30, 41, 59))
+            draw.text((80, 160), "Offline text fixture rendered as a placeholder page image.", fill=(75, 85, 99))
+            image.save(PAGE_IMAGE_DIR / f"page-{page_num}.png")
+        return
+
     subprocess.run(
         [
             "pdftoppm",

@@ -7,8 +7,12 @@ The English edition is being updated from the earlier public edition. Until the 
 ## Current Policy
 
 - Chinese: latest complete edition.
-- English: earlier edition plus translation status page.
-- Japanese: earlier edition plus translation status page.
+- English: 2026 edition translation in progress. Legacy translated chapters are archived and are not published as the current edition.
+- Japanese: 2026 edition translation in progress. Legacy translated chapters are archived and are not published as the current edition.
+
+## Legacy Translation Archive
+
+Earlier English and Japanese chapter translations have been moved out of the public MkDocs site into `archive/legacy-translations/`. They are retained as reference material, but they should not be treated as synchronized with the 2026 Chinese edition.
 
 ## Latest Chinese Scope
 

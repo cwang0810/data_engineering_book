@@ -52,6 +52,7 @@ plugins:
   - i18n:
       reconfigure_material: true     # 自动适配 Material 主题
       docs_structure: folder         # 文件夹策略：zh/ 和 en/ 目录
+      fallback_to_default: false
       languages:
         - locale: zh
           default: true
@@ -61,6 +62,7 @@ plugins:
           nav:
             - 目录: index.md
             - 序言: preface.md
+            - 中文正文风格指南: style_guide.md
             - 第一部分：总论与基础设施:
                 - 第1章：大模型时代的数据变革: part1/ch01_data_change.md
                 - 第2章：LLM数据生命周期与质量评估框架: part1/ch02_quality_framework.md
@@ -185,6 +187,7 @@ extra_javascript:
 nav:
   - 目录: index.md
   - 序言: preface.md
+  - 中文正文风格指南: style_guide.md
   - 第一部分：总论与基础设施:
       - 第1章：大模型时代的数据变革: part1/ch01_data_change.md
       - 第2章：LLM数据生命周期与质量评估框架: part1/ch02_quality_framework.md

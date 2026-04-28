@@ -3,8 +3,6 @@ from __future__ import annotations
 import json
 import os
 
-import fasttext
-
 from pipeline_utils import normalize_text
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -22,16 +20,29 @@ OUTPUT_FILES = {
 MIN_TEXT_CHARS = 40
 
 
+def smoke_detect_lang(text: str) -> tuple[str, float]:
+    cjk = sum(1 for char in text if "\u4e00" <= char <= "\u9fff")
+    latin = sum(1 for char in text if char.isascii() and char.isalpha())
+    if cjk >= latin:
+        return "zh", 0.99
+    return "en", 0.99
+
+
 def main() -> None:
     if not os.path.exists(INPUT_FILE):
         print(f"❌ 找不到输入文件: {INPUT_FILE}")
         return
 
-    if not os.path.exists(MODEL_PATH):
+    smoke_mode = os.environ.get("PROJECT_SMOKE") == "1"
+    model = None
+    if not smoke_mode and not os.path.exists(MODEL_PATH):
         print(f"❌ 找不到 FastText 模型: {MODEL_PATH}")
         return
 
-    model = fasttext.load_model(MODEL_PATH)
+    if not smoke_mode:
+        import fasttext
+        model = fasttext.load_model(MODEL_PATH)
+
     stats = {"total": 0, "en": 0, "zh": 0, "others": 0, "skipped": 0}
 
     with open(INPUT_FILE, "r", encoding="utf-8") as f_in, \
@@ -53,9 +64,12 @@ def main() -> None:
                 stats["skipped"] += 1
                 continue
 
-            labels, scores = model.predict(text.replace("\n", " "), k=1)
-            detected_lang = labels[0].replace("__label__", "")
-            confidence = float(scores[0])
+            if smoke_mode:
+                detected_lang, confidence = smoke_detect_lang(text)
+            else:
+                labels, scores = model.predict(text.replace("\n", " "), k=1)
+                detected_lang = labels[0].replace("__label__", "")
+                confidence = float(scores[0])
 
             data["text"] = text
             data["detected_lang"] = detected_lang
