@@ -1,0 +1,1063 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="大模型数据工程：架构、算法及项目实战">
+      
+      
+        <meta name="author" content="ustc">
+      
+      
+        <link rel="canonical" href="https://datascale-ai.github.io/data_engineering_book/en/part3/3_1_image_text_pairs/">
+      
+      
+      
+      
+        
+          <link rel="alternate" href="/data_engineering_book/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+          <link rel="alternate" href="../../../ja/part3/3_1_image_text_pairs/" hreflang="ja">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>3 1 image text pairs - Data Engineering for Large Models: Architecture, Algorithms &amp; Projects</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-6-image-text-pairs-data-processing" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../" title="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" class="md-header__button md-logo" aria-label="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Engineering for Large Models: Architecture, Algorithms &amp; Projects
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3 1 image text pairs
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="/data_engineering_book/" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ja/part3/3_1_image_text_pairs/" hreflang="ja" class="md-select__link">
+              日本語
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" class="md-nav__button md-logo" aria-label="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    Data Engineering for Large Models: Architecture, Algorithms &amp; Projects
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translation-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chinese 2026 Edition Status
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#chapter-6-image-text-pairs-data-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter 6: Image-Text Pairs Data Processing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 6: Image-Text Pairs Data Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#61-data-paradigms-image-text-pairs-laion-5b-vs-interleaved-documents-obelicsmmc4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Data Paradigms: Image-Text Pairs (LAION-5B) vs Interleaved Documents (OBELICS/MMC4)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.1 Data Paradigms: Image-Text Pairs (LAION-5B) vs Interleaved Documents (OBELICS/MMC4)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#611-core-concepts-and-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.1 Core Concepts and Principles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#612-architecture-decision-comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.2 Architecture Decision: Comparison Table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-image-acquisition-and-preprocessing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Image Acquisition and Preprocessing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.2 Image Acquisition and Preprocessing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#621-img2dataset-high-concurrency-download-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.1 img2dataset High-Concurrency Download in Practice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#622-visual-preprocessing-pitfalls-cropping-and-semantic-alignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.2 Visual Preprocessing Pitfalls: Cropping and Semantic Alignment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#623-gpu-accelerated-decoding-and-transformation-nvidia-dali" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.3 GPU-Accelerated Decoding and Transformation (NVIDIA DALI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-multimodal-cleaning-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Multimodal Cleaning Pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.3 Multimodal Cleaning Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#631-architecture-design-ray-data-distributed-cleaning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.1 Architecture Design: Ray Data Distributed Cleaning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#632-core-algorithm-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.2 Core Algorithm Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-pitfalls-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Pitfalls &amp; Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>3 1 image text pairs</h1>
+
+<h2 id="chapter-6-image-text-pairs-data-processing">Chapter 6: Image-Text Pairs Data Processing<a class="headerlink" href="#chapter-6-image-text-pairs-data-processing" title="Permanent link">¶</a></h2>
+<h3 id="chapter-summary">Chapter Summary<a class="headerlink" href="#chapter-summary" title="Permanent link">¶</a></h3>
+<p>In the journey of building next-generation Foundation Models, the focus of data engineering has shifted from mere text cleaning to capturing, aligning, and reconstructing multi-dimensional signals from the physical world. If language model data engineering is about "denoising," then multimodal data engineering is about "association" and "alignment." With the emergence of GPT-4V, Gemini, and Sora, we have come to realize that single-modality data can no longer satisfy models' appetite for understanding the world.</p>
+<p>This chapter provides an in-depth analysis of the complete engineering pipeline for building billion-scale multimodal datasets. This is far more than writing a few scripts to download images—it is a comprehensive campaign involving network protocols, distributed storage, heterogeneous computing, and aesthetic evaluation. We will explore the underlying logic of data paradigms, analyze how to leverage distributed computing frameworks to solve the high-concurrency acquisition challenges of massive images, and use GPU hardware acceleration to break through the I/O bottleneck of image preprocessing. Furthermore, we will build an automated cleaning pipeline based on semantics and aesthetics to ensure that data fed into the model is both relevant and safe.</p>
+<p><strong>Learning Objectives</strong>:
+* Understand the training benefits and engineering challenges of LAION-5B (image-text pairs) and OBELICS (interleaved documents) paradigms, and master the design of hybrid data strategies.
+* Be able to write distributed downloaders based on PySpark and Ray Data, handle DNS bottlenecks and long-tail latency, and achieve throughput of 10,000+ img/s.
+* Master NVIDIA DALI pipeline design, solve CPU decoding bottlenecks, and optimize data loading using GPU Direct principles.
+* Build a multi-stage cleaning funnel that includes CLIP semantic filtering, aesthetic scoring, and safety detection, and master threshold tuning strategies for different business scenarios.</p>
+<p><strong>Scenario Introduction</strong>:</p>
+<blockquote>
+<p>"Imagine this scenario: Our crawler team has just extracted 2 billion raw URLs from Common Crawl, stored in thousands of Parquet files. Your task is to transform this data into a high-quality dataset suitable for GPT-4V pre-training within two weeks. When you try to download using the traditional Python requests library on a single machine, you find the estimated time is as high as 15 years—a classic network I/O blocking problem. Worse, preliminary sampling shows that 30% of downloaded images are e-commerce ads (full of noise), 15% have severe watermarks, and there is even serious NSFW content. If we use this data directly, we will not only waste millions of dollars in compute, but the trained model may face legal risks due to generating objectionable content. We need an industrial-grade, high-throughput, intelligent data engineering solution to meet this challenge."</p>
+</blockquote>
+<h3 id="61-data-paradigms-image-text-pairs-laion-5b-vs-interleaved-documents-obelicsmmc4">6.1 Data Paradigms: Image-Text Pairs (LAION-5B) vs Interleaved Documents (OBELICS/MMC4)<a class="headerlink" href="#61-data-paradigms-image-text-pairs-laion-5b-vs-interleaved-documents-obelicsmmc4" title="Permanent link">¶</a></h3>
+<p>Before designing the data pipeline, our first responsibility is to clarify the data organization format. This is not only about storage structure, but also directly determines the training objective and emergent capabilities of downstream models. Different data forms are essentially different abstractions of "how knowledge exists in the world."</p>
+<h4 id="611-core-concepts-and-principles">6.1.1 Core Concepts and Principles<a class="headerlink" href="#611-core-concepts-and-principles" title="Permanent link">¶</a></h4>
+<p><strong>Image-Text Pairs</strong>
+are the foundation of multimodal learning, represented by CLIP, ALIGN, and LAION-5B.
+* <strong>Theoretical Analysis</strong>: This paradigm assumes strong semantic association between image <span class="arithmatex">\(I\)</span> and text <span class="arithmatex">\(T\)</span>, and this association is independent and atomic. The training objective is typically to maximize the cosine similarity of <span class="arithmatex">\(I\)</span> and <span class="arithmatex">\(T\)</span> in a shared embedding space (Contrastive Learning). Its advantage lies in extremely high "signal-to-noise ratio" refinement potential—through contrastive learning, the model learns direct mapping between objects and vocabulary.
+* <strong>Engineering Perspective</strong>: Data structure is simple, typically represented as flattened records of <code>(url, caption, metadata)</code>. This data is extremely easy to shard and randomly shuffle. During training, since samples are independent, we can easily implement Global Batch Shuffling to improve contrastive learning effectiveness.</p>
+<p><strong>Interleaved Image-Text Documents</strong>
+are the key fuel for next-generation multimodal large models (such as Flamingo, GPT-4V, MM1), represented by OBELICS and MMC4.
+* <strong>Theoretical Analysis</strong>: This paradigm preserves the original DOM structure order of web pages, with data presented as sequences of <code>&lt;text&gt;, &lt;image&gt;, &lt;text&gt;...</code>. This forces the model to learn "multimodal context dependency" (Multimodal In-Context Learning). For example, in a "how to make a cake" web page, the relationship between Image 1 (ingredients) and Image 5 (finished product), and their logical connection with surrounding text, cannot be provided by image-text pairs. It simulates the cognitive process of humans reading illustrated books.
+* <strong>Engineering Perspective</strong>: The data pipeline is extremely complex. Since individual samples (documents) have variable length and may contain multiple images, batch assembly becomes difficult. Traditional Collators require complex padding strategies. Additionally, document integrity must be carefully maintained during cleaning—arbitrarily deleting a low-quality image may break context logic and cause the model to learn incorrect referential relationships.</p>
+<h4 id="612-architecture-decision-comparison-table">6.1.2 Architecture Decision: Comparison Table<a class="headerlink" href="#612-architecture-decision-comparison-table" title="Permanent link">¶</a></h4>
+<p>With limited resources, how do we weigh these two data paradigms? This is not a simple binary choice, but involves deep trade-offs among model architecture, training cost, and final application scenarios.</p>
+<p>In early multimodal research (before 2021), the industry widely believed that as long as data volume was sufficient (e.g., 400M pairs for CLIP), models could learn everything. However, with the emergence of GPT-4V, we found that models trained only on image-text pairs, while able to accurately identify "this is a cat," cannot answer "what might this cat in the image do," because they lack logical reasoning context. Conversely, while interleaved documents are rich in logic, the data is sparse and processing cost is extremely high.</p>
+<p>The table below compares the core differences between the two paradigms at the engineering implementation level, aimed at helping architects make technical choices based on actual needs:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Dimension</th>
+<th style="text-align: left;">Image-Text Pairs (LAION-style)</th>
+<th style="text-align: left;">Interleaved Documents (OBELICS-style)</th>
+<th style="text-align: left;">In-depth Analysis &amp; Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Training Objective</strong></td>
+<td style="text-align: left;">Contrastive Learning (CLIP), Text-to-Image (Stable Diffusion)</td>
+<td style="text-align: left;">Next-Token Prediction, Multimodal Dialogue (GPT-4V)</td>
+<td style="text-align: left;"><strong>Hybrid strategy is King</strong>. Research shows that training visual encoders only with interleaved documents is inefficient (images not dense enough), while using only image-text pairs lacks reasoning capability. Recommend Curriculum Learning strategy.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Data Source Parsing</strong></td>
+<td style="text-align: left;">Simple: only need to extract <code>&lt;img&gt;</code> tags and Alt-text</td>
+<td style="text-align: left;">Complex: need to parse DOM tree, filter ads and sidebars, preserve main content logic</td>
+<td style="text-align: left;"><strong>Engineering complexity warning</strong>. Building interleaved documents requires handling extremely complex HTML rendering logic. Recommend initially using Common Crawl WET files, or directly using OBELICS open-source set for augmentation—don't try to clean the entire internet from scratch.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Storage Cost</strong></td>
+<td style="text-align: left;">Medium: metadata is CSV/Parquet only, images stored separately</td>
+<td style="text-align: left;">High: need to save document topology, recommend WebDataset or TFRecord encapsulation</td>
+<td style="text-align: left;"><strong>I/O performance bottleneck</strong>. For interleaved documents, must use sharded storage to avoid small file fragmentation. Reading requires pre-loading entire documents, placing higher demands on memory bandwidth.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Cleaning Challenges</strong></td>
+<td style="text-align: left;">Single-point cleaning: each image judged independently, easy to parallelize</td>
+<td style="text-align: left;">Context cleaning: must consider text coherence and image quality simultaneously, cleaning logic coupled</td>
+<td style="text-align: left;"><strong>Strategy selection</strong>. When processing interleaved documents, if an image is judged NSFW, recommend replacing with special <code>&lt;BLOCKED_IMAGE&gt;</code> token rather than deleting, to maintain Positional Embedding accuracy.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Model Benefits</strong></td>
+<td style="text-align: left;">Strong visual-semantic alignment, strong Zero-shot classification</td>
+<td style="text-align: left;">Powerful Few-shot Learning, supports multi-turn dialogue and logical reasoning</td>
+<td style="text-align: left;"><strong>Business-oriented</strong>. If the scenario is "image search," image-text pairs suffice; if it involves complex document understanding (e.g., research report analysis, long-form story generation), interleaved documents must be introduced.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Tips:</strong>
+In cutting-edge research like MM1 and Idefics2, best practice is not either-or but proportioning. Typically recommend using <strong>80% image-text pairs</strong> in the early pre-training phase to establish solid visual-language mapping foundation, while mixing <strong>20% interleaved documents</strong>; in the late pre-training phase (Annealing Phase), significantly increase the proportion of interleaved documents to stimulate model long-context reasoning capability. This "foundation first, logic later" strategy maximizes compute utilization.</p>
+</blockquote>
+<h3 id="62-image-acquisition-and-preprocessing">6.2 Image Acquisition and Preprocessing<a class="headerlink" href="#62-image-acquisition-and-preprocessing" title="Permanent link">¶</a></h3>
+<p>Once the data manifest is determined, the next step is to build a high-throughput download and preprocessing pipeline. This is a typical I/O-intensive task, with main bottlenecks in network bandwidth, DNS resolution latency, and disk writes of massive small files.</p>
+<h4 id="621-img2dataset-high-concurrency-download-in-practice">6.2.1 img2dataset High-Concurrency Download in Practice<a class="headerlink" href="#621-img2dataset-high-concurrency-download-in-practice" title="Permanent link">¶</a></h4>
+<p><code>img2dataset</code> is currently the community-recognized best practice tool. It is not just a download script, but a distributed data processing framework based on MapReduce principles.</p>
+<p>Why do we need specialized tools instead of writing a simple <code>requests.get</code> loop? Because the internet environment is extremely harsh. Links expire (Link Rot), servers rate-limit, DNS times out. When processing billions of URLs, any tiny long-tail latency is amplified into weeks of time cost.</p>
+<p><strong>Core Principles</strong>:
+1.  <strong>Sharding</strong>: Split 1 billion URLs into tens of thousands of small tasks (Shards). This is the foundation of distributed computing.
+2.  <strong>Async I/O</strong>: Use Python's aiohttp or Go coroutines to concurrently initiate hundreds of network requests on a single core, masking network latency.
+3.  <strong>Streaming Archival</strong>: Downloaded images don't hit disk; they are directly assembled into tar packages (WebDataset format) in memory, then streamed to object storage (S3/HDFS). This avoids the file system inode exhaustion problem from creating millions of small files in one directory—a pitfall newcomers often encounter.</p>
+<p><strong>Engineering Implementation: PySpark Distributed Download Script</strong></p>
+<p>When processing PB-scale data, single-machine multiprocessing mode is insufficient; a Spark cluster must be used.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Recommended environment: PySpark 3_2+, img2dataset 1_41+</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># Run command: spark-submit --master yarn --deploy-mode cluster...</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">img2dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">download</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">run_distributed_download</span><span class="p">():</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="sd">"""</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="sd">    Configuration tuning is key to throughput.</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="sd">    process_count: Number of processes per Spark Executor.</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="sd">    thread_count: Number of async threads per process.</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="sd">    For 10Gbps NIC nodes, typically recommend total_concurrency around 1000.</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="sd">    """</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="c1"># Define output path (S3 or HDFS)</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">output_dir</span> <span class="o">=</span> <span class="s2">"s3a://multimodal-lake/raw-images/laion-5b-subset"</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="c1"># Clean old data (use with caution, production recommends versioning)</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_dir</span><span class="p">):</span> 
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>        <span class="c1"># shutil.rmtree(output_dir) # Dangerous operation, commented out</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>        <span class="k">pass</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">download</span><span class="p">(</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>        <span class="n">processes_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>          <span class="c1"># 4 CPU cores per node</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>        <span class="n">thread_count</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>            <span class="c1"># 64 download threads per core</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>        <span class="n">url_list</span><span class="o">=</span><span class="s2">"s3a://multimodal-lake/meta/laion-urls.parquet"</span><span class="p">,</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>        <span class="n">image_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>             <span class="c1"># 256x256 sufficient for pre-training, saves bandwidth</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>        <span class="n">resize_only_if_bigger</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># Avoid blur from upscaling small images</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>        <span class="n">resize_mode</span><span class="o">=</span><span class="s2">"keep_ratio"</span><span class="p">,</span>   <span class="c1"># Maintain aspect ratio, black padding or center crop</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>        <span class="n">skip_reencode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>         <span class="c1"># If original is JPG and size acceptable, store directly, saves CPU</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>        <span class="n">output_folder</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>        <span class="n">output_format</span><span class="o">=</span><span class="s2">"webdataset"</span><span class="p">,</span> <span class="c1"># Force WebDataset format</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>        <span class="n">input_format</span><span class="o">=</span><span class="s2">"parquet"</span><span class="p">,</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>        <span class="n">url_col</span><span class="o">=</span><span class="s2">"url"</span><span class="p">,</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>        <span class="n">caption_col</span><span class="o">=</span><span class="s2">"caption"</span><span class="p">,</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>        <span class="n">enable_wandb</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>          <span class="c1"># Strongly recommended for monitoring download rate and error rate</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>        <span class="n">number_sample_per_shard</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="c1"># 10k images per tar, ~200-300MB, for easy transfer</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>        <span class="n">distributor</span><span class="o">=</span><span class="s2">"pyspark"</span><span class="p">,</span>      <span class="c1"># Use Spark for task distribution</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>        <span class="n">save_additional_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"similarity"</span><span class="p">,</span> <span class="s2">"hash"</span><span class="p">],</span> <span class="c1"># Preserve original metadata</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>        <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span>                  <span class="c1"># Shorter timeout for fast failure, long-tail requests not worth waiting</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>    <span class="p">)</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>    <span class="c1"># Initialize Spark Session (usually handled by spark-submit, but explicit for IDE debugging)</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a>    <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
+<a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a>        <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"Img2Dataset-Production"</span><span class="p">)</span> \
+<a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a>        <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">"spark.executor.memory"</span><span class="p">,</span> <span class="s2">"8g"</span><span class="p">)</span> \
+<a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a>        <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">"spark.task.maxFailures"</span><span class="p">,</span> <span class="s2">"10"</span><span class="p">)</span> \
+<a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a>        <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a>
+<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a>    <span class="n">run_distributed_download</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>Pro Tips</strong>:
+* <strong>DNS Caching</strong>: Under high concurrency, DNS resolution can become a bottleneck or even get blocked by providers. Recommend deploying local DNS cache (e.g., dnsmasq) on worker nodes, or maintaining a domain-to-IP mapping table in code.
+* <strong>User-Agent Rotation</strong>: Though an "open" secret, rotating User-Agent can reduce 403 Forbidden rates.
+* <strong>Error Handling</strong>: Monitor success_rate in WandB dashboard. If below 80%, usually means URL list is severely stale or your IP pool is contaminated.</p>
+<h4 id="622-visual-preprocessing-pitfalls-cropping-and-semantic-alignment">6.2.2 Visual Preprocessing Pitfalls: Cropping and Semantic Alignment<a class="headerlink" href="#622-visual-preprocessing-pitfalls-cropping-and-semantic-alignment" title="Permanent link">¶</a></h4>
+<p>After solving the challenge of acquiring massive data (Getting bytes), we immediately face the second challenge: data usability. Raw internet images have wildly varying aspect ratios, while models typically require fixed resolution input (e.g., 224x224 or 512x512).</p>
+<p>Many novice engineering solutions habitually use simple brute-force random preprocessing to unify dimensions, but this is often the root of the model's "invisible performance ceiling." We must not only focus on "fitting the image in," but also on "what exactly is being put in."</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part3/%E5%9B%BE6_1_%E5%9B%BE%E7%89%87%E9%A2%84%E5%A4%84%E7%90%86%E4%B8%AD%E8%A3%81%E5%89%AA%E4%B8%8E%E8%AF%AD%E4%B9%89%E5%AF%B9%E9%BD%90%E9%97%AE%E9%A2%98.png" data-desc-position="bottom"><img alt="Figure 6-1: Cropping and Semantic Alignment in Image Preprocessing" src="../../../images/part3/%E5%9B%BE6_1_%E5%9B%BE%E7%89%87%E9%A2%84%E5%A4%84%E7%90%86%E4%B8%AD%E8%A3%81%E5%89%AA%E4%B8%8E%E8%AF%AD%E4%B9%89%E5%AF%B9%E9%BD%90%E9%97%AE%E9%A2%98.png"></a>
+<em>Figure 6-1: Cropping and Semantic Alignment in Image Preprocessing</em></p>
+<ul>
+<li>
+<p><strong>Bad Case (Left image - Cost of Naive Cropping)</strong>:
+    Traditional <code>RandomCrop</code> or <code>CenterCrop</code> has no awareness of composition. When processing a portrait photo in vertical composition, center cropping easily cuts off key features (such as the head), leaving only the torso. At this point, if the text label is still "a smiling man," the model is forced to establish incorrect mapping (mistaking torso features for "smiling person"), causing the trained model to produce severe visual hallucinations.</p>
+</li>
+<li>
+<p><strong>Good Case (Right image - Semantic Completeness)</strong>:
+    High-quality data engineering pursues "image-text consistency."</p>
+<ol>
+<li><strong>Smart Resize</strong>: Prefer <code>Resize with Padding</code> (maintain aspect ratio, black/white padding) to preserve complete visual subject. Though this introduces invalid pixels, it guarantees semantic completeness.</li>
+<li><strong>Aspect Ratio Bucketing</strong>: An advanced technique commonly used by SDXL and Midjourney. Group images with similar aspect ratios into the same batch for training, avoiding cropping while reducing padding waste.</li>
+<li><strong>Recaptioning</strong>: As detailed in Chapter 7 below, using VLM to generate high-density descriptions allows text to precisely correspond to on-screen details (e.g., sign text, background objects), maximizing data training value.</li>
+</ol>
+</li>
+</ul>
+<h4 id="623-gpu-accelerated-decoding-and-transformation-nvidia-dali">6.2.3 GPU-Accelerated Decoding and Transformation (NVIDIA DALI)<a class="headerlink" href="#623-gpu-accelerated-decoding-and-transformation-nvidia-dali" title="Permanent link">¶</a></h4>
+<p>In the deep learning model training phase, most researchers and developers focus their attention on model architecture design, hyperparameter tuning, loss function improvement—modules that directly affect model accuracy—yet easily overlook the data loading (DataLoader) foundation. In reality, it often becomes the "invisible performance killer" that constrains training efficiency, even preventing full utilization of high-end GPU compute and causing serious hardware waste.</p>
+<p>To understand this pain point, we must first clarify the complete logic of the deep learning training flow: model training's core compute relies on GPU's massive parallel computing capability; GPU can efficiently process massive tensor operations and complete backpropagation and parameter updates. But before data enters the GPU, it must go through a series of preprocessing operations, the most basic and time-consuming of which is image decoding and resizing. In traditional PyTorch training flow, these critical preprocessing operations are entirely done on CPU, forming the contradiction between "CPU preprocessing bottleneck" and "GPU compute redundancy."</p>
+<p>Specifically, the traditional PyTorch Dataset workflow is: first read image files (mostly JPEG) from disk via CPU, then CPU completes JPEG decoding—this process requires Huffman decoding, inverse discrete cosine transform (IDCT) and other complex computations on compressed image binary data, a typical CPU-intensive task. After decoding, CPU executes Resize, normalization, color space conversion and other preprocessing, finally copying the processed image tensor to GPU for model training.</p>
+<p>More critically, CPU architecture is better suited for serial computation and logic control; its parallel computing capability is far inferior to GPU. Yet image preprocessing operations like decoding and Resize are inherently highly parallelizable and can improve efficiency through multi-threading or multi-core parallelism. But traditional PyTorch Dataset, even with DataLoader's num_workers to improve CPU parallelism, can hardly break through CPU's own compute ceiling—especially when the training dataset is massive (millions of images) and single image resolution is high (1080p+), CPU preprocessing speed will severely lag behind GPU training speed, causing GPU to frequently idle "waiting for data," with significantly reduced GPU utilization, ultimately dragging down the entire training efficiency. This is why data loading is called the "neglected performance killer."</p>
+<p>Addressing this core pain point, NVIDIA introduced DALI (Data Loading Library), a GPU-accelerated data preprocessing library optimized for deep learning training. Its core goal is to migrate CPU-intensive operations like image decoding and resizing to GPU for parallel execution, breaking the data loading performance bottleneck and enabling full GPU utilization.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part3/%E5%9B%BE6_2_%E4%BD%BF%E7%94%A8DALI%E4%B8%8E%E4%B8%8D%E4%BD%BF%E7%94%A8DALI%E4%B8%8B%E6%95%B0%E6%8D%AE%E8%A7%A3%E7%A0%81%E4%B8%8E%E5%8F%98%E6%8D%A2%E7%9A%84%E5%8C%BA%E5%88%AB.png" data-desc-position="bottom"><img alt="Figure 6-2: Data Decoding and Transformation With vs Without DALI" src="../../../images/part3/%E5%9B%BE6_2_%E4%BD%BF%E7%94%A8DALI%E4%B8%8E%E4%B8%8D%E4%BD%BF%E7%94%A8DALI%E4%B8%8B%E6%95%B0%E6%8D%AE%E8%A7%A3%E7%A0%81%E4%B8%8E%E5%8F%98%E6%8D%A2%E7%9A%84%E5%8C%BA%E5%88%AB.png"></a>
+<em>Figure 6-2: Data Decoding and Transformation With vs Without DALI</em></p>
+<p><strong>Code Walkthrough: High-Performance DALI Pipeline</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">nvidia.dali.fn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">fn</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">nvidia.dali.types</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">types</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">nvidia.dali.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">pipeline_def</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nd">@pipeline_def</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">num_threads</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">device_id</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">def</span><span class="w"> </span><span class="nf">webdataset_gpu_pipeline</span><span class="p">(</span><span class="n">shard_id</span><span class="p">,</span> <span class="n">num_shards</span><span class="p">):</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="sd">"""</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="sd">    Define end-to-end GPU data loading pipeline</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="sd">    Input: WebDataset (Tar) -&gt; Output: GPU Tensor</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="sd">    """</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="c1"># Step 1: Read WebDataset (CPU stage)</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="c1"># Using index_paths is necessary, otherwise initialization requires traversing entire tar, extremely slow [5]</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="n">jpegs</span><span class="p">,</span> <span class="n">captions</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">readers</span><span class="o">.</span><span class="n">webdataset</span><span class="p">(</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>        <span class="n">paths</span><span class="o">=</span><span class="p">[</span><span class="s2">"/data/shards/shard-</span><span class="si">{:05d}</span><span class="s2">.tar"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)],</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>        <span class="n">index_paths</span><span class="o">=</span><span class="p">[</span><span class="s2">"/data/indices/shard-</span><span class="si">{:05d}</span><span class="s2">.idx"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)],</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>        <span class="n">ext</span><span class="o">=</span><span class="p">[</span><span class="s2">"jpg"</span><span class="p">,</span> <span class="s2">"txt"</span><span class="p">],</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>        <span class="n">shard_id</span><span class="o">=</span><span class="n">shard_id</span><span class="p">,</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>        <span class="n">num_shards</span><span class="o">=</span><span class="n">num_shards</span><span class="p">,</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>        <span class="n">random_shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>        <span class="n">initial_fill</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>      <span class="c1"># Shuffle buffer size, larger = more random but slower startup</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>        <span class="n">pad_last_batch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>     <span class="c1"># Ensure all batches have consistent size</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>        <span class="n">name</span><span class="o">=</span><span class="s2">"Reader"</span><span class="p">,</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>        <span class="n">read_ahead</span><span class="o">=</span><span class="kc">True</span>          <span class="c1"># Enable read-ahead</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>    <span class="p">)</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>    <span class="c1"># Step 2: GPU Decoding (core acceleration point)</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>    <span class="c1"># device="mixed" means input in Host memory, output in Device memory</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>    <span class="c1"># output_type=types.RGB handles color space conversion automatically</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>    <span class="n">images</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">decoders</span><span class="o">.</span><span class="n">image</span><span class="p">(</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>        <span class="n">jpegs</span><span class="p">,</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>        <span class="n">device</span><span class="o">=</span><span class="s2">"mixed"</span><span class="p">,</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>        <span class="n">output_type</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">RGB</span><span class="p">,</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>        <span class="c1"># Error handling for corrupted images</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>        <span class="c1"># In production, never let a single bad image crash training</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>    <span class="p">)</span>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>    <span class="c1"># Step 3: GPU transformation pipeline</span>
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>    <span class="c1"># resize: maintain aspect ratio scaling</span>
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>    <span class="n">images</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>        <span class="n">images</span><span class="p">,</span>
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>        <span class="n">resize_x</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span>
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>        <span class="n">resize_y</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span>
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>        <span class="n">interp_type</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">INTERP_LINEAR</span>
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>    <span class="p">)</span>
+<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>    <span class="c1"># crop_mirror_normalize: random crop + flip + normalize (fused operator)</span>
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>    <span class="c1"># This step converts uint8 to float and subtracts mean, divides by std</span>
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>    <span class="n">images</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">crop_mirror_normalize</span><span class="p">(</span>
+<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>        <span class="n">images</span><span class="p">,</span>
+<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>        <span class="n">dtype</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>        <span class="n">output_layout</span><span class="o">=</span><span class="s2">"CHW"</span><span class="p">,</span>
+<a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>        <span class="n">crop</span><span class="o">=</span><span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">),</span>
+<a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>        <span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mi">0_485</span> <span class="o">*</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0_456</span> <span class="o">*</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0_406</span> <span class="o">*</span> <span class="mi">255</span><span class="p">],</span>
+<a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>        <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mi">0_229</span> <span class="o">*</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0_224</span> <span class="o">*</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0_225</span> <span class="o">*</span> <span class="mi">255</span><span class="p">],</span>
+<a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>        <span class="n">mirror</span><span class="o">=</span><span class="n">fn</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">coin_flip</span><span class="p">(</span><span class="n">probability</span><span class="o">=</span><span class="mi">0_5</span><span class="p">)</span>
+<a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a>    <span class="p">)</span>
+<a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a>
+<a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a>    <span class="c1"># Text data typically processed directly on CPU or passed to Tokenizer</span>
+<a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a>    <span class="c1"># Here we only return raw bytes for subsequent PyTorch processing</span>
+<a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a>    <span class="k">return</span> <span class="n">images</span><span class="p">,</span> <span class="n">captions</span>
+<a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a>
+<a id="__codelineno-1-64" name="__codelineno-1-64" href="#__codelineno-1-64"></a><span class="c1"># Use DALIGenericIterator integrated with PyTorch</span>
+<a id="__codelineno-1-65" name="__codelineno-1-65" href="#__codelineno-1-65"></a><span class="kn">from</span><span class="w"> </span><span class="nn">nvidia.dali.plugin.pytorch</span><span class="w"> </span><span class="kn">import</span> <span class="n">DALIGenericIterator</span>
+<a id="__codelineno-1-66" name="__codelineno-1-66" href="#__codelineno-1-66"></a>
+<a id="__codelineno-1-67" name="__codelineno-1-67" href="#__codelineno-1-67"></a><span class="n">pipe</span> <span class="o">=</span> <span class="n">webdataset_gpu_pipeline</span><span class="p">(</span><span class="n">shard_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_shards</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-1-68" name="__codelineno-1-68" href="#__codelineno-1-68"></a><span class="n">pipe</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<a id="__codelineno-1-69" name="__codelineno-1-69" href="#__codelineno-1-69"></a><span class="n">dataloader</span> <span class="o">=</span> <span class="n">DALIGenericIterator</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="p">[</span><span class="s2">"images"</span><span class="p">,</span> <span class="s2">"captions"</span><span class="p">],</span> <span class="n">reader_name</span><span class="o">=</span><span class="s2">"Reader"</span><span class="p">)</span>
+<a id="__codelineno-1-70" name="__codelineno-1-70" href="#__codelineno-1-70"></a>
+<a id="__codelineno-1-71" name="__codelineno-1-71" href="#__codelineno-1-71"></a><span class="c1"># Benchmark test</span>
+<a id="__codelineno-1-72" name="__codelineno-1-72" href="#__codelineno-1-72"></a><span class="c1"># On A100, this pipeline typically achieves 3000-5000 FPS, 5-10x CPU Loader</span>
+</code></pre></div>
+<h3 id="63-multimodal-cleaning-pipeline">6.3 Multimodal Cleaning Pipeline<a class="headerlink" href="#63-multimodal-cleaning-pipeline" title="Permanent link">¶</a></h3>
+<p>Massive data comes with massive noise. In raw LAION-5B data, truly high-quality samples may be less than 10%. We need to establish a multi-stage cleaning funnel to improve data density while minimizing loss of data diversity. So-called "data cleaning" is essentially <strong>Data Diet</strong>—feeding the model less but better.</p>
+<h4 id="631-architecture-design-ray-data-distributed-cleaning">6.3.1 Architecture Design: Ray Data Distributed Cleaning<a class="headerlink" href="#631-architecture-design-ray-data-distributed-cleaning" title="Permanent link">¶</a></h4>
+<p>Why choose Ray over Spark for the cleaning phase? Because cleaning is no longer simple ETL but contains large amounts of <strong>deep learning inference (Model Inference)</strong>. Compared to Spark's MapReduce paradigm, Ray provides more flexible Actor mechanism, allowing us to keep GPU models (e.g., CLIP, Safety Checker) resident, avoiding the huge overhead of reloading multi-GB models for each small batch.</p>
+<p>Ray Data is suitable for this mixed workload with both CPU-intensive (decompression, hashing, Regex) and GPU-intensive (CLIP Embedding inference) tasks. Below is a typical three-stage pipeline design:
+* <strong>Stage 1 (CPU)</strong>: Fast filtering. Directly remove samples with insufficient resolution (&lt;256px), too short text, non-English (if only training English model), or abnormal aspect ratio.
+* <strong>Stage 2 (GPU)</strong>: Deep feature extraction. Use CLIP model to generate Embeddings, compute image-text similarity and aesthetic score based on Embeddings.
+* <strong>Stage 3 (CPU/Mixed)</strong>: Logic evaluation and deduplication. Apply final threshold cutoff based on safety (NSFW), aesthetic score, and image-text relevance, and perform semantic deduplication.</p>
+<p><strong>Data Flow Diagram</strong></p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part3/%E5%9B%BE6_3_Ray_Data%E5%88%86%E5%B8%83%E5%BC%8F%E6%B8%85%E6%B4%97%E6%95%B0%E6%8D%AE%E6%B5%81%E5%90%91%E5%9B%BE.png" data-desc-position="bottom"><img alt="Figure 6-3: Ray Data Distributed Cleaning Data Flow" src="../../../images/part3/%E5%9B%BE6_3_Ray_Data%E5%88%86%E5%B8%83%E5%BC%8F%E6%B8%85%E6%B4%97%E6%95%B0%E6%8D%AE%E6%B5%81%E5%90%91%E5%9B%BE.png"></a>
+<em>Figure 6-3: Ray Data Distributed Cleaning Data Flow</em></p>
+<h4 id="632-core-algorithm-implementation">6.3.2 Core Algorithm Implementation<a class="headerlink" href="#632-core-algorithm-implementation" title="Permanent link">¶</a></h4>
+<p>Cleaning is not just deletion—it is also quantization of data value. We need multi-dimensional metrics to measure the "gold content" of an image and its corresponding text.</p>
+<ol>
+<li>
+<p><strong>Aesthetics Scoring</strong></p>
+<ul>
+<li><strong>Principle</strong>: Datasets are filled with invoices, screenshots, blurry surveillance footage—these are useless for generating beautiful images. Typically use LAION-Aesthetics Predictor.</li>
+<li><strong>Technical Details</strong>: A simple MLP (multi-layer perceptron) with CLIP Image Embedding as input, outputting 1-10 score. Training data from AVA dataset (professional photographer human ratings).</li>
+<li><strong>Recommended Threshold</strong>: For base pre-training, keep Score &gt; 4_5; for fine-tuning high-quality generation models (SFT stage), recommend Score &gt; 6_0 or even 6_5.</li>
+</ul>
+</li>
+<li>
+<p><strong>Image-Text Alignment Filtering</strong></p>
+<ul>
+<li><strong>Principle</strong>: Many Alt-texts are SEO garbage word stacking or filenames ("DSC_001.jpg"), unrelated to image content.</li>
+<li><strong>Technical Details</strong>: Compute cosine similarity (Dot Product) of CLIP Image Embedding and Text Embedding.</li>
+<li><strong>Pitfall</strong>: Different CLIP versions (e.g., OpenAI ViT-L/14 vs OpenCLIP ViT-G/14) have different embedding space distributions—scores are not directly comparable. Must recalibrate thresholds for specific model. Common approach: compute similarity distribution over entire dataset, then keep Top 50% or Top 70%.</li>
+</ul>
+</li>
+<li>
+<p><strong>Safety Detection (Safety &amp; Watermark)</strong></p>
+<ul>
+<li><strong>Principle</strong>: Must remove pornographic, violent, and prominently watermarked images.</li>
+<li><strong>Strategy</strong>: Use specially trained classifier heads (also based on CLIP Embedding) for NSFW and watermark detection. For watermark detection: if target is training generation models (e.g., SDXL), must be extremely strict (Recall priority) because generation models easily overfit watermark features; if target is training understanding models (e.g., GPT-4V), can relax somewhat, because understanding models need to recognize "there is a watermark in the image."</li>
+</ul>
+</li>
+</ol>
+<p><strong>Code Implementation: Ray Data Cleaning Operator</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">ray</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">open_clip</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="c1"># Define Ray Actor class to ensure model loaded only once</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="k">class</span><span class="w"> </span><span class="nc">QualityScorer</span><span class="p">:</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"cpu"</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        <span class="c1"># Load CLIP model (ViT-B-32 fast, suitable for cleaning)</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span> <span class="o">=</span> <span class="n">open_clip</span><span class="o">.</span><span class="n">create_model_and_transforms</span><span class="p">(</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>            <span class="s1">'ViT-B-32'</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="s1">'laion2b_s34b_b79k'</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>        <span class="p">)</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>        <span class="c1"># Load aesthetic scoring head (Linear Layer)</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">aesthetic_head</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">aesthetic_head</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"sac+logos+ava1-l14-linearMSE.pth"</span><span class="p">))</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">aesthetic_head</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">        </span><span class="sd">"""</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="sd">        Process a batch of data. Ray will automatically partition and transfer data to Actor.</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="sd">        """</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>        <span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>        <span class="n">valid_indices</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>        <span class="c1"># Preprocess images (CPU operation)</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">img_bytes</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="s2">"jpg"</span><span class="p">]):</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>            <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>                <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">img_bytes</span><span class="p">))</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"RGB"</span><span class="p">)</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>                <span class="n">img_tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>                <span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img_tensor</span><span class="p">)</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>                <span class="n">valid_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>                <span class="c1"># Log bad image but don't interrupt</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>                <span class="k">continue</span>
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">images</span><span class="p">:</span>
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>            <span class="k">return</span> <span class="p">{</span><span class="s2">"aesthetic_score"</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">"clip_score"</span><span class="p">:</span> <span class="p">[]}</span>
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>        <span class="n">image_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">images</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a>        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a>            <span class="c1"># 1. Extract features</span>
+<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a>            <span class="n">image_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">encode_image</span><span class="p">(</span><span class="n">image_input</span><span class="p">)</span>
+<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a>            <span class="n">image_features</span> <span class="o">/=</span> <span class="n">image_features</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a>
+<a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a>            <span class="c1"># 2. Compute aesthetic score</span>
+<a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a>            <span class="n">aesthetic_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aesthetic_head</span><span class="p">(</span><span class="n">image_features</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a>
+<a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a>            <span class="c1"># 3. Compute image-text match (assuming batch has text field)</span>
+<a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a>            <span class="c1"># text_tokens = self.tokenizer(batch["txt"]).to(self.device)</span>
+<a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a>            <span class="c1"># text_features = self.model.encode_text(text_tokens)</span>
+<a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a>            <span class="c1">#... compute cosine similarity</span>
+<a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a>
+<a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a>        <span class="c1"># Return results (must align with original batch indices)</span>
+<a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">"aesthetic_score"</span><span class="p">:</span> <span class="n">aesthetic_scores</span><span class="p">}</span>
+<a id="__codelineno-2-59" name="__codelineno-2-59" href="#__codelineno-2-59"></a>
+<a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a><span class="c1"># Orchestrate Ray pipeline</span>
+<a id="__codelineno-2-61" name="__codelineno-2-61" href="#__codelineno-2-61"></a><span class="n">ray</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<a id="__codelineno-2-62" name="__codelineno-2-62" href="#__codelineno-2-62"></a><span class="n">ds</span> <span class="o">=</span> <span class="n">ray</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">read_webdataset</span><span class="p">(</span><span class="s2">"s3://raw-bucket/{00000..00099}.tar"</span><span class="p">)</span>
+<a id="__codelineno-2-63" name="__codelineno-2-63" href="#__codelineno-2-63"></a>
+<a id="__codelineno-2-64" name="__codelineno-2-64" href="#__codelineno-2-64"></a><span class="c1"># map_batches will automatically schedule GPU resources</span>
+<a id="__codelineno-2-65" name="__codelineno-2-65" href="#__codelineno-2-65"></a><span class="c1"># num_gpus=0_25 means one GPU can run 4 Actors concurrently, improving throughput</span>
+<a id="__codelineno-2-66" name="__codelineno-2-66" href="#__codelineno-2-66"></a><span class="n">scored_ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">map_batches</span><span class="p">(</span>
+<a id="__codelineno-2-67" name="__codelineno-2-67" href="#__codelineno-2-67"></a>    <span class="n">QualityScorer</span><span class="p">,</span> 
+<a id="__codelineno-2-68" name="__codelineno-2-68" href="#__codelineno-2-68"></a>    <span class="n">compute</span><span class="o">=</span><span class="n">ray</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ActorPoolStrategy</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span> 
+<a id="__codelineno-2-69" name="__codelineno-2-69" href="#__codelineno-2-69"></a>    <span class="n">num_gpus</span><span class="o">=</span><span class="mi">0_25</span><span class="p">,</span> 
+<a id="__codelineno-2-70" name="__codelineno-2-70" href="#__codelineno-2-70"></a>    <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span>
+<a id="__codelineno-2-71" name="__codelineno-2-71" href="#__codelineno-2-71"></a><span class="p">)</span>
+<a id="__codelineno-2-72" name="__codelineno-2-72" href="#__codelineno-2-72"></a>
+<a id="__codelineno-2-73" name="__codelineno-2-73" href="#__codelineno-2-73"></a><span class="c1"># Final filtering</span>
+<a id="__codelineno-2-74" name="__codelineno-2-74" href="#__codelineno-2-74"></a><span class="n">filtered_ds</span> <span class="o">=</span> <span class="n">scored_ds</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">"aesthetic_score"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4_5</span><span class="p">)</span>
+<a id="__codelineno-2-75" name="__codelineno-2-75" href="#__codelineno-2-75"></a><span class="n">filtered_ds</span><span class="o">.</span><span class="n">write_webdataset</span><span class="p">(</span><span class="s2">"s3://clean-bucket/"</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="64-pitfalls-troubleshooting">6.4 Pitfalls &amp; Troubleshooting<a class="headerlink" href="#64-pitfalls-troubleshooting" title="Permanent link">¶</a></h3>
+<p>In building billion-scale multimodal datasets, engineering teams often stumble on details. Here are several lessons learned:</p>
+<ul>
+<li>
+<p><strong>Parquet Metadata Explosion</strong>:</p>
+<ul>
+<li><strong>Error</strong>: Habitually reading Parquet files with 2 billion rows directly in pandas.</li>
+<li><strong>Consequence</strong>: Memory overflow (OOM), because pandas tries to load entire index into memory even when reading just one column.</li>
+<li><strong>Fix</strong>: Use Polars or PySpark lazy evaluation mode; or strictly split Parquet files by row count (e.g., 1M rows) into small files to avoid processing single giant metadata files.</li>
+</ul>
+</li>
+<li>
+<p><strong>WebDataset Insufficient Shuffle</strong>:</p>
+<ul>
+<li><strong>Error</strong>: Data written in domain order during download, training relies only on DataLoader buffer shuffle (typically buffer only 10k).</li>
+<li><strong>Consequence</strong>: Model may see 100k e-commerce images consecutively, then 100k landscape images consecutively. Small buffer cannot break this "temporal correlation," causing violent training curve oscillation or even divergence.</li>
+<li><strong>Fix</strong>: Must perform <strong>Global Shuffle</strong> on URL list before writing WebDataset. Can use Spark's <code>orderBy(rand())</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Accidentally Deleting Long-Tail Data</strong>:</p>
+<ul>
+<li><strong>Error</strong>: For pursuit of extreme aesthetic score, deleting all images with Score &lt; 4_5.</li>
+<li><strong>Consequence</strong>: Model becomes "specialized"—only recognizes art photos and wallpapers, not real-world (possibly ugly) photos like medical imaging, street views, handwritten notes. Greatly reduces model generalization.</li>
+<li><strong>Fix</strong>: Use stratified sampling strategy. Keep 5%-10% low-score data as "regularization," or set special whitelists for specific domains (e.g., OCR, charts) that bypass aesthetic filter.</li>
+</ul>
+</li>
+<li>
+<p><strong>Duplicate Data Hazards (Deduplication)</strong>:</p>
+<ul>
+<li><strong>Error</strong>: Ignoring massive duplicate images on the internet (e.g., Memes, viral news images).</li>
+<li><strong>Consequence</strong>: Model overfits specific samples, even "memorizing" training set images during generation, causing serious copyright risks.</li>
+<li><strong>Fix</strong>: Must add <strong>semantic deduplication</strong> to cleaning pipeline. Compute Embeddings for all images, use Faiss or MinHashLSH for clustering, keep only one per highly similar image group.</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

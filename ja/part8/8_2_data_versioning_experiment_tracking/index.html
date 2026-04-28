@@ -1,0 +1,1345 @@
+<!DOCTYPE html><html lang="ja" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="大模型数据工程：架构、算法及项目实战">
+      
+      
+        <meta name="author" content="ustc">
+      
+      
+        <link rel="canonical" href="https://datascale-ai.github.io/data_engineering_book/ja/part8/8_2_data_versioning_experiment_tracking/">
+      
+      
+      
+      
+        
+          <link rel="alternate" href="../../../part8/8_2_data_versioning_experiment_tracking/" hreflang="zh">
+        
+          <link rel="alternate" href="../../../en/part8/8_2_data_versioning_experiment_tracking/" hreflang="en">
+        
+          <link rel="alternate" href="./" hreflang="ja">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>第25章：数据版本管理与实验追踪 - 大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#25" class="md-skip">
+          コンテンツにスキップ
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
+    <a href="../../" title="大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト" class="md-header__button md-logo" aria-label="大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第25章：数据版本管理与实验追踪
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red" aria-label="ダークモードに切り替え" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="ダークモードに切り替え" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red" aria-label="ライトモードに切り替え" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="ライトモードに切り替え" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="言語切り替え">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../part8/8_2_data_versioning_experiment_tracking/" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../en/part8/8_2_data_versioning_experiment_tracking/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="ja" class="md-select__link">
+              日本語
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="検索">
+        
+        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            検索を初期化
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="リポジトリへ" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="ナビゲーション" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト" class="md-nav__button md-logo" aria-label="大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="リポジトリへ" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    目次
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    序文
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translation-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    中国語2026年版の翻訳状況
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本章摘要
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        场景引入
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#251" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.1 为什么没有版本管理就没有可复盘的迭代
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="25.1 为什么没有版本管理就没有可复盘的迭代">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2511" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.1.1 数据变更对模型效果的影响为何最难追
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2512" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.1.2 从"文件夹管理"升级到"谱系管理"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2513" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.1.3 版本管理的核心价值主张
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#252" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.2 数据版本粒度与命名规范
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="25.2 数据版本粒度与命名规范">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2521" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.2.1 五个层级的版本粒度
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2522" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.2.2 版本命名规范
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2523" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.2.3 分支、快照与回滚点
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#253" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.3 实验追踪、结果回写与审计链路
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="25.3 实验追踪、结果回写与审计链路">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2531" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.3.1 实验卡片的字段设计
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2532" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.3.2 结果回写与双向关联
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2533" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.3.3 失败实验的价值与沉淀
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2534" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.3.4 审计链路的最小信息集合
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#254" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.4 谱系可视化与治理规则
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="25.4 谱系可视化与治理规则">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2541" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.4.1 数据血缘图的表示方式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2542" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.4.2 变更审计流程图
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2543" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.4.3 谱系治理规则
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#255" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25.5 案例：一次失败实验如何快速回溯
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="25.5 案例：一次失败实验如何快速回溯">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        案例背景
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        回溯过程（有版本管理的情况下）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        关键成功因素总结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本章小结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        延伸阅读
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        下一章预告
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="25">第25章：数据版本管理与实验追踪<a class="headerlink" href="#25" title="Permanent link">¶</a></h1>
+<hr>
+<h2 id="_1">本章摘要<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
+<p>"我们上周的模型效果比上上周差，但数据团队说数据没有变"——这句话在 LLM 项目中出现的频率，远远超出大多数团队的预期。数据工程的隐蔽性在于：数据变化往往不是单次的、显著的，而是累积的、渐进的。如果没有系统化的版本管理，团队就没有能力回答"变了什么"这个最基本的问题，更无法做到"为什么变了"的归因。</p>
+<p>本章面向负责数据版本、实验记录和可追溯性的团队，系统阐述如何把数据版本、样本变更和实验结果关联起来，构建一条完整的可追溯链路。本章将从四个层面展开：首先分析为什么版本管理是可复盘迭代的前提；其次建立版本粒度体系与命名规范；第三，介绍实验追踪、结果回写与审计链路的工程实现；最后，讨论谱系可视化与治理规则的设计。</p>
+<p>读者读完本章后，将掌握一套完整的元数据设计方案、版本命名规则和实验卡片模板，并能够通过一个失败实验的回溯案例，理解如何在真实工程中快速定位数据问题的根因。</p>
+<hr>
+<h2 id="_2">场景引入<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
+<p>某公司算法团队在某次大规模实验后发现，新版本模型的数学推理能力显著下降，比上一版本低了约 8 个百分点。算法负责人希望数据团队定位原因，数据负责人开始排查。</p>
+<p>第一步：查看训练集版本。数据负责人发现，当前版本和上一版本的训练集都存储在对象存储里，但没有版本标签，只有上传时间。两个文件夹的内容都已经被后续任务覆盖或删除了部分文件。</p>
+<p>第二步：尝试比对差异。数据负责人发现两个版本之间有约 3 万条样本差异，但无法判断这些差异是"增加"还是"修改"还是"删除"——因为文件的 MD5 校验码没有被记录。</p>
+<p>第三步：尝试追溯数据来源。这 3 万条差异样本里，有一部分来自新增的外包标注批次，有一部分是数据清洗逻辑调整导致的过滤结果变化，还有一部分是算法工程师手动添加的实验样本。这三类变更没有任何区分标记，混在一起，无从拆分。</p>
+<p>排查持续了整整五天，最终发现问题来源：数据清洗逻辑的一个边缘条件修改，意外地过滤掉了大量包含数学公式的高质量样本。这个修改是四周前的一次"小优化"，当时没有留下任何变更记录。</p>
+<p>这个案例揭示了缺乏版本管理的核心代价：<strong>问题发现的时间和排查的时间之间，存在一个巨大的信息黑洞</strong>。没有版本管理，就没有可复盘的迭代。</p>
+<hr>
+<h2 id="251">25.1 为什么没有版本管理就没有可复盘的迭代<a class="headerlink" href="#251" title="Permanent link">¶</a></h2>
+<h3 id="2511">25.1.1 数据变更对模型效果的影响为何最难追<a class="headerlink" href="#2511" title="Permanent link">¶</a></h3>
+<p>在一个 LLM 项目的完整链路中，影响模型效果的变量有很多：模型架构、超参数、训练代码、评测代码、数据。前四类变量通常都有完善的版本管理工具（Git 管理代码，配置文件记录超参数），唯独数据变更最难追踪，原因有三：</p>
+<p><strong>变更的粒度不统一</strong>。代码变更可以精确到行；数据变更可以是一条样本、一个批次、一类来源，或者一条清洗规则——不同粒度的变更对模型的影响差异巨大，但很难用统一的方式记录。</p>
+<p><strong>变更的因果链路复杂</strong>。数据变更不总是主动触发的，有时是被动发生的：外包商的标注风格发生漂移、爬虫源站修改了内容、清洗工具升级了版本——这些变化都可能改变最终的训练数据，但没有人主动"提交"这次变更。</p>
+<p><strong>变更的影响存在延迟</strong>。一次数据变更可能在三个版本之后才对模型效果产生可见影响，因为变更的数据需要经过批量处理、混合、再训练才能体现。这种延迟让根因分析变得极其困难。</p>
+<h3 id="2512">25.1.2 从"文件夹管理"升级到"谱系管理"<a class="headerlink" href="#2512" title="Permanent link">¶</a></h3>
+<p>大多数数据团队的版本管理起点是"文件夹管理"：用日期命名文件夹，新数据放新文件夹，遇到问题就去翻历史文件夹。这种方式的问题不是不记录，而是记录的信息不够。日期告诉你"什么时候"，但无法告诉你：</p>
+<ul>
+<li><strong>什么变了</strong>：哪些样本是新增的，哪些被删除了，哪些被修改了</li>
+<li><strong>为什么变</strong>：这次变更的业务原因是什么，谁做了决策</li>
+<li><strong>谁做的变更</strong>：哪个角色、哪个工具触发了这次变更</li>
+<li><strong>变更的下游影响</strong>：这次变更被哪些实验使用了，产生了什么结果</li>
+</ul>
+<p>谱系管理（Lineage Management）是对文件夹管理的系统升级。它不仅记录数据的"存在状态"，还记录数据的"生成历史"：这个数据集是从哪些数据源加工而来，经过了哪些处理步骤，每个步骤产生了什么样的变化，最终被哪些下游任务消费。谱系管理让数据集不再是一个孤立的文件，而是一个带有完整历史记录的活体资产。</p>
+<h3 id="2513">25.1.3 版本管理的核心价值主张<a class="headerlink" href="#2513" title="Permanent link">¶</a></h3>
+<p>建立版本管理体系，最直接的价值体现在三个场景：</p>
+<p><strong>场景一：实验可重现</strong>。算法团队六个月后想重跑一个历史实验，需要找到当时的数据版本。如果有版本管理，可以直接通过实验 ID 找到对应的数据集版本号，进而还原训练环境。</p>
+<p><strong>场景二：问题可回溯</strong>。发现模型问题后，可以通过数据谱系快速定位：从"哪个模型版本有问题"→"这个模型版本用了哪批数据"→"这批数据和上一版本有什么差异"→"差异来自哪个处理步骤"→"这个步骤的变更是什么时候发生的、为什么发生"。</p>
+<p><strong>场景三：合规可审计</strong>。监管机构要求提供某个模型的训练数据来源，有版本管理就能生成完整的审计报告，包括数据来源、处理记录和授权信息。</p>
+<hr>
+<h2 id="252">25.2 数据版本粒度与命名规范<a class="headerlink" href="#252" title="Permanent link">¶</a></h2>
+<h3 id="2521">25.2.1 五个层级的版本粒度<a class="headerlink" href="#2521" title="Permanent link">¶</a></h3>
+<p>数据版本管理不是一个单一粒度的问题，而是需要在五个层级上同时维护版本信息：</p>
+<p><strong>样本级（Sample）</strong>：单条训练样本。版本信息包括样本 ID、来源 URL/文档 ID、创建时间、最后修改时间、当前状态（active/deprecated/under_review）。样本级的版本主要用于标注质量追溯和合规审计。</p>
+<p><strong>分片级（Shard）</strong>：一批逻辑相关的样本集合，通常是一个标注任务的产出或一次清洗批次的输出。版本信息包括分片 ID、包含的样本数量、处理脚本版本、处理时间、质量摘要。</p>
+<p><strong>数据集级（Dataset）</strong>：一个完整的、可用于训练的数据集。版本信息包括数据集 ID、组成的分片列表、版本号（语义化版本）、创建原因、质量报告。数据集级是最常用的版本粒度。</p>
+<p><strong>实验级（Experiment）</strong>：一次具体的训练实验。版本信息包括实验 ID、使用的数据集版本、模型架构、超参数配置、评测结果。实验级版本把数据和模型联系起来。</p>
+<p><strong>发布包级（Release）</strong>：对外发布的模型版本。版本信息包括发布版本号、对应的模型 checkpoint、使用的数据集版本、通过的评测集列表、发布审批记录。</p>
+<table>
+<thead>
+<tr>
+<th>版本粒度</th>
+<th>主要用途</th>
+<th>关键字段</th>
+<th>保留策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>样本级</td>
+<td>合规审计、标注追溯</td>
+<td>sample_id, source, status</td>
+<td>永久保留</td>
+</tr>
+<tr>
+<td>分片级</td>
+<td>质量分析、处理追溯</td>
+<td>shard_id, script_version, quality_summary</td>
+<td>保留12个月</td>
+</tr>
+<tr>
+<td>数据集级</td>
+<td>实验对照、版本发布</td>
+<td>dataset_id, version, shards, quality_report</td>
+<td>永久保留（冻结版本）</td>
+</tr>
+<tr>
+<td>实验级</td>
+<td>结果归因、效果追踪</td>
+<td>experiment_id, dataset_version, results</td>
+<td>保留18个月</td>
+</tr>
+<tr>
+<td>发布包级</td>
+<td>部署管理、合规审查</td>
+<td>release_version, model_checkpoint, approval</td>
+<td>永久保留</td>
+</tr>
+</tbody>
+</table>
+<p><em>表25-1：数据版本粒度与适用场景表</em></p>
+<h3 id="2522">25.2.2 版本命名规范<a class="headerlink" href="#2522" title="Permanent link">¶</a></h3>
+<p>版本命名规范应该遵循三个原则：可读性（人看得懂）、可排序性（能推断时间先后）、可唯一标识性（不会重复）。</p>
+<p><strong>数据集版本：语义化版本（Semantic Versioning）</strong></p>
+<p>采用 <code>MAJOR.MINOR.PATCH</code> 格式，规则如下：
+- <code>MAJOR</code>：发生重大数据重构，如更换核心数据来源、大规模重新标注、数据格式不兼容变更
+- <code>MINOR</code>：新增了新类别的数据或新增了超过 10% 的样本量
+- <code>PATCH</code>：修复了已有样本的质量问题，或对小比例样本进行了更新</p>
+<p>示例：<code>dialogue-sft-zh_v2.3.1</code>
+- <code>dialogue-sft-zh</code>：数据集名称（任务类型-训练阶段-语言）
+- <code>v2.3.1</code>：第2个大版本，第3个功能版本，第1次补丁</p>
+<p><strong>分片版本：时间戳 + 来源标识</strong></p>
+<p>格式：<code>{source_tag}_{YYYYMMDD}_{sequence}_{hash}</code></p>
+<p>示例：<code>vendor_a_annotation_20240315_001_a3f7b2</code>
+- <code>vendor_a_annotation</code>：来源标识（供应商A的标注结果）
+- <code>20240315</code>：处理日期
+- <code>001</code>：当日第1批
+- <code>a3f7b2</code>：内容 hash 的前6位，用于快速验证完整性</p>
+<p><strong>实验版本：项目缩写 + 日期 + 序号</strong></p>
+<p>格式：<code>{project}_{YYYYMMDD}_{seq_num}</code></p>
+<p>示例：<code>edu-math_20240315_exp003</code>
+- <code>edu-math</code>：项目简称（教育数学子任务）
+- <code>20240315</code>：实验启动日期
+- <code>exp003</code>：当日第3个实验</p>
+<h3 id="2523">25.2.3 分支、快照与回滚点<a class="headerlink" href="#2523" title="Permanent link">¶</a></h3>
+<p>版本管理中需要区分三种不同的操作类型：</p>
+<p><strong>分支（Branch）</strong>：在不影响主线数据集的情况下，对数据进行实验性的修改或扩展。例如，想测试"增加 20% 合成数据对效果的影响"，可以从当前主线数据集创建一个分支，在分支上添加合成数据，实验完成后决定是否合并回主线。</p>
+<p>分支适用于场景：不确定一个数据决策是否有效、需要同时维护多个数据配方给不同算法实验使用。</p>
+<p><strong>快照（Snapshot）</strong>：在某个时间点对数据集当前状态的精确记录。快照是只读的，创建后不能修改。季度版本冻结就是一种典型的快照操作。快照适用于场景：合规审计需要留存历史状态、给外部合作方提供稳定的参考版本。</p>
+<p><strong>回滚点（Rollback Point）</strong>：在已知"这个版本是好的"的时间点创建的标记，当发现问题后可以快速恢复到这个状态。回滚点通常在重大数据变更之前手动设置。回滚点适用于场景：大规模数据清洗规则变更前的安全备份、外包标注批次合并前的状态保存。</p>
+<hr>
+<h2 id="253">25.3 实验追踪、结果回写与审计链路<a class="headerlink" href="#253" title="Permanent link">¶</a></h2>
+<h3 id="2531">25.3.1 实验卡片的字段设计<a class="headerlink" href="#2531" title="Permanent link">¶</a></h3>
+<p>实验追踪的核心工具是<strong>实验卡片（Experiment Card）</strong>。一张完整的实验卡片需要记录足够的信息，使得任何人在六个月后都能重现这次实验，并理解当时的决策上下文。</p>
+<p>以下是一套标准的实验卡片字段设计：</p>
+<p><strong>基础信息</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>experiment_id</td>
+<td>string</td>
+<td>唯一实验标识符</td>
+</tr>
+<tr>
+<td>experiment_name</td>
+<td>string</td>
+<td>人类可读的实验名称</td>
+</tr>
+<tr>
+<td>project</td>
+<td>string</td>
+<td>所属项目名</td>
+</tr>
+<tr>
+<td>created_by</td>
+<td>string</td>
+<td>实验发起人</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>datetime</td>
+<td>实验创建时间</td>
+</tr>
+<tr>
+<td>status</td>
+<td>enum</td>
+<td>pending / running / completed / failed / abandoned</td>
+</tr>
+</tbody>
+</table>
+<p><strong>数据配置</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dataset_id</td>
+<td>string</td>
+<td>使用的数据集 ID</td>
+</tr>
+<tr>
+<td>dataset_version</td>
+<td>string</td>
+<td>数据集版本号</td>
+</tr>
+<tr>
+<td>data_splits</td>
+<td>object</td>
+<td>train/val/test 的样本数量</td>
+</tr>
+<tr>
+<td>data_filters</td>
+<td>list</td>
+<td>本次实验应用的额外过滤条件（如果有）</td>
+</tr>
+<tr>
+<td>data_mixing_weights</td>
+<td>object</td>
+<td>多数据集混合时各数据集的权重</td>
+</tr>
+</tbody>
+</table>
+<p><strong>模型配置</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>base_model</td>
+<td>string</td>
+<td>基座模型名称和版本</td>
+</tr>
+<tr>
+<td>training_framework</td>
+<td>string</td>
+<td>训练框架（如 DeepSpeed、Megatron）</td>
+</tr>
+<tr>
+<td>hyperparams</td>
+<td>object</td>
+<td>完整超参数配置（学习率、batch size 等）</td>
+</tr>
+<tr>
+<td>training_code_commit</td>
+<td>string</td>
+<td>训练代码的 Git commit hash</td>
+</tr>
+</tbody>
+</table>
+<p><strong>评测结果</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>eval_datasets</td>
+<td>list</td>
+<td>使用的评测集列表</td>
+</tr>
+<tr>
+<td>metrics</td>
+<td>object</td>
+<td>各评测集上的指标结果（键值对）</td>
+</tr>
+<tr>
+<td>eval_code_commit</td>
+<td>string</td>
+<td>评测代码的 Git commit hash</td>
+</tr>
+<tr>
+<td>eval_timestamp</td>
+<td>datetime</td>
+<td>评测完成时间</td>
+</tr>
+</tbody>
+</table>
+<p><strong>实验记录</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hypothesis</td>
+<td>string</td>
+<td>实验假设（这次实验想验证什么）</td>
+</tr>
+<tr>
+<td>motivation</td>
+<td>string</td>
+<td>数据或配置调整的业务动机</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>string</td>
+<td>实验过程中的观察和异常记录</td>
+</tr>
+<tr>
+<td>conclusion</td>
+<td>string</td>
+<td>实验结论</td>
+</tr>
+<tr>
+<td>next_actions</td>
+<td>list</td>
+<td>基于本次实验结果的后续动作</td>
+</tr>
+</tbody>
+</table>
+<p><em>表25-2：实验卡片字段示例表</em></p>
+<p>特别强调 <code>hypothesis</code>（实验假设）字段的重要性。很多团队只记录"做了什么"，却不记录"为什么这么做"。六个月后，实验结果还在，但做这个实验的原因已经无处可查。填写 <code>hypothesis</code> 字段，强制要求实验发起人在启动前明确实验目的，这本身就能显著提升实验设计的质量。</p>
+<h3 id="2532">25.3.2 结果回写与双向关联<a class="headerlink" href="#2532" title="Permanent link">¶</a></h3>
+<p>实验卡片只记录了从"数据"到"结果"的单向关系。完整的追踪体系还需要从"结果"反向追溯到"数据"的能力，这就是<strong>结果回写（Result Write-back）</strong>机制。</p>
+<p>结果回写的含义是：当一次实验的评测结果出来后，不只是把结果写入实验卡片，还要把结果"回写"到数据集的元数据中，形成双向关联：</p>
+<ul>
+<li>从数据集角度：可以查询"这个数据集被用在哪些实验里，产生了什么效果"</li>
+<li>从实验角度：可以查询"这次实验用了哪些数据集版本"</li>
+</ul>
+<p>这种双向关联的价值在于：当团队面对一个新的数据改动决策时，可以快速查询"之前用这类数据配置的实验效果如何"，从已有实验中学习，而不是每次都从零开始。</p>
+<p>结果回写的技术实现有多种方案：
+- 基于 MLflow 的实验追踪 API，将数据集版本作为实验的 artifact 参数记录
+- 基于 DVC 的 <code>dvc params diff</code> 和 <code>dvc metrics diff</code> 命令，对比不同数据版本的实验结果差异
+- 自建元数据服务，维护 <code>(dataset_version, experiment_id)</code> 的多对多关联表</p>
+<p>无论选择哪种技术方案，结果回写应该是自动化的，不能依赖人工手动填写。实验启动时自动记录数据集版本，实验完成后自动读取评测结果写入，减少人工干预的环节就是减少遗漏的机会。</p>
+<h3 id="2533">25.3.3 失败实验的价值与沉淀<a class="headerlink" href="#2533" title="Permanent link">¶</a></h3>
+<p>一个常见的误区是：失败实验不需要认真记录，因为"反正没有价值"。这个观点会造成巨大的知识浪费。</p>
+<p>失败实验的价值体现在三个方面：</p>
+<p><strong>排除空间</strong>：一次失败的实验证明了"这条路走不通"，避免团队在同一个方向上重复踩坑。如果失败实验没有被记录，三个月后换了一个算法工程师，很可能会重新做同样的实验，浪费宝贵的计算资源。</p>
+<p><strong>异常信号</strong>：失败实验往往包含了有价值的异常信号。Loss 曲线的异常抖动、某类样本上的极端误差、评测集上某个指标的意外上升——这些信号即使在"失败"的整体背景下，也可能是重要的发现。</p>
+<p><strong>对照基线</strong>：当后续的实验尝试新的数据配方时，历史失败实验提供了有意义的对照组。没有对照组，就无法评估改进是否真的有效。</p>
+<p>失败实验的沉淀要求：
+1. 必须填写 <code>conclusion</code> 字段，明确记录为什么认定这次实验是失败的
+2. 必须填写 <code>next_actions</code> 字段，记录基于失败结论的下一步动作
+3. 失败实验的 <code>status</code> 必须标记为 <code>failed</code> 或 <code>abandoned</code>，不能静默消失
+4. 对于"已知失败方向"，应建立一个共享的"禁区列表"，标注哪类实验已经被证明无效</p>
+<h3 id="2534">25.3.4 审计链路的最小信息集合<a class="headerlink" href="#2534" title="Permanent link">¶</a></h3>
+<p>完整的审计链路需要能够回答以下核心问题：</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>需要的信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>这个模型用了什么数据训练？</td>
+<td>发布包 → 实验 → 数据集版本</td>
+</tr>
+<tr>
+<td>这批数据是从哪里来的？</td>
+<td>数据集 → 分片 → 样本来源</td>
+</tr>
+<tr>
+<td>谁对这批数据做了什么处理？</td>
+<td>处理脚本版本 + 操作人 + 时间戳</td>
+</tr>
+<tr>
+<td>这批数据通过了什么质量检查？</td>
+<td>质量评估记录 + 评估人 + 时间</td>
+</tr>
+<tr>
+<td>数据的使用是否经过合规审批？</td>
+<td>数据合规审核记录 + 审核人 + 审核结论</td>
+</tr>
+<tr>
+<td>如果需要删除某用户的数据，波及范围是什么？</td>
+<td>样本级来源索引 → 关联的分片 → 关联的数据集 → 关联的实验</td>
+</tr>
+</tbody>
+</table>
+<p>对于审计而言，不是"记录越多越好"，而是"关键信息必须有"。上表中的每一列信息都是审计的最小必要集合，缺少任何一项都会让审计链路出现断点。</p>
+<hr>
+<h2 id="254">25.4 谱系可视化与治理规则<a class="headerlink" href="#254" title="Permanent link">¶</a></h2>
+<h3 id="2541">25.4.1 数据血缘图的表示方式<a class="headerlink" href="#2541" title="Permanent link">¶</a></h3>
+<p>数据血缘图（Data Lineage Graph）是数据谱系的可视化表达。它以有向无环图（DAG）的形式，展示数据资产之间的依赖关系和转化关系。</p>
+<p>在 LLM 数据工程中，一张典型的数据血缘图包含以下节点类型：</p>
+<ul>
+<li><strong>数据源节点</strong>：原始数据来源，如"网络爬取 - CommonCrawl 2024Q1"、"外包商 A 标注批次 202403"</li>
+<li><strong>处理节点</strong>：数据转化步骤，如"去重过滤"、"语言识别"、"标注质量审核"</li>
+<li><strong>数据集节点</strong>：某个版本的数据集，如"dialogue-sft-zh_v2.3.1"</li>
+<li><strong>实验节点</strong>：使用某个数据集的实验，如"edu-math_exp003"</li>
+<li><strong>模型节点</strong>：训练产出的模型，如"edu-math-7B-v1.2"</li>
+</ul>
+<p>节点之间的有向边表示"从这个节点产生了那个节点"，边上可以标注转化规则（如清洗脚本版本）和转化时间。</p>
+<p>数据血缘图有三种典型的查询视角：</p>
+<p><strong>正向追踪</strong>：从一个数据源开始，追踪它的所有下游——这批爬取数据最终进入了哪些训练集，用于了哪些实验，产出了哪些模型。正向追踪用于影响分析（如果这个数据源出了问题，波及哪些产物）。</p>
+<p><strong>反向追踪</strong>：从一个模型或实验开始，追溯它的所有上游——这个模型的训练数据来自哪里，经过了哪些处理，质量评估是谁做的。反向追踪用于根因分析。</p>
+<p><strong>差异比对</strong>：对比两个不同版本的数据集在谱系上的差异——哪些数据源变了，哪些处理步骤变了，差异的规模有多大。差异比对用于变更审计。</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part8/%E5%9B%BE25_1_%E6%95%B0%E6%8D%AE%E8%B0%B1%E7%B3%BB%E4%B8%8E%E5%AE%9E%E9%AA%8C%E8%BF%BD%E8%B8%AA%E5%9B%BE.png" data-desc-position="bottom"><img alt="图25-1：数据谱系与实验追踪图" src="../../../images/part8/%E5%9B%BE25_1_%E6%95%B0%E6%8D%AE%E8%B0%B1%E7%B3%BB%E4%B8%8E%E5%AE%9E%E9%AA%8C%E8%BF%BD%E8%B8%AA%E5%9B%BE.png"></a></p>
+<p><em>图25-1：从数据源到模型发布的完整数据谱系图，展示正向追踪与反向追踪路径</em></p>
+<h3 id="2542">25.4.2 变更审计流程图<a class="headerlink" href="#2542" title="Permanent link">¶</a></h3>
+<p>每一次数据集版本变更都应该经过规范的审计流程，确保变更被授权、被记录、被验证。</p>
+<p>标准变更审计流程如下：</p>
+<ol>
+<li><strong>变更申请</strong>：提出方（通常是数据工程师或标注工程师）填写变更申请表，说明变更内容、变更原因和预期影响</li>
+<li><strong>影响评估</strong>：评估这次变更会影响哪些下游数据集和实验</li>
+<li><strong>合规审查</strong>：如果变更涉及数据来源或数据类型的变化，需要法务合规专员审核</li>
+<li><strong>技术审查</strong>：数据 Owner 或高级数据工程师审查变更的技术实现方案</li>
+<li><strong>变更执行</strong>：在创建回滚点后执行变更</li>
+<li><strong>变更验证</strong>：运行自动化质量检查，与变更申请中的预期影响对比</li>
+<li><strong>变更记录</strong>：将变更日志写入数据集的元数据，更新血缘图</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>执行者</th>
+<th>工具</th>
+<th>产出物</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>变更申请</td>
+<td>申请方</td>
+<td>变更申请表单</td>
+<td>填写完整的申请单</td>
+</tr>
+<tr>
+<td>影响评估</td>
+<td>数据工程师</td>
+<td>血缘图查询工具</td>
+<td>影响范围列表</td>
+</tr>
+<tr>
+<td>合规审查</td>
+<td>法务合规</td>
+<td>合规审查清单</td>
+<td>审查结论（通过/拒绝/条件通过）</td>
+</tr>
+<tr>
+<td>技术审查</td>
+<td>数据Owner</td>
+<td>Code Review</td>
+<td>审批意见</td>
+</tr>
+<tr>
+<td>变更执行</td>
+<td>数据工程师</td>
+<td>处理脚本 + 版本工具</td>
+<td>新版本数据集</td>
+</tr>
+<tr>
+<td>变更验证</td>
+<td>质量评估员</td>
+<td>自动化质量检查工具</td>
+<td>质量报告</td>
+</tr>
+<tr>
+<td>变更记录</td>
+<td>自动化</td>
+<td>元数据服务</td>
+<td>更新的血缘图和变更日志</td>
+</tr>
+</tbody>
+</table>
+<p><em>表25-3：数据变更审计流程表</em></p>
+<h3 id="2543">25.4.3 谱系治理规则<a class="headerlink" href="#2543" title="Permanent link">¶</a></h3>
+<p>谱系治理规则是数据团队约定的一套"数据行为准则"，规定了哪些操作是被允许的、哪些需要审批、哪些是被禁止的。</p>
+<p>以下是一套参考治理规则：</p>
+<p><strong>允许自由操作（无需审批）</strong>
+- 在沙箱环境中创建数据分支用于本地实验
+- 查看和导出数据集的统计摘要
+- 添加或修改数据集的非关键元数据（如标签、注释）</p>
+<p><strong>需要申请审批（轻量审批，数据工程师或 Tech Lead 审批）</strong>
+- 将新的数据分片合并到主线数据集
+- 修改数据清洗规则
+- 添加新的数据来源类别</p>
+<p><strong>需要正式审批（Data Owner + 法务合规审批）</strong>
+- 变更数据集的核心来源（如更换标注供应商、新增爬取站点）
+- 删除已有数据集版本
+- 将内部数据集共享给外部合作方
+- 对已发布版本数据集进行修改（原则上禁止，特殊情况需要完整记录）</p>
+<p><strong>永远禁止</strong>
+- 在没有版本记录的情况下修改已冻结的数据集
+- 在没有合规审核的情况下使用第三方版权数据
+- 直接修改他人提交的数据而不留下修改记录</p>
+<hr>
+<h2 id="255">25.5 案例：一次失败实验如何快速回溯<a class="headerlink" href="#255" title="Permanent link">¶</a></h2>
+<h3 id="_3">案例背景<a class="headerlink" href="#_3" title="Permanent link">¶</a></h3>
+<p>某公司正在训练一个客服对话大模型。在第三次大版本迭代（<code>v3.0.0</code>）发布后，线上评测发现模型在"退款流程"类问题上的准确率从 82% 骤降至 67%，引发客户投诉。</p>
+<p>算法团队立即向数据团队发出回溯请求：<strong>在过去 6 周内，"退款流程"相关数据发生了什么变化？</strong></p>
+<h3 id="_4">回溯过程（有版本管理的情况下）<a class="headerlink" href="#_4" title="Permanent link">¶</a></h3>
+<p><strong>步骤一：定位模型版本对应的数据集版本</strong>（用时：5分钟）</p>
+<p>通过实验追踪系统查询模型 <code>v3.0.0</code> 对应的训练实验 ID：<code>cs-dialog_20240401_exp012</code>。</p>
+<p>查询实验卡片，找到数据集版本：<code>cs-dialog-sft-zh_v2.8.0</code></p>
+<p><strong>步骤二：对比当前版本与上一稳定版本的差异</strong>（用时：15分钟）</p>
+<p>使用血缘查询工具，对比 <code>v2.8.0</code> 与 <code>v2.6.0</code>（上一次效果良好的版本）的差异：
+- 总样本量：<code>v2.6.0</code> 有 18.2 万条，<code>v2.8.0</code> 有 21.4 万条
+- 新增样本：32,156 条（来自两个新增分片）
+- 删除样本：1,823 条（被质量过滤移除）</p>
+<p><strong>步骤三：分析"退款流程"标签数据的变化</strong>（用时：20分钟）</p>
+<p>按业务标签过滤，查看"退款流程"类样本在两个版本中的分布：
+- <code>v2.6.0</code>：退款流程样本 6,847 条
+- <code>v2.8.0</code>：退款流程样本 4,102 条（减少了 40%！）</p>
+<p><strong>步骤四：追踪减少原因</strong>（用时：30分钟）</p>
+<p>查询"退款流程"样本减少的原因，定位到分片 <code>vendor_b_annotation_20240318_003</code>：
+- 这批分片中有 3,201 条"退款流程"样本被打了"低质量"标签
+- 追溯到具体的质量审核记录：审核人 <code>QA_王工</code> 在 2024-03-20 进行了批量审核</p>
+<p>查询 <code>QA_王工</code> 的审核记录，发现：他在 3 月 20 日将一批关于"旧版退款流程"的样本统一标记为低质量（原因是"流程已更新，描述过时"），然后被质量过滤步骤移除。</p>
+<p><strong>步骤五：确认根因与制定修复方案</strong>（用时：15分钟）</p>
+<p>根因：质量审核人员按照当前业务流程判断数据质量，将描述"旧版退款流程"的样本视为低质量数据，但实际上旧版流程的处理场景（历史订单退款）仍在线上存在，这些样本对模型理解"退款流程演变"具有重要价值。</p>
+<p>修复方案：
+1. 短期：从 <code>v2.6.0</code> 中取回被删除的退款流程样本，加入"历史退款流程"标签重新入库
+2. 中期：更新质量审核指南，明确"历史流程数据"的保留原则
+3. 长期：在标注任务中增加"是否适用于历史场景"的标注维度</p>
+<p>整个回溯过程共用时约 85 分钟，从"问题反馈"到"根因确认"。这与前述案例中"无版本管理下耗时 5 天"形成了鲜明对比。</p>
+<h3 id="_5">关键成功因素总结<a class="headerlink" href="#_5" title="Permanent link">¶</a></h3>
+<p>这次快速回溯之所以成功，依赖于以下几个关键的版本管理设计：</p>
+<ol>
+<li><strong>实验到数据的双向关联</strong>：知道 <code>v3.0.0</code> 对应哪个数据集版本</li>
+<li><strong>分片级的来源追踪</strong>：能够定位到具体的标注批次</li>
+<li><strong>审核记录的完整保留</strong>：知道谁在什么时间做了什么审核操作</li>
+<li><strong>业务标签的版本维护</strong>：能够按标签过滤历史版本数据</li>
+</ol>
+<p>缺少其中任何一个，回溯链路就会中断。</p>
+<hr>
+<h2 id="_6">本章小结<a class="headerlink" href="#_6" title="Permanent link">¶</a></h2>
+<p>本章系统阐述了 LLM 数据工程中版本管理与实验追踪的核心设计。</p>
+<p>在理念层面，我们分析了数据变更难以追踪的三个根本原因（粒度不统一、因果链复杂、影响有延迟），以及从"文件夹管理"升级到"谱系管理"的必要性。版本管理的核心价值在于：实验可重现、问题可回溯、合规可审计。</p>
+<p>在版本粒度层面，我们定义了从样本、分片、数据集、实验到发布包的五层版本体系，以及语义化版本命名规范和分支/快照/回滚点三种版本操作类型。</p>
+<p>在实验追踪层面，我们设计了完整的实验卡片字段（基础信息、数据配置、模型配置、评测结果、实验记录），强调了失败实验的沉淀价值，以及结果回写形成双向关联的重要性。</p>
+<p>在谱系治理层面，我们介绍了数据血缘图的三种查询视角（正向追踪、反向追踪、差异比对），以及标准化的变更审计流程和分级治理规则。</p>
+<p>最后，通过一次失败实验的完整回溯案例，展示了版本管理体系在真实场景中将回溯时间从 5 天压缩到 85 分钟的实际价值。</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part8/%E5%9B%BE25_2_%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E4%BD%93%E7%B3%BB%E5%85%A8%E6%99%AF%E5%9B%BE.png" data-desc-position="bottom"><img alt="图25-2：版本管理体系全景图" src="../../../images/part8/%E5%9B%BE25_2_%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E4%BD%93%E7%B3%BB%E5%85%A8%E6%99%AF%E5%9B%BE.png"></a></p>
+<p><em>图25-2：数据版本管理与实验追踪体系全景——五层版本粒度与双向关联架构</em></p>
+<hr>
+<h2 id="_7">延伸阅读<a class="headerlink" href="#_7" title="Permanent link">¶</a></h2>
+<p><strong>工具推荐</strong></p>
+<p>DVC（Data Version Control）是目前最成熟的数据版本控制工具，与 Git 深度集成，支持大文件的版本管理和数据血缘追踪。其文档中的"Data Registry"模式是多项目数据共享的参考实现。MLflow 是开源的机器学习实验追踪平台，支持实验参数、指标、artifact 的统一记录，以及版本对比的可视化界面。LakeFS 是面向数据湖的版本控制工具，提供了类似 Git 的分支、合并和回滚操作，适合大规模数据集的版本管理。</p>
+<p><strong>深度阅读</strong></p>
+<p>Zaharia 等人的《Accelerating the Machine Learning Lifecycle with MLflow》（2018）是 MLflow 的原始论文，系统介绍了 ML 生命周期管理的挑战和解决思路。Google 发布的《Data Cards: Purposeful and Transparent Dataset Documentation for Responsible AI》（2022）提供了数据集文档化的最佳实践，对实验卡片的设计有重要参考价值。</p>
+<hr>
+<h2 id="_8">下一章预告<a class="headerlink" href="#_8" title="Permanent link">¶</a></h2>
+<p>有了版本管理和实验追踪，团队建立了"事后可回溯"的能力。但 LLM 数据平台还需要一类更主动的能力：<strong>在问题发生时就能感知，而不是等到模型效果下降才意识到</strong>。</p>
+<p>第26章将深入数据平台的可观测性体系，从指标分层到告警设计，从异常归因到运营面板，构建一套能够让团队"第一时间感知数据健康状态"的监控系统。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  ページトップへ戻る
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

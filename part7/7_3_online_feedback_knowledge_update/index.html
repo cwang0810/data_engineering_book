@@ -1,0 +1,4095 @@
+<!DOCTYPE html><html lang="zh" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="大模型数据工程：架构、算法及项目实战">
+      
+      
+        <meta name="author" content="ustc">
+      
+      
+        <link rel="canonical" href="https://datascale-ai.github.io/data_engineering_book/part7/7_3_online_feedback_knowledge_update/">
+      
+      
+        <link rel="prev" href="../7_2_multimodal_rag_visual_retrieval/">
+      
+      
+        <link rel="next" href="../../part8/8_1_dataops_flywheel_team/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="zh">
+        
+          <link rel="alternate" href="../../en/part7/7_3_online_feedback_knowledge_update/" hreflang="en">
+        
+          <link rel="alternate" href="../../ja/part7/7_3_online_feedback_knowledge_update/" hreflang="ja">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>第23章：在线反馈闭环与知识更新 - 大模型数据工程：架构、算法及项目实战</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#23" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="大模型数据工程：架构、算法及项目实战" class="md-header__button md-logo" aria-label="大模型数据工程：架构、算法及项目实战" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            大模型数据工程：架构、算法及项目实战
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第23章：在线反馈闭环与知识更新
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red" aria-label="切换至夜间模式" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换至夜间模式" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red" aria-label="切换至日间模式" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换至日间模式" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../en/part7/7_3_online_feedback_knowledge_update/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../ja/part7/7_3_online_feedback_knowledge_update/" hreflang="ja" class="md-select__link">
+              日本語
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="大模型数据工程：架构、算法及项目实战" class="md-nav__button md-logo" aria-label="大模型数据工程：架构、算法及项目实战" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    大模型数据工程：架构、算法及项目实战
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    目录
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    序言
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第一部分：总论与基础设施
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第一部分：总论与基础设施
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part1/ch01_data_change/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第1章：大模型时代的数据变革
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part1/ch02_quality_framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第2章：LLM数据生命周期与质量评估框架
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part1/ch03_data_stack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第3章：AI原生数据栈与成本治理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4">
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第二部分：文本预训练数据工程
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第二部分：文本预训练数据工程
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part2/ch04_data_sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第4章：数据源、采集与版权
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part2/ch05_cleaning_dedup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第5章：清洗、去重与去污染
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part2/ch06_tokenization_loading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第6章：分词、序列化与高效加载
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part2/ch07_data_operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第7章：数据评估、质量闭环与运营迭代
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5">
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第三部分：多模态数据工程
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第三部分：多模态数据工程
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part3/ch08_multimodal_image/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第8章：图文对数据工程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part3/ch09_recaptioning_ocr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第9章：重标注与文档理解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part3/ch10_video_audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第10章：视频与音频数据工程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part3/ch11_cross_modal_alignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第11章：跨模态对齐与融合
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第四部分：指令微调与偏好数据
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第四部分：指令微调与偏好数据
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part4/4_1_SFT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第12章：SFT数据设计与指令体系
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part4/4_2_preference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第13章：偏好数据与奖励信号
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part4/4_3_qa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第14章：标注平台、QA体系与数据运营
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7">
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第五部分：合成数据工程
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第五部分：合成数据工程
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part5/5_1_data_synthesis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第15章：合成数据工厂：从种子到验证
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part5/5_2_distillation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第16章：知识蒸馏与模型协作
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part5/5_3_quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第17章：合成数据质量控制与模型坍缩
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8">
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第六部分：推理与 Agent 数据工程
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第六部分：推理与 Agent 数据工程
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part6/6_1_COT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第18章：思维链与推理数据工程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part6/6_2_tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第19章：Tool-Use 与函数调用数据
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part6/6_3_agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第20章：Agent 记忆与多轮交互数据
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked="">
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第七部分：应用级数据工程
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第七部分：应用级数据工程
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7_1_rag_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第21章：RAG 数据流水线
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7_2_multimodal_rag_visual_retrieval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第22章：多模态 RAG 与视觉检索
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第23章：在线反馈闭环与知识更新
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第23章：在线反馈闭环与知识更新
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#231" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.1 为什么“上线完成”只是数据飞轮起点
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.1 为什么“上线完成”只是数据飞轮起点">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2311" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.1.1 上线后的三类漂移
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2312" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.1.2 反馈数据比离线假设更接近真实短板
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2313" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.1.3 反馈闭环的基本结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2314" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.1.4 本节小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#232" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2 事件采集与反馈分流
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.2 事件采集与反馈分流">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2321" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.1 反馈不是一个按钮
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2322" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.2 线上事件字段模板
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2323" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.3 反馈分流策略
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2324" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.4 优先级评分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2325" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.5 自动归因与人工复核
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2326" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.6 采集边界与采样策略
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2327" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.7 本节小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#233" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3 知识更新、回滚与版本治理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.3 知识更新、回滚与版本治理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2331" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3.1 更新不是覆盖
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2332" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3.2 知识更新的四类任务
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2333" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3.3 回滚机制
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2334" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3.4 权限、隐私与保留范围
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2335" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3.5 发布审批与冲突处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2336" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3.6 本节小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#234" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4 指标看板与运营节奏
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.4 指标看板与运营节奏">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2341" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.1 看板的四类指标
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2342" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.2 运营节奏
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2343" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.3 行动阈值
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2344" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.4 看板字段设计
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2345-dataops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.5 从应用问题过桥到 DataOps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2346-raci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.6 跨团队交接与 RACI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2347" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.7 本节小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#235" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5 案例与标准产出物
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.5 案例与标准产出物">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2351-a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.1 案例 A：引用不准的企业知识助手
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2352-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.2 案例 B：更新过快导致版本混乱
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2353-sop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.3 标准产出物一：反馈回流 SOP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2354" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.4 标准产出物二：线上事件字段模板
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2355" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.5 标准产出物三：反馈事件复盘模板
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2356" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.6 标准产出物四：反馈任务看板字段
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2357" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.7 本章总结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10">
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第八部分：数据运营与平台建设
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第八部分：数据运营与平台建设
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part8/8_1_dataops_flywheel_team/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第24章：DataOps 飞轮与团队组织
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part8/8_2_data_versioning_experiment_tracking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第25章：数据版本管理与实验追踪
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part8/8_3_data_platform_observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第26章：数据平台可观测性
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11">
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第九部分：隐私合规与数据安全
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第九部分：隐私合规与数据安全
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part9/Ch27_compliance_framework_and_governance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第27章：数据合规框架与治理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part9/Ch28_federated_learning_and_privacy_preserving_technologies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第28章：联邦学习与隐私保护技术
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12">
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第十部分：项目实战
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第十部分：项目实战
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part10/10_1_mini_c4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目一：基于 Ray 构建分布式 Mini-C4 数据流水线
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part10/10_2_legal_sft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目二：垂直领域专家 SFT（法律）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part10/10_3_llava_instruct/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目三：LLaVA 多模态指令数据工厂
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part10/10_4_synthetic_textbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目四：合成数学与代码教材工厂
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part10/10_5_mm_rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目五：多模态 RAG 企业财报助手
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part10/10_6_PRM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目六：CoT 推理数据集构建与 PRM 训练
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part10/10_7_Agent_Tooluse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目七：Agent Tool-Use 数据工厂
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part10/10_8_dataops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目八：企业级 DataOps 平台搭建：从数据项目到组织级治理能力
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part10/10_9_privacy_pipline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目九：隐私保护数据流水线
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../part10/10_10_flywheel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目十：端到端 LLM 数据飞轮
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#231" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.1 为什么“上线完成”只是数据飞轮起点
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.1 为什么“上线完成”只是数据飞轮起点">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2311" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.1.1 上线后的三类漂移
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2312" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.1.2 反馈数据比离线假设更接近真实短板
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2313" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.1.3 反馈闭环的基本结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2314" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.1.4 本节小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#232" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2 事件采集与反馈分流
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.2 事件采集与反馈分流">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2321" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.1 反馈不是一个按钮
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2322" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.2 线上事件字段模板
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2323" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.3 反馈分流策略
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2324" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.4 优先级评分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2325" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.5 自动归因与人工复核
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2326" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.6 采集边界与采样策略
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2327" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.2.7 本节小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#233" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3 知识更新、回滚与版本治理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.3 知识更新、回滚与版本治理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2331" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3.1 更新不是覆盖
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2332" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3.2 知识更新的四类任务
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2333" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3.3 回滚机制
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2334" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3.4 权限、隐私与保留范围
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2335" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3.5 发布审批与冲突处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2336" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.3.6 本节小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#234" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4 指标看板与运营节奏
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.4 指标看板与运营节奏">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2341" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.1 看板的四类指标
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2342" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.2 运营节奏
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2343" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.3 行动阈值
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2344" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.4 看板字段设计
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2345-dataops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.5 从应用问题过桥到 DataOps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2346-raci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.6 跨团队交接与 RACI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2347" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.4.7 本节小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#235" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5 案例与标准产出物
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="23.5 案例与标准产出物">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2351-a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.1 案例 A：引用不准的企业知识助手
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2352-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.2 案例 B：更新过快导致版本混乱
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2353-sop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.3 标准产出物一：反馈回流 SOP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2354" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.4 标准产出物二：线上事件字段模板
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2355" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.5 标准产出物三：反馈事件复盘模板
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2356" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.6 标准产出物四：反馈任务看板字段
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2357" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23.5.7 本章总结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="23">第23章：在线反馈闭环与知识更新<a class="headerlink" href="#23" title="Permanent link">¶</a></h1>
+<p>RAG 系统上线并不意味着数据工程结束。恰恰相反，真实用户开始使用系统之后，知识缺口、检索偏差、权限问题、版本冲突和回答风格问题才会集中暴露。一个没有反馈闭环的系统，即使初始效果不错，也会随着业务变化逐渐老化；一个有反馈闭环的系统，则可以把线上失败转化为新的知识更新、评测样本和数据修复任务。</p>
+<p>本章讨论应用级数据工程的最后一段：如何把线上事件转化为可运营的数据资产。这里的“反馈”不只是点赞点踩，也包括检索日志、引用失败、拒答记录、用户追问、人工工单、知识修订、回滚事件和 A/B 实验结果。数据工程的目标，是让这些事件进入一条可追踪、可分流、可验证的回流链路，而不是散落在客服系统和聊天记录中。</p>
+<p>读者读完本章后，应能设计一套反馈事件模型，建立反馈优先级和处理路径，把知识更新与版本回滚纳入治理，并通过运营看板持续观察系统健康度。</p>
+<hr>
+<h2 id="231">23.1 为什么“上线完成”只是数据飞轮起点<a class="headerlink" href="#231" title="Permanent link">¶</a></h2>
+<h3 id="2311">23.1.1 上线后的三类漂移<a class="headerlink" href="#2311" title="Permanent link">¶</a></h3>
+<p>大模型应用上线后，系统面对的不再是固定评测集，而是持续变化的真实环境。变化首先来自知识本身：制度会修订，产品会迭代，价格会调整，组织架构会变化，外部法规也会更新。即使模型和检索系统完全不变，知识库也会因为时效性下降而逐渐失真。</p>
+<p>第二类变化来自用户问题。上线初期，用户可能只问简单事实；当他们开始信任系统后，会提出更复杂、更含糊、更接近业务决策的问题。系统需要处理跨文档综合、例外条件、权限边界和上下文追问，这些问题在离线评测集中往往覆盖不足。</p>
+<p>第三类变化来自系统自身。解析规则、chunk 策略、索引版本、rerank 模型、生成模型和权限配置都会持续迭代。一次看似局部的索引刷新，可能改变大量问题的召回结果；一次知识库更新，也可能引入新的重复、冲突或越权风险。</p>
+<p>这三类漂移共同说明：应用级数据工程必须从静态构建转向持续运营。系统上线只是数据飞轮开始转动的时刻，而不是结束点。</p>
+<h3 id="2312">23.1.2 反馈数据比离线假设更接近真实短板<a class="headerlink" href="#2312" title="Permanent link">¶</a></h3>
+<p>离线评测集很重要，但它永远只能代表团队已经预想到的问题。线上反馈的价值在于暴露未知短板。例如用户连续追问，可能说明第一次回答缺少关键条件；用户复制答案后又打开原文，可能说明引用可信度不足；用户点击“无帮助”，但问题本身很简单，可能说明检索没有命中正确知识。</p>
+<p>这些信号如果只被当作产品统计，就无法进入数据改进。真正的数据闭环要求把每一次失败拆成可处理的事件：是知识缺失、文档过期、解析错误、chunk 断裂、检索未命中、证据不完整、生成偏离，还是权限策略导致无法回答。</p>
+<h3 id="2313">23.1.3 反馈闭环的基本结构<a class="headerlink" href="#2313" title="Permanent link">¶</a></h3>
+<p>一个生产级反馈闭环通常包含六个阶段：</p>
+<ol>
+<li><strong>事件采集</strong>：记录用户问题、检索结果、上下文、回答、引用、反馈和系统状态；</li>
+<li><strong>分类分流</strong>：判断事件属于知识缺口、检索问题、生成问题、权限问题还是产品交互问题；</li>
+<li><strong>优先级排序</strong>：按风险、频次、业务影响和修复成本决定处理顺序；</li>
+<li><strong>修复执行</strong>：生成补数、修订、重建索引、回滚或规则更新任务；</li>
+<li><strong>验证发布</strong>：通过回归评测、灰度观察和审批后发布；</li>
+<li><strong>沉淀复用</strong>：把事件转化为评测样本、SOP、规则或数据处理模板。</li>
+</ol>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../images/part2/data_operations_flywheel.png" data-desc-position="bottom"><img alt="图23-1：DataOps 飞轮与反馈闭环" src="../../images/part2/data_operations_flywheel.png"></a></p>
+<p><em>图23-1：线上反馈只有进入采集、分流、修复、验证和沉淀链路，才能从用户抱怨转化为系统能力。</em></p>
+<h3 id="2314">23.1.4 本节小结<a class="headerlink" href="#2314" title="Permanent link">¶</a></h3>
+<p>上线后的应用系统会持续面对知识漂移、问题漂移和系统漂移。反馈闭环的价值，是把这些变化变成可观测、可分流、可修复的数据资产。没有闭环的系统会逐渐老化，有闭环的系统才可能形成应用级数据飞轮。</p>
+<hr>
+<h2 id="232">23.2 事件采集与反馈分流<a class="headerlink" href="#232" title="Permanent link">¶</a></h2>
+<h3 id="2321">23.2.1 反馈不是一个按钮<a class="headerlink" href="#2321" title="Permanent link">¶</a></h3>
+<p>很多系统把反馈理解为点赞、点踩或一句用户评论。这类显式反馈当然有价值，但它只是反馈体系的一小部分。真实系统中，更重要的反馈往往藏在行为日志和链路状态中。</p>
+<table>
+<thead>
+<tr>
+<th>反馈类型</th>
+<th>示例</th>
+<th>价值</th>
+<th>风险</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>显式反馈</td>
+<td>点赞、点踩、文字评论</td>
+<td>直接表达用户满意度</td>
+<td>主观性强，覆盖率低</td>
+</tr>
+<tr>
+<td>隐式行为</td>
+<td>追问、复制、重新搜索、停留时间</td>
+<td>反映真实使用路径</td>
+<td>解释需要上下文</td>
+</tr>
+<tr>
+<td>检索日志</td>
+<td>query、top-k、rerank 分数、引用页</td>
+<td>定位检索失败</td>
+<td>数据量大，需脱敏</td>
+</tr>
+<tr>
+<td>生成日志</td>
+<td>prompt、上下文、答案、拒答原因</td>
+<td>定位生成偏离</td>
+<td>可能含敏感内容</td>
+</tr>
+<tr>
+<td>人工工单</td>
+<td>客服记录、专家标注、修订意见</td>
+<td>质量高，可解释</td>
+<td>时效慢，成本高</td>
+</tr>
+<tr>
+<td>系统事件</td>
+<td>索引刷新、权限拒绝、解析失败</td>
+<td>定位工程故障</td>
+<td>需要跨系统关联</td>
+</tr>
+</tbody>
+</table>
+<p>一个成熟系统应同时采集这些信号，并把它们绑定到同一条会话或任务链路中。否则，团队只能看到“用户点踩了”，却不知道点踩前系统检索了什么、引用了什么、是否命中了旧版本文档、是否因为权限过滤丢掉了正确证据。</p>
+<h3 id="2322">23.2.2 线上事件字段模板<a class="headerlink" href="#2322" title="Permanent link">¶</a></h3>
+<p>建议将每次问答记录为结构化事件。下面是一份最小可用字段模板。</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>event_id</code></td>
+<td>事件唯一 ID</td>
+</tr>
+<tr>
+<td><code>session_id</code></td>
+<td>会话 ID，用于追踪多轮上下文</td>
+</tr>
+<tr>
+<td><code>user_role</code></td>
+<td>用户角色或权限组，避免记录真实身份</td>
+</tr>
+<tr>
+<td><code>timestamp</code></td>
+<td>请求时间</td>
+</tr>
+<tr>
+<td><code>query</code></td>
+<td>用户问题，需按策略脱敏</td>
+</tr>
+<tr>
+<td><code>query_type</code></td>
+<td>事实、流程、表格、图表、权限、综合等</td>
+</tr>
+<tr>
+<td><code>retrieved_items</code></td>
+<td>召回证据 ID、分数、版本和来源</td>
+</tr>
+<tr>
+<td><code>context_snapshot</code></td>
+<td>进入模型的上下文摘要或引用 ID</td>
+</tr>
+<tr>
+<td><code>answer</code></td>
+<td>系统回答或回答摘要</td>
+</tr>
+<tr>
+<td><code>citations</code></td>
+<td>引用页面、段落、区域或对象</td>
+</tr>
+<tr>
+<td><code>feedback_signal</code></td>
+<td>点赞、点踩、追问、工单等</td>
+</tr>
+<tr>
+<td><code>failure_label</code></td>
+<td>人工或自动归因标签</td>
+</tr>
+<tr>
+<td><code>privacy_flags</code></td>
+<td>是否含敏感信息、是否需脱敏</td>
+</tr>
+<tr>
+<td><code>pipeline_version</code></td>
+<td>解析、索引、模型和提示版本</td>
+</tr>
+</tbody>
+</table>
+<p>这份模板的重点是可归因。只有保留检索项、上下文快照、引用和版本，团队才能回放一次失败。若只保存最终答案，后续几乎无法判断问题来自数据、检索还是生成。</p>
+<h3 id="2323">23.2.3 反馈分流策略<a class="headerlink" href="#2323" title="Permanent link">¶</a></h3>
+<p>反馈进入系统后，不应全部进入同一个待办池。不同事件需要不同处理路径。</p>
+<table>
+<thead>
+<tr>
+<th>分流类型</th>
+<th>触发条件</th>
+<th>处理动作</th>
+<th>SLA 建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>高风险即时处理</td>
+<td>越权、合规、严重事实错误</td>
+<td>熔断、下线、回滚、人工复核</td>
+<td>当日</td>
+</tr>
+<tr>
+<td>高频批量治理</td>
+<td>多用户反复反馈同类问题</td>
+<td>建立专题修复任务</td>
+<td>每周</td>
+</tr>
+<tr>
+<td>知识更新</td>
+<td>文档过期、制度修订、版本冲突</td>
+<td>修订知识源、刷新索引</td>
+<td>1-3 个工作日</td>
+</tr>
+<tr>
+<td>检索优化</td>
+<td>正确知识存在但未召回</td>
+<td>调整 chunk、索引、rerank</td>
+<td>每周</td>
+</tr>
+<tr>
+<td>生成优化</td>
+<td>证据正确但回答表达错误</td>
+<td>调整提示、格式、拒答策略</td>
+<td>每周</td>
+</tr>
+<tr>
+<td>延迟观察</td>
+<td>低频、低风险、原因不明</td>
+<td>进入观察池</td>
+<td>每月复盘</td>
+</tr>
+</tbody>
+</table>
+<p>分流的关键是把风险和收益分开。高风险事件需要快速止损，高频问题需要专题治理，低频问题可以沉淀到观察池。所有事件都立即处理，会导致团队疲于奔命；所有事件都等月度复盘，又会错过高风险窗口。</p>
+<h3 id="2324">23.2.4 优先级评分<a class="headerlink" href="#2324" title="Permanent link">¶</a></h3>
+<p>当反馈量增加后，仅靠人工判断优先级会很快失效。建议使用一套轻量评分，把每条事件转成可排序的任务。一个实用公式如下：</p>
+<div class="arithmatex">\[
+Priority = Risk \times Impact \times Frequency \div Effort
+\]</div>
+<p>其中，<code>Risk</code> 表示风险等级，越权、合规、严重事实错误权重最高；<code>Impact</code> 表示业务影响，影响关键流程或核心客户的问题优先；<code>Frequency</code> 表示出现频次，重复出现的问题应高于孤立个案；<code>Effort</code> 表示修复成本，低成本高收益的问题可以优先处理。</p>
+<table>
+<thead>
+<tr>
+<th>因子</th>
+<th>取值示例</th>
+<th>判断依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Risk</code></td>
+<td>1-5</td>
+<td>是否涉及合规、财务、医疗、隐私、越权</td>
+</tr>
+<tr>
+<td><code>Impact</code></td>
+<td>1-5</td>
+<td>影响用户数、业务流程重要性、客户等级</td>
+</tr>
+<tr>
+<td><code>Frequency</code></td>
+<td>1-5</td>
+<td>单日/单周重复次数和趋势</td>
+</tr>
+<tr>
+<td><code>Effort</code></td>
+<td>1-5</td>
+<td>是否只需补一条知识，还是要重建管线</td>
+</tr>
+</tbody>
+</table>
+<p>例如，一条普通 FAQ 回答不完整，风险 1、影响 2、频次 2、修复成本 1，优先级不高但适合快速修；一条旧版财务制度被反复召回，风险 4、影响 4、频次 3、修复成本 2，应进入本周专题治理；一条越权回答即使只出现一次，风险也可能直接触发即时处理。</p>
+<p>评分不是为了替代判断，而是让任务队列透明。运营团队可以解释为什么某些问题先修，为什么某些问题进入观察池，为什么某些高风险事件需要暂停发布。</p>
+<h3 id="2325">23.2.5 自动归因与人工复核<a class="headerlink" href="#2325" title="Permanent link">¶</a></h3>
+<p>反馈分流可以先由规则和模型进行初步归因。例如：</p>
+<ul>
+<li>正确答案未在 top-k 中出现，标记为检索召回问题；</li>
+<li>top-k 中有正确证据但答案错误，标记为生成使用证据失败；</li>
+<li>引用文档版本早于当前有效版本，标记为知识版本问题；</li>
+<li>召回项被权限过滤后为空，标记为权限边界问题；</li>
+<li>用户连续追问同一实体，标记为回答不完整或上下文保持问题。</li>
+</ul>
+<p>自动归因不能替代人工复核。对高风险事件、低置信事件和高频模式，应由运营或专家团队抽检。人工复核的结果要回写为标签，以便后续训练分类器、优化规则或扩充评测集。</p>
+<h3 id="2326">23.2.6 采集边界与采样策略<a class="headerlink" href="#2326" title="Permanent link">¶</a></h3>
+<p>反馈数据越完整，越容易回放问题；但采集越多，隐私、成本和治理压力也越高。因此，线上反馈采集必须明确边界。</p>
+<p>首先，系统应区分<strong>诊断必需字段</strong>和<strong>可选分析字段</strong>。检索项 ID、索引版本、引用锚点、失败标签属于诊断必需字段；完整原文、完整对话历史、用户身份明文则通常不应默认保留。对于高风险场景，可以只保存摘要和证据 ID，在获得权限后再回查原始材料。</p>
+<p>其次，系统应采用<strong>分层采样</strong>。并非所有成功请求都需要完整保存，但所有高风险失败、低置信回答、权限拒绝、用户点踩和人工工单都应进入高优先级样本池。普通成功请求可以抽样保留，用于监测分布变化和构建基线。</p>
+<p>第三，反馈采集应支持<strong>事件合并</strong>。同一个用户连续追问、同一个问题在多个部门反复出现、同一文档版本引发多次错误，都不应被当成孤立事件。事件合并能帮助团队识别系统性问题，而不是被大量重复工单淹没。</p>
+<table>
+<thead>
+<tr>
+<th>采集层级</th>
+<th>保存内容</th>
+<th>适用场景</th>
+<th>保留策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最小诊断</td>
+<td>事件 ID、版本、证据 ID、反馈标签</td>
+<td>默认所有请求</td>
+<td>长期保留</td>
+</tr>
+<tr>
+<td>脱敏摘要</td>
+<td>query 摘要、answer 摘要、引用摘要</td>
+<td>普通反馈</td>
+<td>中期保留</td>
+</tr>
+<tr>
+<td>完整回放</td>
+<td>完整 query、上下文、回答、top-k</td>
+<td>高风险或授权复盘</td>
+<td>短期隔离</td>
+</tr>
+<tr>
+<td>专家样本</td>
+<td>人工标注根因和修复建议</td>
+<td>训练评测集</td>
+<td>审批后入库</td>
+</tr>
+</tbody>
+</table>
+<p>采集边界的本质是把“能诊断问题”和“最小化风险”结合起来。团队不应为了分析便利无限保留用户内容，也不应因为合规压力完全丢失诊断能力。</p>
+<h3 id="2327">23.2.7 本节小结<a class="headerlink" href="#2327" title="Permanent link">¶</a></h3>
+<p>反馈体系的核心不是多收日志，而是收集能够支持归因和修复的事件。事件字段要能回放链路，分流策略要区分风险、频次和修复成本，自动归因要与人工复核结合。只有这样，反馈才不会停留在情绪统计，而能进入数据治理。</p>
+<hr>
+<h2 id="233">23.3 知识更新、回滚与版本治理<a class="headerlink" href="#233" title="Permanent link">¶</a></h2>
+<h3 id="2331">23.3.1 更新不是覆盖<a class="headerlink" href="#2331" title="Permanent link">¶</a></h3>
+<p>知识更新最容易犯的错误，是把新文档直接覆盖旧文档，把新索引直接替换旧索引。这样做看似简单，却会造成严重的可追溯问题：当用户反馈某个回答错误时，团队无法判断当时系统使用的是哪个文档版本、哪个 chunk 策略、哪个索引版本。</p>
+<p>生产级知识更新应遵循版本化原则。每次更新至少需要记录：</p>
+<ul>
+<li>原始知识源版本；</li>
+<li>解析规则版本；</li>
+<li>清洗和 chunk 策略版本；</li>
+<li>索引构建版本；</li>
+<li>权限和有效期配置；</li>
+<li>发布审批记录；</li>
+<li>回滚目标版本。</li>
+</ul>
+<p>只有这些信息齐全，团队才能在更新失败时快速回滚，并在事后复盘中定位根因。</p>
+<h3 id="2332">23.3.2 知识更新的四类任务<a class="headerlink" href="#2332" title="Permanent link">¶</a></h3>
+<p>线上反馈通常会转化为四类知识更新任务。</p>
+<table>
+<thead>
+<tr>
+<th>任务类型</th>
+<th>示例</th>
+<th>处理方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>补数任务</td>
+<td>用户问到知识库没有的政策</td>
+<td>接入新文档或补充 FAQ</td>
+</tr>
+<tr>
+<td>修订任务</td>
+<td>旧制度已过期但仍被引用</td>
+<td>更新原文、有效期和版本标签</td>
+</tr>
+<tr>
+<td>重建任务</td>
+<td>文档存在但 chunk 或索引不合理</td>
+<td>调整解析、切分或索引策略</td>
+</tr>
+<tr>
+<td>删除/隔离任务</td>
+<td>文档越权、违规或质量过低</td>
+<td>下线、隔离或限制访问</td>
+</tr>
+</tbody>
+</table>
+<p>这四类任务不能混在一起处理。补数任务强调来源和合规，修订任务强调版本和审批，重建任务强调评测回归，删除任务强调风险控制和影响面分析。</p>
+<h3 id="2333">23.3.3 回滚机制<a class="headerlink" href="#2333" title="Permanent link">¶</a></h3>
+<p>越快更新，越需要回滚。一个没有回滚机制的知识库，会因为一次错误更新影响大量回答。回滚不是简单恢复旧文件，而是恢复一组一致状态：文档、chunk、索引、权限、提示和评测基线都需要对齐。</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../images/part10/10_8_fig08_rollback_flow.png" data-desc-position="bottom"><img alt="图23-2：知识更新与回滚流程" src="../../images/part10/10_8_fig08_rollback_flow.png"></a></p>
+<p><em>图23-2：知识更新应有明确的发布、验证和回滚路径，避免错误知识扩散到线上回答。</em></p>
+<p>建议每次更新都形成以下记录：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>release_id</code></td>
+<td>更新批次</td>
+</tr>
+<tr>
+<td><code>changed_sources</code></td>
+<td>变更文档或知识源</td>
+</tr>
+<tr>
+<td><code>affected_indexes</code></td>
+<td>受影响索引</td>
+</tr>
+<tr>
+<td><code>validation_set</code></td>
+<td>回归评测集</td>
+</tr>
+<tr>
+<td><code>approval_owner</code></td>
+<td>审批人</td>
+</tr>
+<tr>
+<td><code>rollback_target</code></td>
+<td>可回滚版本</td>
+</tr>
+<tr>
+<td><code>risk_level</code></td>
+<td>低、中、高</td>
+</tr>
+<tr>
+<td><code>monitoring_window</code></td>
+<td>灰度观察时间</td>
+</tr>
+</tbody>
+</table>
+<p>高风险更新应先灰度发布。例如只对内部测试用户开放，或只在低风险问题类型上启用。若在观察窗口内出现引用错误、投诉升高或拒答率异常，应自动触发回滚或人工审批。</p>
+<h3 id="2334">23.3.4 权限、隐私与保留范围<a class="headerlink" href="#2334" title="Permanent link">¶</a></h3>
+<p>线上反馈会包含用户问题、系统回答、检索结果和上下文片段，其中可能含有个人信息、商业敏感信息或权限受限内容。因此，反馈闭环必须和合规治理协同。</p>
+<p>最低要求包括：</p>
+<ul>
+<li>用户身份用角色或权限组表示，避免存储真实身份；</li>
+<li>原始 query 和 answer 按规则脱敏或只保留摘要；</li>
+<li>检索证据只保存 ID 和引用锚点，必要时再按权限回查；</li>
+<li>高敏事件进入隔离队列，限制访问和导出；</li>
+<li>日志保留周期、删除请求和审计要求写入数据治理策略；</li>
+<li>反馈样本进入训练或评测前必须经过二次脱敏和审批。</li>
+</ul>
+<p>这些要求不应等到第 27 章合规治理再处理。在应用级数据工程中，权限和隐私是反馈闭环的基础约束。</p>
+<h3 id="2335">23.3.5 发布审批与冲突处理<a class="headerlink" href="#2335" title="Permanent link">¶</a></h3>
+<p>知识更新通常涉及多个角色：业务 Owner 提供内容，数据工程师处理文档，RAG 工程师重建索引，专家审核事实，合规团队审查风险，产品团队决定上线节奏。若没有审批机制，更新速度可能很快，但错误也会快速扩散。</p>
+<p>建议按风险等级设计审批路径。</p>
+<table>
+<thead>
+<tr>
+<th>风险等级</th>
+<th>示例</th>
+<th>审批要求</th>
+<th>发布方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>低风险</td>
+<td>FAQ 表述优化、错别字修正</td>
+<td>数据 Owner 确认</td>
+<td>直接发布</td>
+</tr>
+<tr>
+<td>中风险</td>
+<td>制度条款修订、产品功能更新</td>
+<td>业务 Owner + 数据 Owner</td>
+<td>灰度发布</td>
+</tr>
+<tr>
+<td>高风险</td>
+<td>法务、财务、权限、个人数据</td>
+<td>业务 + 合规 + 数据 Owner</td>
+<td>审批后分批发布</td>
+</tr>
+<tr>
+<td>紧急风险</td>
+<td>错误知识造成严重误导</td>
+<td>值班 Owner 决策</td>
+<td>下线或回滚</td>
+</tr>
+</tbody>
+</table>
+<p>冲突处理同样重要。常见冲突包括新旧制度同时存在、不同部门维护同一知识、FAQ 与正式文档口径不一致、用户反馈与业务 Owner 判断不一致。系统应记录冲突状态，而不是让冲突内容同时进入线上索引。</p>
+<p>处理冲突时，可以采用三条规则：</p>
+<ol>
+<li><strong>权威源优先</strong>：正式制度高于 FAQ，签发文件高于临时说明；</li>
+<li><strong>有效期优先</strong>：有明确生效日期和失效日期的版本优先；</li>
+<li><strong>风险保守</strong>：高风险冲突未解决前，系统应拒答或提示人工确认。</li>
+</ol>
+<p>审批和冲突处理会降低一点发布速度，但它换来的是稳定性和可追责性。对企业级系统而言，这通常是值得的。</p>
+<h3 id="2336">23.3.6 本节小结<a class="headerlink" href="#2336" title="Permanent link">¶</a></h3>
+<p>知识更新不是覆盖文件，而是版本化发布。每次更新都应记录来源、处理规则、索引版本、权限配置和回滚目标。反馈日志必须遵守隐私和权限边界，否则反馈闭环本身会成为新的风险源。</p>
+<hr>
+<h2 id="234">23.4 指标看板与运营节奏<a class="headerlink" href="#234" title="Permanent link">¶</a></h2>
+<h3 id="2341">23.4.1 看板的四类指标<a class="headerlink" href="#2341" title="Permanent link">¶</a></h3>
+<p>反馈闭环需要可观测性。没有指标，团队只能凭感觉判断系统是否变好。应用级 RAG 系统建议维护四类指标。</p>
+<table>
+<thead>
+<tr>
+<th>指标组</th>
+<th>核心指标</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>问答质量</td>
+<td>答案正确率、引用准确率、拒答质量</td>
+<td>反映用户可感知效果</td>
+</tr>
+<tr>
+<td>检索健康</td>
+<td>命中率、空召回率、旧版本召回率</td>
+<td>定位检索和索引问题</td>
+</tr>
+<tr>
+<td>反馈运营</td>
+<td>反馈量、积压量、处理时长、回补完成率</td>
+<td>反映运营闭环效率</td>
+</tr>
+<tr>
+<td>风险控制</td>
+<td>越权召回、敏感日志、回滚次数</td>
+<td>反映合规和发布风险</td>
+</tr>
+</tbody>
+</table>
+<p>指标不能只看均值。很多严重问题出现在长尾场景，例如某个部门文档持续过期、某类财务问题经常引用错误、某个权限组频繁触发拒答。看板应支持按知识源、问题类型、用户角色、版本和时间窗口拆分。</p>
+<h3 id="2342">23.4.2 运营节奏<a class="headerlink" href="#2342" title="Permanent link">¶</a></h3>
+<p>建议建立三层运营节奏。</p>
+<table>
+<thead>
+<tr>
+<th>节奏</th>
+<th>参与角色</th>
+<th>内容</th>
+<th>产出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>每日巡检</td>
+<td>值班工程师、运营</td>
+<td>高风险事件、异常指标、失败队列</td>
+<td>当日修复或升级</td>
+</tr>
+<tr>
+<td>每周复盘</td>
+<td>数据、检索、产品、专家</td>
+<td>高频问题、积压、回补进度</td>
+<td>专题治理任务</td>
+</tr>
+<tr>
+<td>每月治理</td>
+<td>数据 Owner、平台、合规</td>
+<td>版本策略、指标趋势、风险事件</td>
+<td>规则更新和资源决策</td>
+</tr>
+</tbody>
+</table>
+<p>每日巡检解决止损问题，每周复盘解决系统性质量问题，每月治理解决组织和平台问题。三者缺一不可。如果只有每日巡检，团队会陷入救火；如果只有月度治理，又会错过线上风险。</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../images/part8/%E5%9B%BE26_2_%E5%B9%B3%E5%8F%B0%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7%E5%85%A8%E6%99%AF%E5%9B%BE.png" data-desc-position="bottom"><img alt="图23-3：平台可观测性全景图" src="../../images/part8/%E5%9B%BE26_2_%E5%B9%B3%E5%8F%B0%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7%E5%85%A8%E6%99%AF%E5%9B%BE.png"></a></p>
+<p><em>图23-3：反馈闭环最终要进入平台可观测体系，和日志、指标、告警、版本、审计共同治理。</em></p>
+<h3 id="2343">23.4.3 行动阈值<a class="headerlink" href="#2343" title="Permanent link">¶</a></h3>
+<p>看板必须连接行动阈值，否则指标只是展示。以下是一组可作为起点的阈值模板。</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>阈值示例</th>
+<th>行动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>高风险负反馈</td>
+<td>单日 &gt; 3 条</td>
+<td>进入即时复核队列</td>
+</tr>
+<tr>
+<td>空召回率</td>
+<td>连续 3 天上升</td>
+<td>检查索引刷新和知识源覆盖</td>
+</tr>
+<tr>
+<td>旧版本召回率</td>
+<td>&gt; 1%</td>
+<td>检查版本优先级和过期策略</td>
+</tr>
+<tr>
+<td>引用缺失率</td>
+<td>&gt; 5%</td>
+<td>检查上下文组织和引用模板</td>
+</tr>
+<tr>
+<td>反馈积压</td>
+<td>超过 7 天未处理</td>
+<td>提升优先级或增加运营资源</td>
+</tr>
+<tr>
+<td>回滚次数</td>
+<td>单周 &gt; 2 次</td>
+<td>暂停高风险更新，复盘发布流程</td>
+</tr>
+</tbody>
+</table>
+<p>阈值不是固定标准，而是团队治理工具。随着系统成熟，阈值应根据业务风险和用户规模调整。</p>
+<h3 id="2344">23.4.4 看板字段设计<a class="headerlink" href="#2344" title="Permanent link">¶</a></h3>
+<p>一个真正可用的反馈看板，不应只展示总体点赞率。它至少应支持按以下维度切片：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>知识源</td>
+<td>判断哪个文档库或业务域问题最多</td>
+</tr>
+<tr>
+<td>问题类型</td>
+<td>区分事实、流程、表格、图表、权限、综合推理</td>
+</tr>
+<tr>
+<td>失败标签</td>
+<td>定位检索、生成、版本、权限、解析等根因</td>
+</tr>
+<tr>
+<td>用户角色</td>
+<td>判断是否存在特定角色的权限或体验问题</td>
+</tr>
+<tr>
+<td>管线版本</td>
+<td>对比解析、chunk、索引、模型升级前后效果</td>
+</tr>
+<tr>
+<td>时间窗口</td>
+<td>观察发布后指标是否异常</td>
+</tr>
+<tr>
+<td>处理状态</td>
+<td>管理待分流、复核中、修复中、已验证、已关闭</td>
+</tr>
+</tbody>
+</table>
+<p>看板还应能追踪每个反馈事件的处理链路。一个事件从采集到关闭，应有明确状态流转：<code>new -&gt; triaged -&gt; assigned -&gt; fixed -&gt; validated -&gt; closed</code>。若事件被判定为无需处理，也应记录原因，例如“用户误操作”“权限正确拒答”“重复事件合并”。</p>
+<p>这样做的价值，是让反馈运营从“靠人记住”转为“靠系统流转”。当问题积压时，团队可以看到卡在哪个阶段；当指标下降时，可以回溯对应版本；当管理者追问效果时，可以给出基于数据的解释。</p>
+<h3 id="2345-dataops">23.4.5 从应用问题过桥到 DataOps<a class="headerlink" href="#2345-dataops" title="Permanent link">¶</a></h3>
+<p>当反馈数量变多后，团队会发现很多问题无法靠单个工程师修复。知识源 Owner 不明确，更新审批没人负责，数据处理版本没有冻结，合规审核没有前置，专家标注队列长期积压。这些问题表面上是应用问题，实质上是组织和平台问题。</p>
+<p>因此，本章自然过桥到第 24 章。在线反馈闭环告诉团队“系统哪里坏了”，而 DataOps 负责建立“谁来修、按什么节奏修、修完如何发布、如何防止重复发生”的组织机制。没有 DataOps 托底，反馈闭环会变成问题收集箱；有了 DataOps，反馈才能推动系统持续演进。</p>
+<h3 id="2346-raci">23.4.6 跨团队交接与 RACI<a class="headerlink" href="#2346-raci" title="Permanent link">¶</a></h3>
+<p>反馈闭环一旦进入生产，就必须明确职责。否则，反馈事件会在产品、算法、数据、平台、业务和合规之间来回转发。建议为常见反馈任务建立 RACI 矩阵。</p>
+<table>
+<thead>
+<tr>
+<th>事项</th>
+<th>数据工程</th>
+<th>RAG 工程</th>
+<th>业务 Owner</th>
+<th>产品</th>
+<th>合规</th>
+<th>平台</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>反馈事件分流</td>
+<td>R</td>
+<td>C</td>
+<td>C</td>
+<td>A</td>
+<td>C</td>
+<td>I</td>
+</tr>
+<tr>
+<td>知识源修订</td>
+<td>C</td>
+<td>I</td>
+<td>A/R</td>
+<td>C</td>
+<td>C</td>
+<td>I</td>
+</tr>
+<tr>
+<td>chunk/索引重建</td>
+<td>R</td>
+<td>A/R</td>
+<td>C</td>
+<td>I</td>
+<td>I</td>
+<td>C</td>
+</tr>
+<tr>
+<td>高风险越权事件</td>
+<td>C</td>
+<td>C</td>
+<td>I</td>
+<td>I</td>
+<td>A/R</td>
+<td>C</td>
+</tr>
+<tr>
+<td>回归评测</td>
+<td>C</td>
+<td>A/R</td>
+<td>C</td>
+<td>I</td>
+<td>I</td>
+<td>C</td>
+</tr>
+<tr>
+<td>发布与回滚</td>
+<td>C</td>
+<td>R</td>
+<td>C</td>
+<td>A</td>
+<td>C</td>
+<td>R</td>
+</tr>
+<tr>
+<td>月度治理复盘</td>
+<td>C</td>
+<td>C</td>
+<td>A</td>
+<td>R</td>
+<td>C</td>
+<td>I</td>
+</tr>
+</tbody>
+</table>
+<p>这里的 A 表示最终负责，R 表示执行，C 表示咨询，I 表示知会。矩阵的价值在于把“大家都相关”变成“每件事只有一个最终负责人”。例如，索引重建可以由 RAG 工程负责最终质量，数据工程负责具体数据处理；知识源修订则应由业务 Owner 负责事实正确性，而不是让算法团队判断制度口径。</p>
+<p>跨团队交接还需要明确交付物。例如，业务 Owner 不能只说“这条知识错了”，而应提交修订后的权威文本、有效期和适用范围；RAG 工程不能只说“索引已刷新”，而应提交索引版本、影响范围和回归结果；合规团队不能只说“有风险”，而应给出风险类型、处理动作和保留要求。</p>
+<p>当这些交接物固化后，反馈闭环才真正进入 DataOps。否则，系统虽然收集了大量反馈，但每次修复仍依赖临时沟通。</p>
+<h3 id="2347">23.4.7 本节小结<a class="headerlink" href="#2347" title="Permanent link">¶</a></h3>
+<p>指标看板和运营节奏把反馈闭环从技术链路变成团队机制。每日巡检、每周复盘和每月治理分别承担止损、治理和决策职能。行动阈值把指标转化为任务，DataOps 则把任务转化为稳定的组织能力。</p>
+<hr>
+<h2 id="235">23.5 案例与标准产出物<a class="headerlink" href="#235" title="Permanent link">¶</a></h2>
+<h3 id="2351-a">23.5.1 案例 A：引用不准的企业知识助手<a class="headerlink" href="#2351-a" title="Permanent link">¶</a></h3>
+<p>某企业知识助手上线后，整体点赞率不错，但“引用不准”的投诉持续增加。初期团队认为是生成模型没有按要求引用，于是不断调整提示词，要求模型“必须引用原文”。效果短暂改善后又反复。</p>
+<p>复盘发现，问题根因并不在生成，而在数据和检索链路。第一，部分制度文档存在新旧版本并存，索引没有优先召回最新版本；第二，chunk 切分时把适用条件和执行动作拆开，导致模型引用了动作却漏掉条件；第三，反馈日志只保存点踩，没有保存当次 top-k 召回结果，早期问题无法回放。</p>
+<p>修复方案包括：建立文档有效期字段，重建制度类 chunk 规则，补充引用准确率评测集，并把线上点踩事件升级为带检索快照的结构化事件。修复后，团队不再简单追求更强模型，而是把引用问题纳入版本治理和反馈回流。</p>
+<h3 id="2352-b">23.5.2 案例 B：更新过快导致版本混乱<a class="headerlink" href="#2352-b" title="Permanent link">¶</a></h3>
+<p>另一个团队为了提高知识时效，允许业务部门每天直接上传新文档并自动刷新索引。上线初期，系统回答更“新”了，但两周后投诉明显增加：同一问题今天和昨天答案不同，不同用户看到的政策不一致，部分旧制度仍被引用。</p>
+<p>问题在于系统只有更新，没有发布治理。业务文档上传后没有审批，索引刷新没有批次号，旧版本没有失效规则，系统也没有回滚目标。一旦新文档出错，只能人工删除并重新构建索引。</p>
+<p>最终团队引入发布批次、灰度窗口、回归评测和回滚记录。知识更新从“随时覆盖”改为“批次发布”，高风险文档需要知识 Owner 审批。系统牺牲了一点更新速度，但显著提升了可控性。</p>
+<h3 id="2353-sop">23.5.3 标准产出物一：反馈回流 SOP<a class="headerlink" href="#2353-sop" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>输入</th>
+<th>处理动作</th>
+<th>输出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>采集</td>
+<td>query、召回、回答、引用、反馈</td>
+<td>生成结构化事件</td>
+<td><code>feedback_event</code></td>
+</tr>
+<tr>
+<td>脱敏</td>
+<td>原始事件</td>
+<td>去身份化、敏感字段处理</td>
+<td>可分析事件</td>
+</tr>
+<tr>
+<td>分流</td>
+<td>可分析事件</td>
+<td>风险、频次、问题类型分类</td>
+<td>任务队列</td>
+</tr>
+<tr>
+<td>复核</td>
+<td>高风险/高频事件</td>
+<td>人工确认根因</td>
+<td>归因标签</td>
+</tr>
+<tr>
+<td>修复</td>
+<td>归因标签</td>
+<td>补数、修订、重建、回滚</td>
+<td>数据变更</td>
+</tr>
+<tr>
+<td>验证</td>
+<td>数据变更</td>
+<td>回归评测和灰度观察</td>
+<td>发布结论</td>
+</tr>
+<tr>
+<td>沉淀</td>
+<td>修复记录</td>
+<td>更新评测集、规则和文档</td>
+<td>可复用资产</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2354">23.5.4 标准产出物二：线上事件字段模板<a class="headerlink" href="#2354" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">"event_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"evt_20260428_0001"</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">"session_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sess_hash"</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-04-28T10:00:00+08:00"</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">"user_role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"finance_reader"</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">"query_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"table_fact"</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">"query_redacted"</span><span class="p">:</span><span class="w"> </span><span class="s2">"差旅住宿标准是多少？"</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="nt">"retrieved_items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="nt">"item_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"policy_2025_p12_table_03"</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">      </span><span class="nt">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.82</span><span class="p">,</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">      </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"index_v4"</span><span class="p">,</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="nt">"citation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"p12_table_03"</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="nt">"answer_summary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"系统回答了一线城市住宿标准。"</span><span class="p">,</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="nt">"feedback_signal"</span><span class="p">:</span><span class="w"> </span><span class="s2">"thumb_down"</span><span class="p">,</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span><span class="nt">"failure_label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"outdated_policy"</span><span class="p">,</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="nt">"privacy_flags"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"no_personal_data"</span><span class="p">],</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="nt">"pipeline_version"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="nt">"parser"</span><span class="p">:</span><span class="w"> </span><span class="s2">"layout_v3"</span><span class="p">,</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="nt">"chunker"</span><span class="p">:</span><span class="w"> </span><span class="s2">"policy_chunk_v2"</span><span class="p">,</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">    </span><span class="nt">"index"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rag_index_v4"</span><span class="p">,</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="nt">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"answer_with_citation_v6"</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="p">}</span>
+</code></pre></div>
+<p>这个模板的目标不是保存一切，而是保存足够支持回放、归因、修复和审计的信息。</p>
+<h3 id="2355">23.5.5 标准产出物三：反馈事件复盘模板<a class="headerlink" href="#2355" title="Permanent link">¶</a></h3>
+<p>对于高风险事件或反复出现的高频问题，建议使用统一复盘模板。</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>填写内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>事件摘要</td>
+<td>用户问题、时间、影响范围、风险等级</td>
+</tr>
+<tr>
+<td>期望行为</td>
+<td>系统本应如何回答或拒答</td>
+</tr>
+<tr>
+<td>实际行为</td>
+<td>实际回答、引用、召回和上下文</td>
+</tr>
+<tr>
+<td>根因分类</td>
+<td>知识缺失、检索失败、版本错误、权限问题、生成偏离等</td>
+</tr>
+<tr>
+<td>数据证据</td>
+<td>涉及的文档、chunk、索引版本和日志 ID</td>
+</tr>
+<tr>
+<td>修复动作</td>
+<td>补数、修订、重建、回滚、规则调整</td>
+</tr>
+<tr>
+<td>验证结果</td>
+<td>回归样本、灰度观察、指标变化</td>
+</tr>
+<tr>
+<td>沉淀资产</td>
+<td>新增评测样本、SOP、规则或模板</td>
+</tr>
+<tr>
+<td>Owner</td>
+<td>后续责任人与截止时间</td>
+</tr>
+</tbody>
+</table>
+<p>复盘模板的关键不是追责，而是把一次线上失败沉淀为系统能力。若复盘只停留在“已修复”，同类问题很快会再次出现；若复盘能产生规则、评测样本和流程更新，系统才会变得更稳。</p>
+<h3 id="2356">23.5.6 标准产出物四：反馈任务看板字段<a class="headerlink" href="#2356" title="Permanent link">¶</a></h3>
+<p>为了让反馈处理可运营，建议将事件转为任务后进入统一看板。</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>示例</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>task_id</code></td>
+<td><code>fb_task_0428_001</code></td>
+<td>任务追踪</td>
+</tr>
+<tr>
+<td><code>source_event_ids</code></td>
+<td><code>['evt_001', 'evt_018']</code></td>
+<td>关联原始事件</td>
+</tr>
+<tr>
+<td><code>failure_type</code></td>
+<td><code>outdated_policy</code></td>
+<td>根因分类</td>
+</tr>
+<tr>
+<td><code>priority_score</code></td>
+<td><code>24</code></td>
+<td>排序</td>
+</tr>
+<tr>
+<td><code>owner</code></td>
+<td><code>knowledge_owner_hr</code></td>
+<td>责任人</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>triaged</code></td>
+<td>流转状态</td>
+</tr>
+<tr>
+<td><code>fix_type</code></td>
+<td><code>knowledge_revision</code></td>
+<td>补数、修订、重建、回滚</td>
+</tr>
+<tr>
+<td><code>due_date</code></td>
+<td><code>2026-05-02</code></td>
+<td>截止时间</td>
+</tr>
+<tr>
+<td><code>validation_case</code></td>
+<td><code>eval_policy_017</code></td>
+<td>回归样本</td>
+</tr>
+<tr>
+<td><code>release_id</code></td>
+<td><code>release_2026w18</code></td>
+<td>发布批次</td>
+</tr>
+<tr>
+<td><code>close_reason</code></td>
+<td><code>fixed_and_validated</code></td>
+<td>关闭依据</td>
+</tr>
+</tbody>
+</table>
+<p>看板字段应与事件模板、发布记录和评测集联动。这样，管理者可以从一个失败事件一路追到修复任务、发布批次和回归样本，形成闭环证据链。</p>
+<h3 id="2357">23.5.7 本章总结<a class="headerlink" href="#2357" title="Permanent link">¶</a></h3>
+<p>在线反馈闭环把应用系统从一次性交付变成持续运营系统。事件采集提供可回放事实，分流策略决定处理优先级，知识更新和回滚保证变更可控，指标看板和运营节奏推动团队持续改进。至此，第七篇完成了从离线 RAG 数据流水线、多模态视觉检索，到线上反馈闭环的完整应用级数据工程路径。下一章将进入 DataOps，讨论支撑这些闭环长期运转的团队组织和平台机制。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚">
+        
+          
+          <a href="../7_2_multimodal_rag_visual_retrieval/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 第22章：多模态 RAG 与视觉检索">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                第22章：多模态 RAG 与视觉检索
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../part8/8_1_dataops_flywheel_team/" class="md-footer__link md-footer__link--next" aria-label="下一页: 第24章：DataOps 飞轮与团队组织">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                第24章：DataOps 飞轮与团队组织
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

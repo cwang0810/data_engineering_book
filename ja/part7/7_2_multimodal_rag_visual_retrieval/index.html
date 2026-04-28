@@ -1,0 +1,1792 @@
+<!DOCTYPE html><html lang="ja" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="大模型数据工程：架构、算法及项目实战">
+      
+      
+        <meta name="author" content="ustc">
+      
+      
+        <link rel="canonical" href="https://datascale-ai.github.io/data_engineering_book/ja/part7/7_2_multimodal_rag_visual_retrieval/">
+      
+      
+      
+      
+        
+          <link rel="alternate" href="../../../part7/7_2_multimodal_rag_visual_retrieval/" hreflang="zh">
+        
+          <link rel="alternate" href="../../../en/part7/7_2_multimodal_rag_visual_retrieval/" hreflang="en">
+        
+          <link rel="alternate" href="./" hreflang="ja">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>第22章：多模态 RAG 与视觉检索 - 大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#22-rag" class="md-skip">
+          コンテンツにスキップ
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
+    <a href="../../" title="大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト" class="md-header__button md-logo" aria-label="大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第22章：多模态 RAG 与视觉检索
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red" aria-label="ダークモードに切り替え" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="ダークモードに切り替え" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red" aria-label="ライトモードに切り替え" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="ライトモードに切り替え" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="言語切り替え">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../part7/7_2_multimodal_rag_visual_retrieval/" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../en/part7/7_2_multimodal_rag_visual_retrieval/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="ja" class="md-select__link">
+              日本語
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="検索">
+        
+        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            検索を初期化
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="リポジトリへ" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="ナビゲーション" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト" class="md-nav__button md-logo" aria-label="大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    大規模モデルデータエンジニアリング: アーキテクチャ・アルゴリズム・実践プロジェクト
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="リポジトリへ" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    目次
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    序文
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translation-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    中国語2026年版の翻訳状況
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#221-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.1 为什么文本 RAG 无法覆盖视觉知识
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.1 为什么文本 RAG 无法覆盖视觉知识">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2211" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.1.1 文本化假设的边界
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2212" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.1.2 复杂文档中的视觉知识类型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2213-ocr-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.1.3 OCR 不是多模态 RAG 的终点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2214" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.1.4 本节小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#222-chunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.2 视觉 chunk 与对象建模
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.2 视觉 chunk 与对象建模">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2221-chunk-chunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.2.1 从文本 chunk 到视觉 chunk
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2222-chunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.2.2 视觉 chunk 的最小字段
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2223" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.2.3 页面、区域与对象的组合表示
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2224" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.2.4 对象建模中的常见错误
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2225" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.2.5 视觉抽检与质量门禁
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2226" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.2.6 本节小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#223" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3 跨模态索引、检索与重排序
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.3 跨模态索引、检索与重排序">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2231" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3.1 为什么不能只靠一种索引
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2232-query-understanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3.2 Query Understanding：先判断问题类型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2233" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3.3 多路召回与候选合并
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2234-rerank" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3.4 Rerank 的判断维度
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2235" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3.5 上下文组织：不要把候选随意堆给模型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2236" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3.6 成本与延迟控制
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2237" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.3.7 本节小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#224" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.4 评测、错误归因与数据回补
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.4 评测、错误归因与数据回补">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2241-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.4.1 多模态 RAG 评测为什么更难
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2242" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.4.2 指标体系
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2243" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.4.3 错误归因表
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2244" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.4.4 失败样本回补流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2245" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.4.5 评测集构建方法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2246" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.4.6 本节小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#225" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5 案例与标准产出物
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="22.5 案例与标准产出物">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2251-a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5.1 案例 A：财报图表问答系统
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2252-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5.2 案例 B：产品手册截图检索
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2253-chunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5.3 标准产出物一：视觉 chunk 设计表
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2254" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5.4 标准产出物二：多模态检索错误归因表
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2255" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5.5 上线前检查清单
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2256-p05" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5.6 与 P05 项目的边界和复用关系
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2257" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22.5.7 本章总结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="22-rag">第22章：多模态 RAG 与视觉检索<a class="headerlink" href="#22-rag" title="Permanent link">¶</a></h1>
+<p>第 21 章讨论了文本型 RAG 的数据流水线：知识源如何接入、文档如何解析、chunk 如何切分、索引如何构建、评测如何回灌。本章在此基础上向前推进一步：当答案并不完整存在于线性文本中，而是藏在表格、图表、截图、扫描件、版面关系和视觉对象里时，RAG 系统应该如何升级。</p>
+<p>多模态 RAG 并不是简单地在文本检索后把几张图片塞给模型。它首先是一套新的数据表示方法：页面、区域、图表、表格、对象、标题、脚注、坐标和文本必须被组织成可检索、可定位、可验证的知识单元。只有当这些单元被正确建模，视觉检索才可能稳定服务于问答、审阅、辅助决策和企业知识系统。</p>
+<p>本章的目标，是把多模态 RAG 从“看图问答演示”写回到“视觉知识资产工程”。读者读完本章后，应能回答四个问题：</p>
+<ol>
+<li>为什么文本 RAG 无法覆盖复杂文档和视觉知识；</li>
+<li>如何设计视觉 chunk、对象索引和版面元数据；</li>
+<li>如何组合文本向量、图像向量、结构化字段和重排序模型；</li>
+<li>如何评测多模态检索错误，并把失败样本回补到数据流水线。</li>
+</ol>
+<hr>
+<h2 id="221-rag">22.1 为什么文本 RAG 无法覆盖视觉知识<a class="headerlink" href="#221-rag" title="Permanent link">¶</a></h2>
+<h3 id="2211">22.1.1 文本化假设的边界<a class="headerlink" href="#2211" title="Permanent link">¶</a></h3>
+<p>文本型 RAG 的默认假设是：知识可以被解析成一组文本片段，问题可以通过文本相似度命中相关片段，模型可以基于这些片段生成答案。这个假设在制度文档、FAQ、技术说明、政策条款等场景中通常有效，因为答案主要由自然语言句子承载。</p>
+<p>但大量企业知识并不完全以句子形式存在。例如，财报中的趋势图依赖坐标轴、颜色、图例和折线形态；产品手册中的操作路径依赖截图里的按钮位置、菜单层级和页面状态；检测报告中的结果依赖表格单元格、单位、脚注和判定阈值；合同扫描件中的关键字段可能以印章、手写批注或表单框的形式出现。把这些内容全部转换成纯文本，往往会造成三类损失：</p>
+<ul>
+<li><strong>对象关系丢失</strong>：图表元素、表格行列、截图组件之间的空间关系被打散；</li>
+<li><strong>证据定位丢失</strong>：系统只能引用一段 OCR 文本，无法说明答案来自页面哪个区域；</li>
+<li><strong>视觉语义丢失</strong>：趋势、颜色、布局、箭头、图标和状态变化无法被文本完整表达。</li>
+</ul>
+<p>因此，多模态 RAG 的第一性问题不是“是否使用视觉模型”，而是“是否承认视觉结构本身也是知识的一部分”。如果数据流水线仍然只产出纯文本 chunk，那么后续无论接入多强的多模态模型，都只能在残缺输入上做推理。</p>
+<h3 id="2212">22.1.2 复杂文档中的视觉知识类型<a class="headerlink" href="#2212" title="Permanent link">¶</a></h3>
+<p>在企业场景中，视觉知识大致可以分为六类。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>典型载体</th>
+<th>文本化风险</th>
+<th>检索目标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>页面级版面</td>
+<td>PDF、PPT、扫描件</td>
+<td>阅读顺序错乱、页眉页脚干扰</td>
+<td>找到包含答案的页面或章节</td>
+</tr>
+<tr>
+<td>表格结构</td>
+<td>财报、规格表、清单</td>
+<td>行列关系丢失、单位错配</td>
+<td>找到具体单元格及其上下文</td>
+</tr>
+<tr>
+<td>图表趋势</td>
+<td>折线图、柱状图、饼图</td>
+<td>趋势和图例无法可靠转写</td>
+<td>找到图表并解释视觉变化</td>
+</tr>
+<tr>
+<td>截图界面</td>
+<td>产品手册、运维文档</td>
+<td>按钮位置、层级、状态丢失</td>
+<td>找到界面区域和操作步骤</td>
+</tr>
+<tr>
+<td>视觉标记</td>
+<td>印章、签名、水印、批注</td>
+<td>OCR 可能忽略或误读</td>
+<td>判断文档状态和有效性</td>
+</tr>
+<tr>
+<td>跨页对象</td>
+<td>长表格、连续图组</td>
+<td>单页切分导致证据断裂</td>
+<td>组合多页证据回答问题</td>
+</tr>
+</tbody>
+</table>
+<p>这张表的意义在于提醒团队：多模态 RAG 的输入并不只是“图片”。它面对的是一组带有业务语义的视觉结构。数据工程需要先识别这些结构，再决定它们应该以什么粒度进入索引。</p>
+<h3 id="2213-ocr-rag">22.1.3 OCR 不是多模态 RAG 的终点<a class="headerlink" href="#2213-ocr-rag" title="Permanent link">¶</a></h3>
+<p>很多团队会把 OCR 当成复杂文档处理的全部。OCR 的确重要，它能把图像中的字符变成可检索文本，但它无法单独解决版面、对象和结构问题。一个 OCR 结果即使字符准确，也可能因为缺少坐标和层级而无法回答问题。</p>
+<p>以财务表格为例，OCR 能识别“营业收入”“2025 年”“13.2%”这些字符，但如果它不知道这些字符位于同一行还是同一列，就无法判断 13.2% 对应的是收入增速、毛利率还是费用率。再以产品截图为例，OCR 能识别按钮上的“提交”，但如果它不知道按钮位于哪个弹窗、上方提示是什么、是否处于禁用状态，就无法回答“用户为什么无法提交”。</p>
+<p>因此，多模态 RAG 的基本原则是：<strong>OCR 负责提供文本线索，版面解析负责恢复空间关系，对象建模负责定义可检索单元，视觉索引负责保留非文本证据。</strong></p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part5/%E5%9B%BE13_3_%E5%A4%9A%E6%A8%A1%E6%80%81%E6%B5%81%E6%B0%B4%E7%BA%BF.png" data-desc-position="bottom"><img alt="图22-1：多模态 RAG 数据处理全景图" src="../../../images/part5/%E5%9B%BE13_3_%E5%A4%9A%E6%A8%A1%E6%80%81%E6%B5%81%E6%B0%B4%E7%BA%BF.png"></a></p>
+<p><em>图22-1：多模态 RAG 不应只在生成阶段看图，而应在数据处理阶段就把页面、区域、对象和文本组织成统一证据结构。</em></p>
+<h3 id="2214">22.1.4 本节小结<a class="headerlink" href="#2214" title="Permanent link">¶</a></h3>
+<p>文本 RAG 的失败往往被误判为模型能力不足，但在复杂文档场景中，根因常常是知识没有被正确表示。多模态 RAG 的价值，不是让模型多看几张图，而是把原本无法被文本 chunk 表达的视觉知识转化为可检索、可定位、可评测的数据资产。</p>
+<hr>
+<h2 id="222-chunk">22.2 视觉 chunk 与对象建模<a class="headerlink" href="#222-chunk" title="Permanent link">¶</a></h2>
+<h3 id="2221-chunk-chunk">22.2.1 从文本 chunk 到视觉 chunk<a class="headerlink" href="#2221-chunk-chunk" title="Permanent link">¶</a></h3>
+<p>在文本 RAG 中，chunk 通常是段落、条款、FAQ 或固定长度片段。在多模态 RAG 中，chunk 的含义需要扩展：一个知识单元可能是一整页、一个页面区域、一张表格、一个图表、一个截图组件，也可能是这些对象和相关文本的组合。</p>
+<p>视觉 chunk 的设计不能只看图像大小，而要看问题如何使用证据。页面级 chunk 保留完整上下文，适合目录定位、整页审阅和图文混排问答；区域级 chunk 聚焦具体对象，适合表格、图表和截图区域检索；对象级 chunk 进一步拆到单个按钮、图例、曲线、表格行或字段，适合精确定位和自动校验。</p>
+<table>
+<thead>
+<tr>
+<th>粒度</th>
+<th>适用场景</th>
+<th>优点</th>
+<th>风险</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>页面级</td>
+<td>财报页、PPT 页、扫描件</td>
+<td>上下文完整，易引用</td>
+<td>向量表示不聚焦，成本高</td>
+</tr>
+<tr>
+<td>区域级</td>
+<td>表格、图表、截图区域</td>
+<td>证据集中，便于重排</td>
+<td>依赖版面检测质量</td>
+</tr>
+<tr>
+<td>对象级</td>
+<td>单元格、按钮、图例、印章</td>
+<td>定位精确，适合校验</td>
+<td>需要更强标注和对象识别</td>
+</tr>
+<tr>
+<td>组合级</td>
+<td>图表 + 标题 + 正文说明</td>
+<td>保留语义关系</td>
+<td>构建规则复杂</td>
+</tr>
+</tbody>
+</table>
+<p>生产系统通常不会只选一种粒度，而是同时维护多层索引。例如，先用页面级向量召回候选页面，再用区域级索引定位图表或表格，最后用对象级字段校验证据。这样的设计与第 21 章的父子索引思想一致，只是父子关系从“章节-段落”扩展为“页面-区域-对象”。</p>
+<h3 id="2222-chunk">22.2.2 视觉 chunk 的最小字段<a class="headerlink" href="#2222-chunk" title="Permanent link">¶</a></h3>
+<p>视觉 chunk 必须携带足够的元数据，否则即使能被召回，也无法被解释和治理。建议将每个视觉 chunk 表示为一个包含内容、位置、来源、结构和质量信息的对象。</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chunk_id</code></td>
+<td>视觉单元唯一 ID</td>
+<td>支撑引用、去重和回滚</td>
+</tr>
+<tr>
+<td><code>doc_id</code> / <code>page_no</code></td>
+<td>来源文档与页码</td>
+<td>支撑溯源</td>
+</tr>
+<tr>
+<td><code>bbox</code></td>
+<td>页面坐标区域</td>
+<td>支撑高亮、裁剪和局部重排</td>
+</tr>
+<tr>
+<td><code>object_type</code></td>
+<td>页面、表格、图表、截图、文本块等</td>
+<td>决定检索和展示策略</td>
+</tr>
+<tr>
+<td><code>ocr_text</code></td>
+<td>区域 OCR 文本</td>
+<td>支撑关键词和混合检索</td>
+</tr>
+<tr>
+<td><code>caption</code></td>
+<td>视觉描述或结构化摘要</td>
+<td>支撑语义召回</td>
+</tr>
+<tr>
+<td><code>parent_id</code></td>
+<td>所属页面或章节</td>
+<td>保留上下文</td>
+</tr>
+<tr>
+<td><code>quality_flags</code></td>
+<td>模糊、遮挡、低置信、跨页等标记</td>
+<td>支撑过滤和抽检</td>
+</tr>
+<tr>
+<td><code>permission_tags</code></td>
+<td>权限、密级、数据域</td>
+<td>防止越权召回</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>解析规则和索引版本</td>
+<td>支撑效果回溯</td>
+</tr>
+</tbody>
+</table>
+<p>这些字段中，<code>bbox</code>、<code>object_type</code>、<code>parent_id</code> 和 <code>version</code> 最容易被省略，也最容易在生产阶段造成问题。没有坐标，就无法定位证据；没有对象类型，就无法选择正确的检索策略；没有父节点，就会丢失上下文；没有版本，就无法判断效果变化来自模型还是数据处理规则。</p>
+<h3 id="2223">22.2.3 页面、区域与对象的组合表示<a class="headerlink" href="#2223" title="Permanent link">¶</a></h3>
+<p>多模态 RAG 的难点在于同一个知识点往往跨越多种表示。例如，一张财报图表包含标题、坐标轴、图例、曲线、脚注和正文说明。若只索引图片，系统可能知道这是收入趋势图，却不知道单位和口径；若只索引 OCR 文本，系统可能看到“收入增长”，却无法判断趋势是否来自图中曲线；若只索引图表 caption，系统又可能失去可验证证据。</p>
+<p>较稳妥的做法是为每个视觉对象维护三种并行表示：</p>
+<ol>
+<li><strong>图像表示</strong>：保留裁剪区域或页面截图，用于视觉向量和多模态模型输入；</li>
+<li><strong>文本表示</strong>：保留 OCR、标题、脚注、周边段落和生成式 caption；</li>
+<li><strong>结构表示</strong>：保留坐标、对象类型、行列关系、页面层级和权限字段。</li>
+</ol>
+<p>这三种表示不应互相替代，而应共同组成检索单元。检索阶段可以按需要使用其中一部分，生成阶段则应尽量把可验证证据交给模型。</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part10/10_5_fig03_page_assets.png" data-desc-position="bottom"><img alt="图22-2：页面资产与证据组织示意图" src="../../../images/part10/10_5_fig03_page_assets.png"></a></p>
+<p><em>图22-2：页面、区域和对象需要同时保留图像、文本和结构表示，才能支撑可解释的多模态检索。</em></p>
+<h3 id="2224">22.2.4 对象建模中的常见错误<a class="headerlink" href="#2224" title="Permanent link">¶</a></h3>
+<p>多模态数据处理经常出现“模型看到了图，但系统仍然不会用图”的问题。常见原因包括：</p>
+<ul>
+<li><strong>只保存页面截图，不保存区域坐标</strong>：模型能看整页，但无法知道证据位置；</li>
+<li><strong>只保存 OCR 文本，不保存图像区域</strong>：系统失去视觉趋势、图例和布局信息；</li>
+<li><strong>表格被拆散</strong>：表头、单位、备注和数据行分离，导致数值解释错误；</li>
+<li><strong>图表 caption 过度生成</strong>：教师模型把推测写进 caption，污染事实证据；</li>
+<li><strong>截图缺少界面状态</strong>：按钮是否禁用、弹窗是否打开、菜单层级未被记录；</li>
+<li><strong>跨页对象未绑定</strong>：长表格和连续图组被切成孤立页面。</li>
+</ul>
+<p>解决这些问题的核心不是换一个更强的视觉模型，而是把对象建模前移到数据流水线中，让每个视觉对象在进入索引前就具备可追踪的结构身份。</p>
+<h3 id="2225">22.2.5 视觉抽检与质量门禁<a class="headerlink" href="#2225" title="Permanent link">¶</a></h3>
+<p>视觉 chunk 构建完成后，不能只检查“生成了多少对象”。生产系统更需要检查对象是否真正可用。建议在入库前设置三类质量门禁。</p>
+<p>第一类是<strong>解析完整性门禁</strong>。它回答“该被识别的对象是否都被识别出来”。例如，财报页面中的主表、附注表、趋势图和脚注是否都有对象记录；产品手册截图中的按钮、弹窗、菜单和错误提示是否被分割；扫描件中的印章、签名和表单字段是否被保留。完整性门禁适合用抽样人工检查加自动统计结合完成，例如统计每页对象数量分布、空 OCR 区域占比、表格对象占比和异常页面比例。</p>
+<p>第二类是<strong>结构正确性门禁</strong>。它回答“识别出来的对象关系是否正确”。表格的行列关系、图表标题和图例、截图中的父子组件、正文中的“如图所示”与目标图像是否连接正确，都属于结构正确性。结构错误比字符错误更隐蔽，因为系统表面上召回了正确页面，却在生成阶段使用了错误关系。</p>
+<p>第三类是<strong>检索可用性门禁</strong>。它回答“对象能否被真实问题命中”。团队应为每批视觉对象生成少量验证问题，例如“某图表说明了什么趋势”“某按钮在哪个页面”“某表格中某项指标是多少”。若对象存在但问题无法命中，说明 caption、关键词、向量表示或元数据设计仍然不足。</p>
+<table>
+<thead>
+<tr>
+<th>门禁类型</th>
+<th>检查对象</th>
+<th>推荐指标</th>
+<th>失败后的处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>解析完整性</td>
+<td>页面、区域、表格、图表、截图组件</td>
+<td>对象覆盖率、空对象率、异常页率</td>
+<td>重跑解析或进入人工队列</td>
+</tr>
+<tr>
+<td>结构正确性</td>
+<td>行列关系、标题绑定、图文引用</td>
+<td>结构抽检通过率、跨页绑定率</td>
+<td>修正规则或补结构字段</td>
+</tr>
+<tr>
+<td>检索可用性</td>
+<td>视觉对象与问题匹配</td>
+<td>视觉对象命中率、区域命中率</td>
+<td>补 caption、关键词或索引策略</td>
+</tr>
+<tr>
+<td>权限合规</td>
+<td>密级、数据域、可见范围</td>
+<td>权限标签覆盖率、越权召回率</td>
+<td>阻断入库或隔离索引</td>
+</tr>
+</tbody>
+</table>
+<p>视觉质量门禁的产出应写入数据处理版本中。这样，当某一版索引效果下降时，团队可以回看当时的对象覆盖率、表格结构通过率和视觉命中率，而不是只凭最终问答结果猜测原因。</p>
+<h3 id="2226">22.2.6 本节小结<a class="headerlink" href="#2226" title="Permanent link">¶</a></h3>
+<p>视觉 chunk 是多模态 RAG 的基础设计单元。它既不是简单的图片切片，也不是 OCR 文本的附属品，而是图像、文本、结构和治理字段的组合。一个成熟的多模态知识库，应该能回答“这条证据来自哪里、对应页面哪个区域、属于什么对象、由哪个处理版本生成、是否允许当前用户访问”。</p>
+<hr>
+<h2 id="223">22.3 跨模态索引、检索与重排序<a class="headerlink" href="#223" title="Permanent link">¶</a></h2>
+<h3 id="2231">22.3.1 为什么不能只靠一种索引<a class="headerlink" href="#2231" title="Permanent link">¶</a></h3>
+<p>多模态问题的表达方式非常多样。用户可能问“研发投入变化趋势如何”，也可能问“图中蓝色曲线代表什么”，还可能上传一张截图问“这个按钮为什么是灰的”。这些问题有的依赖语义相似度，有的依赖视觉相似度，有的依赖精确字段，有的依赖页面结构。</p>
+<p>因此，多模态 RAG 通常需要组合多条检索路径：</p>
+<table>
+<thead>
+<tr>
+<th>检索路径</th>
+<th>输入</th>
+<th>适合问题</th>
+<th>主要风险</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文本向量检索</td>
+<td>用户问题、OCR、caption</td>
+<td>概念问答、摘要问答</td>
+<td>对数字、图例、按钮位置不稳定</td>
+</tr>
+<tr>
+<td>图像向量检索</td>
+<td>截图、页面图、区域图</td>
+<td>视觉相似、页面定位</td>
+<td>语义解释弱，难处理精确事实</td>
+</tr>
+<tr>
+<td>关键词检索</td>
+<td>术语、编号、字段名</td>
+<td>条款号、产品型号、指标名</td>
+<td>对自然语言改写不敏感</td>
+</tr>
+<tr>
+<td>结构化检索</td>
+<td>元数据、页码、对象类型、权限</td>
+<td>过滤、排序、权限控制</td>
+<td>依赖元数据完整性</td>
+</tr>
+<tr>
+<td>Cross-encoder / 多模态 rerank</td>
+<td>问题 + 候选证据</td>
+<td>候选精排、证据判断</td>
+<td>成本较高，吞吐受限</td>
+</tr>
+</tbody>
+</table>
+<p>这几条路径的关系不是替代，而是协同。向量检索负责召回语义相关候选，关键词检索补足精确项，结构化检索执行过滤与权限控制，重排序模型判断证据是否真正回答问题。</p>
+<h3 id="2232-query-understanding">22.3.2 Query Understanding：先判断问题类型<a class="headerlink" href="#2232-query-understanding" title="Permanent link">¶</a></h3>
+<p>多模态 RAG 系统不应对所有问题使用同一套召回策略。一个有效的做法是在检索前加入轻量级 query understanding，将问题划分为不同类型。</p>
+<table>
+<thead>
+<tr>
+<th>问题类型</th>
+<th>示例</th>
+<th>首选策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>页面定位</td>
+<td>“年报里研发费用在哪一页？”</td>
+<td>关键词 + 页面级索引</td>
+</tr>
+<tr>
+<td>图表解释</td>
+<td>“收入趋势图说明了什么？”</td>
+<td>图表区域索引 + caption</td>
+</tr>
+<tr>
+<td>表格数值</td>
+<td>“一线城市住宿标准是多少？”</td>
+<td>结构化表格索引 + OCR</td>
+</tr>
+<tr>
+<td>截图操作</td>
+<td>“这个按钮在哪里？”</td>
+<td>截图对象索引 + 区域定位</td>
+</tr>
+<tr>
+<td>跨页综合</td>
+<td>“经营结果变化的原因是什么？”</td>
+<td>多页召回 + rerank + 证据组合</td>
+</tr>
+<tr>
+<td>权限敏感</td>
+<td>“给我看员工薪酬明细。”</td>
+<td>权限过滤 + 拒答策略</td>
+</tr>
+</tbody>
+</table>
+<p>问题类型决定了召回路径、候选数量、上下文组织方式和生成提示。若系统不做问题分类，就容易在简单问题上花费过高成本，在复杂问题上又召回不足。</p>
+<h3 id="2233">22.3.3 多路召回与候选合并<a class="headerlink" href="#2233" title="Permanent link">¶</a></h3>
+<p>一个实用的多模态检索流程通常包括四步。</p>
+<p>第一步，基于问题类型生成检索计划。例如表格数值问题需要优先查表格对象，图表解释问题需要优先查图表区域，截图操作问题需要查 UI 对象和页面截图。</p>
+<p>第二步，多路召回候选。文本向量、图像向量、关键词和结构化过滤可以并行执行。每一路返回候选时，应携带分数、来源路径和证据类型。</p>
+<p>第三步，候选归并与去重。同一页面可能被多个索引命中，同一图表可能既被 OCR 命中又被视觉向量命中。系统需要把它们合并成统一证据组，避免把重复证据当成多个独立来源。</p>
+<p>第四步，重排序与证据组装。重排序模型不只判断“是否相关”，还要判断“是否足以回答问题”。最终进入生成模型的上下文，应包含页面图、区域图、OCR 文本、caption、元数据和引用锚点。</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part5/%E5%9B%BE13_2_ColPali%E5%AF%B9%E6%AF%94.png" data-desc-position="bottom"><img alt="图22-3：ColPali 式页面检索与传统文本检索的对比" src="../../../images/part5/%E5%9B%BE13_2_ColPali%E5%AF%B9%E6%AF%94.png"></a></p>
+<p><em>图22-3：页面级视觉检索能够保留版面和图表线索，但仍需与文本、结构字段和重排序策略组合使用。</em></p>
+<h3 id="2234-rerank">22.3.4 Rerank 的判断维度<a class="headerlink" href="#2234-rerank" title="Permanent link">¶</a></h3>
+<p>多模态 rerank 不能只看相似度。一个候选页面可能与问题主题相关，但并不包含答案；一个图表可能包含趋势，但没有单位；一个表格可能有数值，但缺少适用条件。因此，重排序需要考虑以下维度。</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>判断问题</th>
+<th>低质量表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>相关性</td>
+<td>候选是否讨论同一主题</td>
+<td>召回目录页或泛泛说明页</td>
+</tr>
+<tr>
+<td>完整性</td>
+<td>是否包含回答所需条件</td>
+<td>只有数值，没有口径或单位</td>
+</tr>
+<tr>
+<td>可定位性</td>
+<td>是否能定位到页面/区域</td>
+<td>只有摘要，无原文位置</td>
+</tr>
+<tr>
+<td>结构一致性</td>
+<td>图、表、正文是否匹配</td>
+<td>图表标题和正文解释冲突</td>
+</tr>
+<tr>
+<td>权限合法性</td>
+<td>当前用户是否可访问</td>
+<td>召回越权文档</td>
+</tr>
+<tr>
+<td>时效性</td>
+<td>是否为最新有效版本</td>
+<td>召回旧制度或旧报表</td>
+</tr>
+</tbody>
+</table>
+<p>在工程实现中，可以先用规则过滤掉明显无效候选，再用模型做精排。比如先按权限、版本、对象类型过滤，再让 rerank 模型判断候选证据是否足以回答问题。这样既能降低成本，也能减少模型在不合法候选上浪费推理资源。</p>
+<h3 id="2235">22.3.5 上下文组织：不要把候选随意堆给模型<a class="headerlink" href="#2235" title="Permanent link">¶</a></h3>
+<p>多模态 RAG 的生成质量高度依赖上下文组织。把 Top-K 页面截图按分数排列后直接塞给模型，往往会造成三个问题：页面太密导致模型看不清；证据之间缺少关系说明；模型不知道应该优先相信哪一块证据。</p>
+<p>更好的做法是按证据组组织上下文。每个证据组包含：</p>
+<ul>
+<li>页面截图或区域裁剪图；</li>
+<li>OCR 文本和结构化字段；</li>
+<li>caption 或对象摘要；</li>
+<li>来源、页码、区域坐标、版本和权限标签；</li>
+<li>系统生成的“为什么召回这条证据”的短说明。</li>
+</ul>
+<p>这种组织方式能够帮助模型区分“原始证据”和“系统解释”，也便于最终输出引用。对于跨页问题，还应显式标注证据之间的关系，例如“第 12 页是趋势图，第 38 页是指标定义，第 56 页是附注说明”。</p>
+<h3 id="2236">22.3.6 成本与延迟控制<a class="headerlink" href="#2236" title="Permanent link">¶</a></h3>
+<p>多模态 RAG 的成本通常高于文本 RAG。页面渲染、OCR、版面检测、图像向量、区域裁剪、多模态 rerank 和最终看图生成都会消耗算力。若没有成本控制，系统可能在原型阶段表现很好，但上线后无法承受吞吐。</p>
+<p>成本控制可以从三个层面做。</p>
+<p>第一是<strong>离线预计算</strong>。页面渲染、对象检测、OCR、caption、图像向量和结构字段应尽量在离线索引阶段完成。线上请求不应临时解析 PDF 或临时生成页面向量，否则延迟会非常不稳定。</p>
+<p>第二是<strong>分层召回</strong>。线上不应一开始就把大量页面交给多模态大模型。更稳妥的流程是：先用低成本索引召回候选文档和页面，再用中等成本 rerank 选出少量证据，最后只把必要的图像区域交给生成模型。这样可以避免“每个问题都看十几页图”的成本浪费。</p>
+<p>第三是<strong>缓存与复用</strong>。高频问题、常用页面、热门文档和稳定图表可以缓存重排序结果、证据组和答案草稿。对于企业知识库，问题分布通常有明显热点，缓存策略能显著降低延迟和成本。</p>
+<table>
+<thead>
+<tr>
+<th>成本环节</th>
+<th>主要消耗</th>
+<th>控制方法</th>
+<th>风险</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>页面渲染</td>
+<td>CPU/GPU、存储</td>
+<td>离线渲染、增量刷新</td>
+<td>文档更新后缓存过期</td>
+</tr>
+<tr>
+<td>OCR/版面解析</td>
+<td>推理算力</td>
+<td>批处理、失败隔离</td>
+<td>低质量扫描件成本高</td>
+</tr>
+<tr>
+<td>图像向量</td>
+<td>GPU 推理</td>
+<td>预计算、批量化</td>
+<td>模型升级需重建索引</td>
+</tr>
+<tr>
+<td>多模态 rerank</td>
+<td>在线推理</td>
+<td>小候选集、规则预过滤</td>
+<td>过滤过严导致漏召回</td>
+</tr>
+<tr>
+<td>生成看图</td>
+<td>大模型调用</td>
+<td>区域裁剪、证据压缩</td>
+<td>裁剪过度丢上下文</td>
+</tr>
+</tbody>
+</table>
+<p>成本控制不是单纯降配。它的目标是把昂贵能力用在真正需要的环节，把低风险问题留给低成本路径，把高风险和复杂问题交给更强模型。</p>
+<h3 id="2237">22.3.7 本节小结<a class="headerlink" href="#2237" title="Permanent link">¶</a></h3>
+<p>多模态索引不是单一路径，而是文本、图像、结构字段和重排序模型的协作系统。一个生产级方案应先判断问题类型，再选择召回路径，最后把候选证据组织成可解释上下文。这样才能避免多模态 RAG 变成“检索一堆截图后让模型猜”。</p>
+<hr>
+<h2 id="224">22.4 评测、错误归因与数据回补<a class="headerlink" href="#224" title="Permanent link">¶</a></h2>
+<h3 id="2241-rag">22.4.1 多模态 RAG 评测为什么更难<a class="headerlink" href="#2241-rag" title="Permanent link">¶</a></h3>
+<p>文本 RAG 的评测通常关注召回命中率、答案正确率和引用准确率。多模态 RAG 还需要评测对象定位、视觉证据完整性、图表理解、表格结构保真和跨模态一致性。这意味着评测集不能只包含问题和标准答案，还必须包含期望证据位置。</p>
+<p>一条多模态评测样本至少应包括：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>question</code></td>
+<td>用户问题</td>
+</tr>
+<tr>
+<td><code>answer</code></td>
+<td>标准答案或判定规则</td>
+</tr>
+<tr>
+<td><code>required_evidence</code></td>
+<td>期望页面、区域、表格或图表</td>
+</tr>
+<tr>
+<td><code>evidence_type</code></td>
+<td>文本、表格、图表、截图、跨页组合</td>
+</tr>
+<tr>
+<td><code>permission_context</code></td>
+<td>访问权限条件</td>
+</tr>
+<tr>
+<td><code>evaluation_focus</code></td>
+<td>召回、定位、解释、引用或综合推理</td>
+</tr>
+</tbody>
+</table>
+<p>如果评测集只验证最终答案，团队很难知道系统是“检索对了但生成错了”，还是“检索错了但模型猜对了”。后者在演示中看起来不错，但在生产中非常危险。</p>
+<h3 id="2242">22.4.2 指标体系<a class="headerlink" href="#2242" title="Permanent link">¶</a></h3>
+<p>多模态 RAG 的指标可以分为四层。</p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>指标</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>召回层</td>
+<td>页面命中率、区域命中率、对象命中率</td>
+<td>是否找到了正确证据</td>
+</tr>
+<tr>
+<td>证据层</td>
+<td>引用准确率、bbox IoU、表格结构保真率</td>
+<td>证据位置和结构是否正确</td>
+</tr>
+<tr>
+<td>生成层</td>
+<td>答案正确率、事实一致性、拒答质量</td>
+<td>模型是否基于证据回答</td>
+</tr>
+<tr>
+<td>运营层</td>
+<td>解析失败率、回补完成率、成本/延迟</td>
+<td>流水线是否可持续运营</td>
+</tr>
+</tbody>
+</table>
+<p>其中，bbox IoU 和对象命中率是多模态场景特有的关键指标。若系统回答正确但定位不到区域，用户仍然难以验证答案；若系统定位正确但表格结构错了，最终推理仍可能失败。</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part10/10_5_fig07_eval_framework.png" data-desc-position="bottom"><img alt="图22-4：多模态 RAG 评测框架" src="../../../images/part10/10_5_fig07_eval_framework.png"></a></p>
+<p><em>图22-4：多模态 RAG 的评测应同时覆盖检索、证据定位、生成和运营成本。</em></p>
+<h3 id="2243">22.4.3 错误归因表<a class="headerlink" href="#2243" title="Permanent link">¶</a></h3>
+<p>多模态 RAG 的错误需要回到数据链路中修复，而不是只调 prompt。建议团队维护如下错误归因表。</p>
+<table>
+<thead>
+<tr>
+<th>错误类型</th>
+<th>用户侧表现</th>
+<th>常见根因</th>
+<th>回补动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>页面未召回</td>
+<td>系统说找不到答案</td>
+<td>页面级向量弱、标题缺失、问题改写失败</td>
+<td>增加页面 caption，补充关键词字段</td>
+</tr>
+<tr>
+<td>区域未定位</td>
+<td>引用了正确页面但找不到图表</td>
+<td>版面检测漏检、bbox 错误</td>
+<td>补对象检测规则，人工校准区域</td>
+</tr>
+<tr>
+<td>表格错读</td>
+<td>数值或单位错误</td>
+<td>表头绑定失败、跨页表格断裂</td>
+<td>建立表格结构化表示和单元格校验</td>
+</tr>
+<tr>
+<td>图表误解</td>
+<td>趋势判断错误</td>
+<td>图例/坐标轴未进入上下文</td>
+<td>绑定图例、标题、脚注和周边正文</td>
+</tr>
+<tr>
+<td>截图误召回</td>
+<td>找到相似界面但不是当前状态</td>
+<td>UI 状态字段缺失</td>
+<td>增加状态标签和版本标签</td>
+</tr>
+<tr>
+<td>越权召回</td>
+<td>回答包含无权限内容</td>
+<td>权限标签缺失或过滤后置</td>
+<td>权限字段前置到索引过滤</td>
+</tr>
+<tr>
+<td>旧版本回答</td>
+<td>引用过期文档</td>
+<td>版本治理缺失</td>
+<td>建立有效期和版本优先级</td>
+</tr>
+</tbody>
+</table>
+<p>这张表的价值在于把“系统答错了”拆成可执行的数据修复任务。每一类错误都应能回写到具体的解析规则、对象标注、索引策略或权限治理中。</p>
+<h3 id="2244">22.4.4 失败样本回补流程<a class="headerlink" href="#2244" title="Permanent link">¶</a></h3>
+<p>多模态 RAG 的持续优化依赖失败样本回补。一个推荐流程如下：</p>
+<ol>
+<li>从线上日志或评测集中收集失败问题；</li>
+<li>标注失败点属于页面召回、区域定位、表格结构、图表理解、权限过滤还是生成阶段；</li>
+<li>回查原始页面、解析结果、视觉 chunk、索引记录和最终上下文；</li>
+<li>生成数据修复任务，例如补 caption、修 bbox、重建表格、增加关键词、调整版本标签；</li>
+<li>重建受影响索引，并在固定评测集上做回归测试；</li>
+<li>将修复规则写入流水线版本，避免同类错误重复出现。</li>
+</ol>
+<p>这套流程的重点是“失败样本进入数据流水线”，而不是停留在人工客服或 prompt 调参层面。只有当失败样本能变成可复用的处理规则，多模态 RAG 才能形成真正的数据飞轮。</p>
+<h3 id="2245">22.4.5 评测集构建方法<a class="headerlink" href="#2245" title="Permanent link">¶</a></h3>
+<p>多模态 RAG 的评测集最好按证据类型分层构建，而不是只随机采样用户问题。建议至少覆盖五类样本。</p>
+<p>第一类是<strong>页面定位样本</strong>。问题要求系统找到正确页面，例如“研发投入相关图表在哪一页”。这类样本用于验证页面级视觉索引和目录干扰控制。</p>
+<p>第二类是<strong>区域定位样本</strong>。问题要求系统找到页面中的具体图表、表格或截图区域，例如“资产负债表中流动负债合计在哪里”。这类样本用于验证 bbox 和区域级索引。</p>
+<p>第三类是<strong>结构推理样本</strong>。问题需要结合表头、单位、图例或脚注，例如“该指标同比变化是否为正”。这类样本用于验证表格结构和图表语义。</p>
+<p>第四类是<strong>跨页综合样本</strong>。问题需要组合多个页面，例如“收入增长和研发投入变化是否一致”。这类样本用于验证候选组装和上下文组织。</p>
+<p>第五类是<strong>权限与版本样本</strong>。问题涉及受限文档、旧版本或不同用户角色，例如“某部门薪酬明细是否可见”。这类样本用于验证过滤和拒答。</p>
+<table>
+<thead>
+<tr>
+<th>样本层</th>
+<th>标注内容</th>
+<th>评测重点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>页面定位</td>
+<td>正确页码、文档版本</td>
+<td>页面召回</td>
+</tr>
+<tr>
+<td>区域定位</td>
+<td>bbox、对象类型</td>
+<td>区域命中</td>
+</tr>
+<tr>
+<td>结构推理</td>
+<td>表头、单位、图例、脚注</td>
+<td>结构保真</td>
+</tr>
+<tr>
+<td>跨页综合</td>
+<td>多个证据及关系</td>
+<td>证据组装</td>
+</tr>
+<tr>
+<td>权限版本</td>
+<td>用户角色、有效版本</td>
+<td>合规过滤</td>
+</tr>
+</tbody>
+</table>
+<p>这套评测集应随线上失败持续扩充。每一次高价值失败都应至少沉淀为一条回归样本，避免系统在后续索引或模型升级中重复犯错。</p>
+<h3 id="2246">22.4.6 本节小结<a class="headerlink" href="#2246" title="Permanent link">¶</a></h3>
+<p>多模态 RAG 的评测不能只看答案。它必须追踪证据是否被召回、区域是否定位正确、图表和表格结构是否保真、权限和版本是否合规。错误归因的最终目标，是把线上失败转化为数据回补动作，使系统随着使用持续变稳。</p>
+<hr>
+<h2 id="225">22.5 案例与标准产出物<a class="headerlink" href="#225" title="Permanent link">¶</a></h2>
+<h3 id="2251-a">22.5.1 案例 A：财报图表问答系统<a class="headerlink" href="#2251-a" title="Permanent link">¶</a></h3>
+<p>一个典型场景是企业财报助手。用户问：“公司近三年研发投入占比是否持续上升？”如果系统只做 OCR 文本检索，可能召回管理层讨论页，也可能召回目录页，却未必召回真正包含趋势图或表格的页面。</p>
+<p>生产级处理应分为四步。首先，在解析阶段识别图表区域，绑定标题、图例、坐标轴、脚注和周边正文。其次，在索引阶段同时建立页面级视觉向量、图表区域向量、OCR 文本向量和指标字段索引。第三，在检索阶段根据“趋势判断”问题类型优先召回图表和指标表。最后，在生成阶段要求模型基于证据说明“趋势来自哪几页、哪些图表、哪些数值”。</p>
+<p>这个案例说明，多模态 RAG 的核心不是让模型“看财报”，而是让系统知道哪些页面和区域构成可验证证据。</p>
+<h3 id="2252-b">22.5.2 案例 B：产品手册截图检索<a class="headerlink" href="#2252-b" title="Permanent link">¶</a></h3>
+<p>另一个常见场景是软件产品手册。用户问：“导出按钮为什么是灰色？”答案往往依赖截图状态、权限说明和操作路径。单靠 OCR 可能只能识别“导出”两个字，却无法判断按钮是否禁用，也无法知道前置条件是什么。</p>
+<p>此时，视觉 chunk 应把截图拆成界面区域、按钮对象、提示文案和状态标签。索引不仅要记录按钮文本，还要记录按钮坐标、是否禁用、所属弹窗、页面版本和相关说明段落。检索结果进入模型前，应把截图区域和操作说明一起组织成证据组。</p>
+<p>这个案例说明，截图类知识不是普通图片，而是一种带状态和交互语义的视觉文档。</p>
+<h3 id="2253-chunk">22.5.3 标准产出物一：视觉 chunk 设计表<a class="headerlink" href="#2253-chunk" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>示例</th>
+<th>是否必需</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chunk_id</code></td>
+<td><code>annual_2025_p12_chart_01</code></td>
+<td>是</td>
+<td>全局唯一</td>
+</tr>
+<tr>
+<td><code>doc_id</code></td>
+<td><code>annual_2025</code></td>
+<td>是</td>
+<td>来源文档</td>
+</tr>
+<tr>
+<td><code>page_no</code></td>
+<td><code>12</code></td>
+<td>是</td>
+<td>页码</td>
+</tr>
+<tr>
+<td><code>bbox</code></td>
+<td><code>[120, 180, 820, 560]</code></td>
+<td>是</td>
+<td>页面坐标</td>
+</tr>
+<tr>
+<td><code>object_type</code></td>
+<td><code>chart</code></td>
+<td>是</td>
+<td>页面、表格、图表、截图、按钮等</td>
+</tr>
+<tr>
+<td><code>ocr_text</code></td>
+<td><code>研发投入占比</code></td>
+<td>否</td>
+<td>OCR 或人工校正文</td>
+</tr>
+<tr>
+<td><code>caption</code></td>
+<td><code>近三年研发投入占比折线图</code></td>
+<td>是</td>
+<td>检索摘要</td>
+</tr>
+<tr>
+<td><code>parent_id</code></td>
+<td><code>annual_2025_p12</code></td>
+<td>是</td>
+<td>父页面或章节</td>
+</tr>
+<tr>
+<td><code>related_text_ids</code></td>
+<td><code>['p12_para_03']</code></td>
+<td>否</td>
+<td>关联正文</td>
+</tr>
+<tr>
+<td><code>quality_flags</code></td>
+<td><code>['low_resolution']</code></td>
+<td>否</td>
+<td>质量标记</td>
+</tr>
+<tr>
+<td><code>permission_tags</code></td>
+<td><code>['internal']</code></td>
+<td>是</td>
+<td>权限过滤</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>layout_v3_index_v2</code></td>
+<td>是</td>
+<td>回溯处理版本</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2254">22.5.4 标准产出物二：多模态检索错误归因表<a class="headerlink" href="#2254" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>失败问题</th>
+<th>正确证据</th>
+<th>实际召回</th>
+<th>归因</th>
+<th>修复任务</th>
+<th>回归检查</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>研发投入占比趋势？</td>
+<td>第 12 页图表</td>
+<td>第 3 页目录</td>
+<td>图表 caption 缺失</td>
+<td>为图表区域补 caption</td>
+<td>页面命中率提升</td>
+</tr>
+<tr>
+<td>导出按钮为什么禁用？</td>
+<td>截图右上角按钮 + 权限说明</td>
+<td>只召回操作说明</td>
+<td>UI 状态未建模</td>
+<td>增加按钮状态标签</td>
+<td>区域命中率提升</td>
+</tr>
+<tr>
+<td>某费用标准是多少？</td>
+<td>表格第 4 行第 3 列</td>
+<td>召回整页但读错列</td>
+<td>表头绑定失败</td>
+<td>重建表格结构字段</td>
+<td>数值准确率提升</td>
+</tr>
+</tbody>
+</table>
+<p>这两个表可以直接成为团队的设计模板。前者用于定义视觉知识单元，后者用于把失败样本转成数据修复任务。</p>
+<h3 id="2255">22.5.5 上线前检查清单<a class="headerlink" href="#2255" title="Permanent link">¶</a></h3>
+<p>在多模态 RAG 系统进入灰度前，建议完成以下检查。</p>
+<table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>通过标准</th>
+<th>责任角色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>视觉对象覆盖</td>
+<td>关键文档页面对象覆盖率通过抽检</td>
+<td>数据工程师</td>
+</tr>
+<tr>
+<td>表格结构保真</td>
+<td>高价值表格行列关系可验证</td>
+<td>文档解析负责人</td>
+</tr>
+<tr>
+<td>图表 caption</td>
+<td>图表标题、图例、单位和正文说明绑定</td>
+<td>多模态数据工程师</td>
+</tr>
+<tr>
+<td>权限过滤</td>
+<td>不同角色无法召回越权页面</td>
+<td>平台/合规</td>
+</tr>
+<tr>
+<td>引用定位</td>
+<td>回答可定位到页码和区域</td>
+<td>RAG 工程师</td>
+</tr>
+<tr>
+<td>评测集覆盖</td>
+<td>页面、区域、结构、跨页、权限样本齐备</td>
+<td>评测负责人</td>
+</tr>
+<tr>
+<td>回补流程</td>
+<td>失败样本能转为数据任务</td>
+<td>运营负责人</td>
+</tr>
+</tbody>
+</table>
+<p>这份清单的作用，是防止团队只验证“模型能看图回答”，而忽略生产系统真正需要的可定位、可治理和可回滚能力。</p>
+<h3 id="2256-p05">22.5.6 与 P05 项目的边界和复用关系<a class="headerlink" href="#2256-p05" title="Permanent link">¶</a></h3>
+<p>本章是方法章，P05 是项目章。两者应形成互补，而不是互相重复。</p>
+<p>本章重点回答“多模态 RAG 应该如何建模”。它抽象出视觉 chunk、对象字段、索引路径、重排序、评测和错误归因等通用方法，适用于财报、产品手册、扫描合同、审计报告和复杂知识库等场景。P05 则应回答“如何把其中一条路线真正跑起来”，围绕企业财报助手给出可复现代码、页面渲染、视觉索引、多页问答、检查脚本和成本分析。</p>
+<p>因此，在写作和工程实现中应保持以下边界：</p>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>本章处理方式</th>
+<th>P05 处理方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>视觉 chunk</td>
+<td>给出通用字段和设计原则</td>
+<td>落到页面截图、裁剪图和财报页面</td>
+</tr>
+<tr>
+<td>检索策略</td>
+<td>比较文本、图像、结构化和 rerank</td>
+<td>实现页面级视觉索引和多页召回</td>
+</tr>
+<tr>
+<td>评测体系</td>
+<td>定义指标和错误归因框架</td>
+<td>提供项目级评测问题和检查脚本</td>
+</tr>
+<tr>
+<td>成本控制</td>
+<td>给出分层召回和缓存方法</td>
+<td>分析具体模型调用和页面处理成本</td>
+</tr>
+<tr>
+<td>失败回补</td>
+<td>给出通用回补流程</td>
+<td>记录财报问答失败样例和修复动作</td>
+</tr>
+</tbody>
+</table>
+<p>从读者路径看，读完本章后再进入 P05，读者应已经理解为什么需要页面级视觉索引、为什么不能只依赖 OCR、为什么要保存 bbox 和对象类型。P05 不需要重新解释所有概念，而应把这些概念落实成一个具体工程案例。</p>
+<p>反过来，P05 的项目经验也能反哺本章。如果项目发现某类图表很难检索、某种页面裁剪策略成本过高、某类财报问题需要特殊证据组装，就应回写到本章的错误归因表和上线检查清单中。这种“方法章定义框架、项目章验证框架”的关系，能让全书避免空泛理论和孤立案例两种问题。</p>
+<h3 id="2257">22.5.7 本章总结<a class="headerlink" href="#2257" title="Permanent link">¶</a></h3>
+<p>多模态 RAG 的核心是视觉知识资产工程。文本、图像和结构字段必须在数据流水线中被统一建模，检索系统必须能根据问题类型选择合适路径，评测体系必须能定位到页面、区域和对象。只有这样，多模态 RAG 才能从演示能力变成生产能力。</p>
+<p>下一章将进一步讨论：当系统上线后，用户反馈、失败日志、知识更新和版本回滚如何进入持续运营闭环。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  ページトップへ戻る
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

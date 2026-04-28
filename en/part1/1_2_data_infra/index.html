@@ -1,0 +1,1563 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="大模型数据工程：架构、算法及项目实战">
+      
+      
+        <meta name="author" content="ustc">
+      
+      
+        <link rel="canonical" href="https://datascale-ai.github.io/data_engineering_book/en/part1/1_2_data_infra/">
+      
+      
+      
+      
+        
+          <link rel="alternate" href="/data_engineering_book/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+          <link rel="alternate" href="../../../ja/part1/1_2_data_infra/" hreflang="ja">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Chapter 2: AI-Native Data Stack (Vector DB, Object Storage, Ray/Spark Distributed Computing) - Data Engineering for Large Models: Architecture, Algorithms &amp; Projects</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-2-ai-native-data-stack-vector-db-object-storage-rayspark-distributed-computing" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../" title="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" class="md-header__button md-logo" aria-label="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Engineering for Large Models: Architecture, Algorithms &amp; Projects
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Chapter 2: AI-Native Data Stack (Vector DB, Object Storage, Ray/Spark Distributed Computing)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="/data_engineering_book/" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ja/part1/1_2_data_infra/" hreflang="ja" class="md-select__link">
+              日本語
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" class="md-nav__button md-logo" aria-label="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    Data Engineering for Large Models: Architecture, Algorithms &amp; Projects
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translation-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chinese 2026 Edition Status
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-modern-data-stack-mds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Modern Data Stack (MDS)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1 Modern Data Stack (MDS)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#211-what-is-the-modern-data-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1.1 What Is the Modern Data Stack?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212-storage-layer-object-storage-and-data-lake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1.2 Storage Layer: Object Storage and Data Lake
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#213-compute-layer-spark-vs-ray-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1.3 Compute Layer: Spark vs Ray Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1.3 Compute Layer: Spark vs Ray Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dask-a-python-native-third-option" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dask: A Python-Native Third Option
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#214-vector-database-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1.4 Vector Database Selection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1.4 Vector Database Selection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Concepts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vector-database-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vector Database Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#object-storage-high-throughput-read-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Object Storage High-Throughput Read Optimization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-data-format-and-io-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Data Format and I/O Optimization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 Data Format and I/O Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221-mainstream-data-format-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.1 Mainstream Data Format Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-compression-algorithm-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.2 Compression Algorithm Selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#223-io-optimization-practical-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.3 I/O Optimization Practical Tips
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-data-version-control-dataops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Data Version Control (DataOps)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 Data Version Control (DataOps)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#231-why-does-data-need-version-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.1 Why Does Data Need Version Control?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#232-tool-selection-dvc-vs-lakefs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.2 Tool Selection: DVC vs LakeFS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#233-data-lineage-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.3 Data Lineage Tracking
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-common-mistakes-and-pitfall-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Common Mistakes and Pitfall Guide
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Chapter Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further Reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preview-of-next-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preview of Next Chapter
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="chapter-2-ai-native-data-stack-vector-db-object-storage-rayspark-distributed-computing">Chapter 2: AI-Native Data Stack (Vector DB, Object Storage, Ray/Spark Distributed Computing)<a class="headerlink" href="#chapter-2-ai-native-data-stack-vector-db-object-storage-rayspark-distributed-computing" title="Permanent link">¶</a></h1>
+<hr>
+<h2 id="chapter-summary">Chapter Summary<a class="headerlink" href="#chapter-summary" title="Permanent link">¶</a></h2>
+<p>A craftsman must sharpen his tools before he can do his work well. Before processing TB-level or even PB-level LLM training data, choosing the right infrastructure is the first step that determines project success or failure. This chapter systematically introduces AI-native data stack technology selection from five dimensions—<strong>storage, compute, vector databases, format, and version control</strong>. We pay special attention to distributed data processing frameworks (Ray Data, Apache Spark, Dask) in large-scale token processing, as well as GPU training I/O bottleneck optimization strategies, helping readers build an efficient, scalable, and reproducible data processing platform.</p>
+<hr>
+<h2 id="scenario-introduction">Scenario Introduction<a class="headerlink" href="#scenario-introduction" title="Permanent link">¶</a></h2>
+<p>You just joined an AI startup, responsible for building the LLM pre-training data processing platform. The team's situation is concerning: data is scattered across local disks on 50 machines, in various formats including <code>.txt</code>, <code>.json</code>, <code>.csv</code>, <code>.parquet</code>, and more. Every time data is processed, Python scripts must be manually written and run on a single machine for three days to complete. Last week someone accidentally overwrote a critical dataset, and there was no backup or version record. Your boss asks: "We're starting training in a month—can the data platform be ready?"</p>
+<p>Your first decision: Use the team-familiar Spark, or switch to the "AI-native" Ray? Build a self-hosted MinIO cluster, or go straight to cloud with S3? There are no "standard answers" to these questions, but there are clear decision frameworks. This chapter provides that framework.</p>
+<hr>
+<h2 id="21-modern-data-stack-mds">2.1 Modern Data Stack (MDS)<a class="headerlink" href="#21-modern-data-stack-mds" title="Permanent link">¶</a></h2>
+<h3 id="211-what-is-the-modern-data-stack">2.1.1 What Is the Modern Data Stack?<a class="headerlink" href="#211-what-is-the-modern-data-stack" title="Permanent link">¶</a></h3>
+<p>The "Modern Data Stack" (MDS) is a hot concept in data engineering in recent years, referring to a cloud-native, modular, decoupled combination of data infrastructure. Compared with traditional integrated data platforms, the core philosophy of the modern data stack is to split storage, compute, orchestration, and other functions into independent components, each of which can be independently replaced and scaled according to needs.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part1/%E5%9B%BE2_1_%E7%8E%B0%E4%BB%A3%E6%95%B0%E6%8D%AE%E6%A0%88%E6%9E%B6%E6%9E%84.png" data-desc-position="bottom"><img alt="Figure 2-1: Modern Data Stack Architecture" src="../../../images/part1/%E5%9B%BE2_1_%E7%8E%B0%E4%BB%A3%E6%95%B0%E6%8D%AE%E6%A0%88%E6%9E%B6%E6%9E%84.png"></a></p>
+<p><em>Figure 2-1: Modern Data Stack Architecture — 5-layer decoupled architecture from storage to application layer, each layer independently replaceable</em></p>
+<p>Traditional data platforms are often deployed in local data centers with integrated systems, storage tightly coupled with compute. Taking the Hadoop ecosystem as an example, HDFS and MapReduce coupling makes replacing any component very difficult. Data formats are often proprietary, leading to serious vendor lock-in. Scaling is mainly vertical—improving performance by purchasing more powerful single machines—with high upfront costs.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Traditional Approach</th>
+<th>Modern Data Stack</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deployment Mode</strong></td>
+<td>Local data center, integrated system</td>
+<td>Cloud-native, elastic scaling on demand</td>
+</tr>
+<tr>
+<td><strong>Component Coupling</strong></td>
+<td>Storage-compute bound (e.g., HDFS + MapReduce)</td>
+<td>Storage-compute separation, each layer independently replaceable</td>
+</tr>
+<tr>
+<td><strong>Data Format</strong></td>
+<td>Proprietary format, vendor lock-in</td>
+<td>Open format (Parquet, ORC)</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Mainly vertical scaling</td>
+<td>Horizontal scaling, nearly unlimited</td>
+</tr>
+<tr>
+<td><strong>Cost Model</strong></td>
+<td>Fixed investment, high upfront cost</td>
+<td>Pay-per-use, elastic cost</td>
+</tr>
+</tbody>
+</table>
+<p>The emergence of the modern data stack changed this landscape. Cloud-native deployment allows elastic scaling on demand; complete storage-compute separation enables each layer to evolve independently. Open data formats (e.g., Parquet, ORC) eliminate vendor lock-in risk. Horizontal scaling enables the system to handle nearly unlimited data volume, while pay-per-use cost model greatly lowers project startup barriers.</p>
+<h3 id="212-storage-layer-object-storage-and-data-lake">2.1.2 Storage Layer: Object Storage and Data Lake<a class="headerlink" href="#212-storage-layer-object-storage-and-data-lake" title="Permanent link">¶</a></h3>
+<p>Object storage is the de facto standard foundation for modern data platforms. Whether AWS S3, Google Cloud Storage, Azure Blob, or open-source MinIO, their core philosophy is the same: flat namespace with no true directory hierarchy, only <code>bucket/key</code> binary structure; theoretically unlimited storage; extremely high data durability (S3 claims 11 nines, i.e., 99.999999999%); billed by actual usage with no large upfront investment.</p>
+<p>When selecting among options, deployment mode, compatibility, cost, and other factors must be considered. AWS S3 is the benchmark for public cloud hosting with the most mature ecosystem, suitable for most production environments. MinIO is an S3-compatible open-source alternative, suitable for private deployment scenarios with data compliance requirements or for development/test environments. Google Cloud Storage and Azure Blob are respectively suitable for users already deeply in GCP or Azure ecosystems.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>AWS S3</th>
+<th>MinIO</th>
+<th>Google GCS</th>
+<th>Azure Blob</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deployment Mode</strong></td>
+<td>Public cloud hosted</td>
+<td>Self-hosted/private cloud</td>
+<td>Public cloud hosted</td>
+<td>Public cloud hosted</td>
+</tr>
+<tr>
+<td><strong>S3 Compatibility</strong></td>
+<td>Native</td>
+<td>100% compatible</td>
+<td>Requires adapter layer</td>
+<td>Requires adapter layer</td>
+</tr>
+<tr>
+<td><strong>Cold/Hot Tiering</strong></td>
+<td>Glacier</td>
+<td>Tiering</td>
+<td>Nearline/Coldline</td>
+<td>Cool/Archive</td>
+</tr>
+<tr>
+<td><strong>Lowest Cost</strong></td>
+<td>$0.023/GB/month</td>
+<td>Hardware cost</td>
+<td>$0.020/GB/month</td>
+<td>$0.018/GB/month</td>
+</tr>
+<tr>
+<td><strong>Typical Use Case</strong></td>
+<td>Production default</td>
+<td>Private deployment/dev-test</td>
+<td>GCP ecosystem users</td>
+<td>Azure ecosystem users</td>
+</tr>
+</tbody>
+</table>
+<p>Object storage solves the "storage" problem but lacks transactional and metadata management capabilities. Operating directly on Parquet files in S3 encounters many difficulties: no ACID transactions, concurrent writes may corrupt data; no efficient querying, must scan all file metadata each time; no time travel, once data is overwritten it cannot be rolled back to historical versions.</p>
+<p>Data lake table formats emerged precisely to solve these problems. They add a metadata management layer on top of object storage, providing data warehouse-level capabilities. Apache Iceberg, Apache Hudi, and Delta Lake are currently the three most mainstream data lake formats.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part1/%E5%9B%BE2_2_%E6%95%B0%E6%8D%AE%E6%B9%96%E4%BB%93%E6%9E%B6%E6%9E%84.png" data-desc-position="bottom"><img alt="Figure 2-2: Data Lakehouse Architecture" src="../../../images/part1/%E5%9B%BE2_2_%E6%95%B0%E6%8D%AE%E6%B9%96%E4%BB%93%E6%9E%B6%E6%9E%84.png"></a></p>
+<p><em>Figure 2-2: Data Lakehouse Architecture — Table format layer provides ACID transactions, time travel, schema evolution, and other capabilities</em></p>
+<p>Apache Iceberg was developed by Netflix and contributed to the Apache Foundation; its biggest advantage is engine neutrality—it works well with Spark, Flink, Trino, Dremio, DuckDB, and other compute engines. For LLM data engineering scenarios, Iceberg is the most recommended choice. Apache Hudi was developed by Uber, with strengths in streaming-batch unification and real-time updates; if there are substantial real-time update needs (e.g., continuous RAG knowledge base updates), Hudi can be considered. Delta Lake was developed by Databricks with the tightest Spark integration; if already deeply in the Databricks ecosystem, choosing Delta Lake provides the best experience.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Apache Iceberg</th>
+<th>Apache Hudi</th>
+<th>Delta Lake</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Backing Vendor</strong></td>
+<td>Netflix → Apache</td>
+<td>Uber → Apache</td>
+<td>Databricks</td>
+</tr>
+<tr>
+<td><strong>Open Source Degree</strong></td>
+<td>Fully open source</td>
+<td>Fully open source</td>
+<td>Core open source, some features commercial</td>
+</tr>
+<tr>
+<td><strong>Engine Compatibility</strong></td>
+<td>Spark, Flink, Trino, DuckDB</td>
+<td>Spark, Flink, Presto</td>
+<td>Primarily Spark</td>
+</tr>
+<tr>
+<td><strong>Typical Use Case</strong></td>
+<td>Multi-engine mixed use, vendor neutral</td>
+<td>Stream-batch unification, real-time updates</td>
+<td>Databricks ecosystem users</td>
+</tr>
+</tbody>
+</table>
+<p>When making actual selections, the following decision tree can be used: First determine whether data scale exceeds 100TB. If yes, further consider whether ACID transactions and time travel are needed—if yes, and there are multi-engine access needs, recommend Iceberg + S3; if only using Spark, Delta Lake or Hudi can be chosen. If ACID capability is not needed, use S3/MinIO + Parquet directly. For scenarios with data volume below 100TB, if team size is small (fewer than 5 people), local disk + Parquet is sufficient for prototype validation; migrate to S3 + Parquet as scale grows.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part1/%E5%9B%BE2_3_%E5%AD%98%E5%82%A8%E5%B1%82%E9%80%89%E5%9E%8B%E5%86%B3%E7%AD%96%E6%A0%91.png" data-desc-position="bottom"><img alt="Figure 2-3: Storage Layer Selection Decision Tree" src="../../../images/part1/%E5%9B%BE2_3_%E5%AD%98%E5%82%A8%E5%B1%82%E9%80%89%E5%9E%8B%E5%86%B3%E7%AD%96%E6%A0%91.png"></a></p>
+<p><em>Figure 2-3: Storage Layer Selection Decision Tree — Choose best solution based on data scale, ACID needs, multi-engine access, and other factors</em></p>
+<hr>
+<h3 id="213-compute-layer-spark-vs-ray-data">2.1.3 Compute Layer: Spark vs Ray Data<a class="headerlink" href="#213-compute-layer-spark-vs-ray-data" title="Permanent link">¶</a></h3>
+<p>This is the most common "either-or" dilemma in LLM data engineering. Both are distributed compute frameworks, but with distinctly different design philosophies and use cases. Understanding their differences is crucial for making the right technical selection.</p>
+<p>Apache Spark was born in Berkeley AMPLab in 2009; after fifteen years of development, it has become the "Swiss Army knife" of big data processing. Spark's core strength is its maturity and stability—production-validated at PB scale, with extremely rich documentation and community resources. Spark SQL enables data analysts to also write distributed processing logic, lowering the barrier to entry. Structured Streaming supports real-time data processing, achieving stream-batch unification. However, Spark also has clear disadvantages: core is JVM implementation, Python UDF requires cross JVM-Python serialization with significant performance overhead; weaker integration support for GPU and PyTorch/TensorFlow, not "AI-native"; operators must materialize intermediate results between them, creating significant memory pressure.</p>
+<p>Ray was born in Berkeley RISELab in 2017, initially a distributed reinforcement learning framework, later evolving into general AI application infrastructure. Ray Data is its data processing module, designed specifically for AI workloads. Ray Data's core strength is Python-native—no JVM overhead, seamless integration with PyTorch, HuggingFace, and other AI ecosystems. It natively supports pipeline execution with high memory efficiency; built-in GPU scheduling for easy CUDA operator invocation; Actor model suits stateful complex processing, such as inference tasks requiring loaded ML models. However, Ray is relatively young with less rich documentation and best practices than Spark; weak SQL support, no mature SQL interface like Spark SQL; integration with traditional big data ecosystem (Hive, Iceberg) requires additional work.</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Apache Spark</th>
+<th>Ray Data</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Language</strong></td>
+<td>Scala/Java core, Python API</td>
+<td>Python native</td>
+</tr>
+<tr>
+<td><strong>Runtime</strong></td>
+<td>JVM</td>
+<td>Python (Arrow-based)</td>
+</tr>
+<tr>
+<td><strong>Data Abstraction</strong></td>
+<td>DataFrame (batch thinking)</td>
+<td>Dataset (stream thinking)</td>
+</tr>
+<tr>
+<td><strong>GPU Support</strong></td>
+<td>Requires RAPIDS plugin</td>
+<td>Native support</td>
+</tr>
+<tr>
+<td><strong>PyTorch Integration</strong></td>
+<td>Cumbersome</td>
+<td>First-class citizen</td>
+</tr>
+<tr>
+<td><strong>SQL Support</strong></td>
+<td>Very mature</td>
+<td>Limited</td>
+</tr>
+<tr>
+<td><strong>Typical Users</strong></td>
+<td>Traditional big data teams</td>
+<td>AI/ML teams</td>
+</tr>
+</tbody>
+</table>
+<p>To more intuitively understand their differences, consider a concrete code comparison. Assume the task: read Parquet files, filter short text, compute text length, save results.</p>
+<p>Spark implementation:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">length</span><span class="p">,</span> <span class="n">col</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Initialize Spark Session</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"TextFilter"</span><span class="p">)</span> \
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">"spark.executor.memory"</span><span class="p">,</span> <span class="s2">"8g"</span><span class="p">)</span> \
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Read → Filter → Compute → Save</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">"s3://my-bucket/raw_data/"</span><span class="p">)</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">df_filtered</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"text"</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">)</span> \
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>                <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"text_length"</span><span class="p">,</span> <span class="n">length</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"text"</span><span class="p">)))</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="n">df_filtered</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">"s3://my-bucket/processed_data/"</span><span class="p">)</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="n">spark</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</code></pre></div>
+<p>Ray Data implementation:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">ray</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Initialize Ray (auto-detect cluster resources)</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">ray</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># Define processing function</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">def</span><span class="w"> </span><span class="nf">filter_and_compute</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">100</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">filtered</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">filtered</span><span class="p">[</span><span class="s2">"text_length"</span><span class="p">]</span> <span class="o">=</span> <span class="n">filtered</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="k">return</span> <span class="n">filtered</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="c1"># Read → Process → Save (pipeline execution)</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="n">ds</span> <span class="o">=</span> <span class="n">ray</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">"s3://my-bucket/raw_data/"</span><span class="p">)</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="n">ds_processed</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">map_batches</span><span class="p">(</span><span class="n">filter_and_compute</span><span class="p">,</span> <span class="n">batch_format</span><span class="o">=</span><span class="s2">"pandas"</span><span class="p">)</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="n">ds_processed</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">"s3://my-bucket/processed_data/"</span><span class="p">)</span>
+</code></pre></div>
+<p>As can be seen, Spark requires explicit Executor memory configuration and uses declarative DataFrame API; Ray auto-discovers resources and uses functional <code>map_batches</code> interface. Custom logic in Spark requires defining UDF with serialization overhead; Ray uses ordinary Python functions directly, more natural.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part1/%E5%9B%BE2_4_%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6%E9%80%89%E5%9E%8B%E5%86%B3%E7%AD%96%E6%A0%91.png" data-desc-position="bottom"><img alt="Figure 2-4: Compute Framework Selection Decision Tree" src="../../../images/part1/%E5%9B%BE2_4_%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6%E9%80%89%E5%9E%8B%E5%86%B3%E7%AD%96%E6%A0%91.png"></a></p>
+<p><em>Figure 2-4: Compute Framework Selection Decision Tree — Spark suits SQL/ETL scenarios, Ray suits GPU/ML scenarios</em></p>
+<p>When making actual decisions, the following logic can be used: If data processing requires GPU (e.g., calling BERT model for quality scoring), Ray Data is the more natural choice. If there are substantial SQL and BI query needs, Spark’s SQL ecosystem is more mature. If there is already extensive Spark infrastructure and code assets, migration cost must be evaluated—high cost then keep Spark, low cost consider gradually introducing Ray. If a new project, team background is decisive: traditional big data teams find Spark easier to adopt, AI/ML teams find Ray smoother.</p>
+<p>Worth mentioning: in actual large projects, Spark and Ray often coexist rather than being mutually exclusive. A common hybrid strategy: Spark handles interaction with data lake/data warehouse, including reading/writing Iceberg/Hive tables, executing SQL analysis and other ETL tasks; Ray Data handles ML-intensive processing, such as invoking large models for inference, using GPU for batch processing. The two exchange data through shared object storage (Parquet files on S3), each performing its role, complementing each other.</p>
+<h4 id="dask-a-python-native-third-option">Dask: A Python-Native Third Option<a class="headerlink" href="#dask-a-python-native-third-option" title="Permanent link">¶</a></h4>
+<p>Besides Spark and Ray, <strong>Dask</strong> is another noteworthy distributed computing framework, especially suited for teams with existing Pandas/NumPy code. Dask’s core principle is "parallelize the PyData ecosystem"—its API is nearly identical to Pandas/NumPy, allowing single-machine code to scale to clusters with minimal changes.</p>
+<p><strong>Dask’s core strengths</strong>:</p>
+<ul>
+<li><strong>Zero learning cost</strong>: <code>dask.dataframe</code> API is nearly identical to Pandas; teams don’t need to learn new syntax.</li>
+<li><strong>Flexible scheduling</strong>: Can run on a single machine with multiple cores (replacing multiprocessing) or scale to distributed clusters.</li>
+<li><strong>Integration with scientific computing ecosystem</strong>: Good integration with scikit-learn, XGBoost, and other ML libraries.</li>
+<li><strong>Low deployment barrier</strong>: No JVM required (unlike Spark), no complex cluster management needed (simpler than Ray).</li>
+</ul>
+<p><strong>Dask’s weaknesses</strong>:</p>
+<ul>
+<li><strong>Large-scale performance inferior to Spark</strong>: At PB-level data processing, Dask’s optimizer and shuffle performance are less mature than Spark.</li>
+<li><strong>No native GPU support</strong>: Unlike Ray’s native GPU scheduling (requires Dask-CUDA plugin).</li>
+<li><strong>Smaller community</strong>: Not as active as Spark and Ray communities.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">dask.dataframe</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dd</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">dask</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Dask vs Pandas: nearly identical API</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">process_with_dask</span><span class="p">(</span><span class="n">input_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="sd">"""Distributed text processing with Dask"""</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="c1"># Read (auto-partitioned, lazy execution)</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">ddf</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="c1"># Filter short text (API identical to Pandas)</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">ddf_filtered</span> <span class="o">=</span> <span class="n">ddf</span><span class="p">[</span><span class="n">ddf</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">]</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="c1"># Add computed column</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    <span class="n">ddf_filtered</span> <span class="o">=</span> <span class="n">ddf_filtered</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>        <span class="n">text_length</span><span class="o">=</span><span class="n">ddf_filtered</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>    <span class="p">)</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>    <span class="c1"># Save (triggers actual computation)</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>    <span class="n">ddf_filtered</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="c1"># Advanced: Using Dask Bag for unstructured data</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="kn">import</span><span class="w"> </span><span class="nn">dask.bag</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">db</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="k">def</span><span class="w"> </span><span class="nf">process_jsonl_with_dask</span><span class="p">(</span><span class="n">input_pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">    </span><span class="sd">"""Process JSONL files with Dask Bag"""</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>    <span class="n">bag</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">input_pattern</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">)</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>    <span class="c1"># Chained processing</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>    <span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>        <span class="n">bag</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'text'</span><span class="p">,</span> <span class="s1">''</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">)</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>        <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="o">**</span><span class="n">x</span><span class="p">,</span> <span class="s1">'text_length'</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">'text'</span><span class="p">])})</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>    <span class="p">)</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>    <span class="c1"># Convert to DataFrame and save</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>    <span class="n">result</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s1">'output/'</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Three-Framework Selection Summary</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Apache Spark</th>
+<th>Ray Data</th>
+<th>Dask</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Best Scenario</strong></td>
+<td>SQL/ETL, data lake</td>
+<td>GPU/ML inference</td>
+<td>Pandas parallelization</td>
+</tr>
+<tr>
+<td><strong>Learning Curve</strong></td>
+<td>Medium (need Spark API)</td>
+<td>Medium (need Ray API)</td>
+<td>Very low (zero barrier for Pandas users)</td>
+</tr>
+<tr>
+<td><strong>PB-level Performance</strong></td>
+<td>⭐⭐⭐</td>
+<td>⭐⭐</td>
+<td>⭐</td>
+</tr>
+<tr>
+<td><strong>GPU Support</strong></td>
+<td>Plugin</td>
+<td>Native</td>
+<td>Plugin</td>
+</tr>
+<tr>
+<td><strong>Target Audience</strong></td>
+<td>Data engineers</td>
+<td>AI/ML engineers</td>
+<td>Data scientists</td>
+</tr>
+</tbody>
+</table>
+<p>For typical LLM data engineering scenarios (TB-level text data + occasional GPU inference), the recommended combination is: <strong>Spark for ETL, Ray for ML inference, Dask for rapid prototyping and medium-scale processing</strong>.</p>
+<hr>
+<h3 id="214-vector-database-selection">2.1.4 Vector Database Selection<a class="headerlink" href="#214-vector-database-selection" title="Permanent link">¶</a></h3>
+<p>With the rise of RAG (Retrieval-Augmented Generation) and multimodal search, vector databases have become an indispensable component of the AI data stack. Vector databases are purpose-built for storing and retrieving high-dimensional vectors (embeddings), serving as the bridge between data engineering and model inference.</p>
+<h4 id="core-concepts">Core Concepts<a class="headerlink" href="#core-concepts" title="Permanent link">¶</a></h4>
+<p>The core operation of a vector database is <strong>Approximate Nearest Neighbor (ANN) search</strong>. Given a query vector <span class="arithmatex">\(q\)</span>, find the <span class="arithmatex">\(k\)</span> most similar vectors in the database. Exact search is prohibitively expensive in high-dimensional spaces, so practical systems use approximate algorithms, trading off between <strong>Recall</strong> and <strong>Query Throughput (QPS)</strong>.</p>
+<p>Mainstream ANN indexing algorithms include:</p>
+<ul>
+<li><strong>HNSW (Hierarchical Navigable Small World)</strong>: Graph-based algorithm with high recall and fast queries, but large memory footprint. Best for scenarios requiring very high recall.</li>
+<li><strong>IVF (Inverted File Index)</strong>: Clustering-based algorithm that partitions the vector space into Voronoi regions, searching only the nearest regions at query time. Good memory efficiency, suitable for large-scale data.</li>
+<li><strong>ScaNN (Scalable Nearest Neighbors)</strong>: Developed by Google, combining quantization and pruning techniques for excellent QPS-Recall balance.</li>
+</ul>
+<h4 id="vector-database-comparison">Vector Database Comparison<a class="headerlink" href="#vector-database-comparison" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Milvus</th>
+<th>Qdrant</th>
+<th>Weaviate</th>
+<th>Pinecone</th>
+<th>FAISS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>Self-hosted/Cloud</td>
+<td>Self-hosted/Cloud</td>
+<td>Self-hosted/Cloud</td>
+<td>Pure SaaS</td>
+<td>Library (not a DB)</td>
+</tr>
+<tr>
+<td><strong>Open Source</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Index Algorithms</strong></td>
+<td>HNSW, IVF, DiskANN</td>
+<td>HNSW</td>
+<td>HNSW</td>
+<td>Proprietary</td>
+<td>HNSW, IVF, PQ</td>
+</tr>
+<tr>
+<td><strong>Distributed</strong></td>
+<td>Native support</td>
+<td>Supported</td>
+<td>Supported</td>
+<td>Managed</td>
+<td>Manual sharding</td>
+</tr>
+<tr>
+<td><strong>Hybrid Search</strong></td>
+<td>Supported</td>
+<td>Supported</td>
+<td>Supported</td>
+<td>Supported</td>
+<td>Not supported</td>
+</tr>
+<tr>
+<td><strong>Suitable Scenario</strong></td>
+<td>Large-scale production</td>
+<td>Small-medium, high perf</td>
+<td>Full-stack semantic search</td>
+<td>Quick start, zero ops</td>
+<td>Research prototypes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Selection Decision Points</strong>:</p>
+<ul>
+<li><strong>QPS vs Recall tradeoff</strong>: For pre-training data deduplication, high Recall (&gt;0.99) is needed but lower QPS is tolerable; for online RAG retrieval, high QPS (&gt;1000) is needed with slightly lower Recall acceptable.</li>
+<li><strong>Data scale</strong>: Under millions of vectors, Qdrant or FAISS suffice; for tens of millions to billions, Milvus’s distributed architecture has advantages.</li>
+<li><strong>Operations capability</strong>: If the team lacks ops experience, Pinecone’s fully managed mode is the lowest-risk choice.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Milvus vector retrieval example</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pymilvus</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">connections</span><span class="p">,</span> <span class="n">Collection</span><span class="p">,</span> <span class="n">FieldSchema</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">CollectionSchema</span><span class="p">,</span> <span class="n">DataType</span><span class="p">,</span> <span class="n">utility</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">)</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Connect to Milvus</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">connections</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"default"</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">"localhost"</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s2">"19530"</span><span class="p">)</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1"># Define Schema</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="n">FieldSchema</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"id"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">DataType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="n">is_primary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">64</span><span class="p">),</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="n">FieldSchema</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"text"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">DataType</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">65535</span><span class="p">),</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    <span class="n">FieldSchema</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"embedding"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">DataType</span><span class="o">.</span><span class="n">FLOAT_VECTOR</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">768</span><span class="p">)</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="p">]</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="n">schema</span> <span class="o">=</span> <span class="n">CollectionSchema</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Document embeddings"</span><span class="p">)</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="c1"># Create Collection</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="p">(</span><span class="s2">"documents"</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="c1"># Create HNSW index (high recall configuration)</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="n">index_params</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>    <span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"COSINE"</span><span class="p">,</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>    <span class="s2">"index_type"</span><span class="p">:</span> <span class="s2">"HNSW"</span><span class="p">,</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>    <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>        <span class="s2">"M"</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>               <span class="c1"># Connections per node; higher = better recall but more memory</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>        <span class="s2">"efConstruction"</span><span class="p">:</span> <span class="mi">256</span>  <span class="c1"># Search width during construction</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>    <span class="p">}</span>
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="p">}</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="n">collection</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="s2">"embedding"</span><span class="p">,</span> <span class="n">index_params</span><span class="p">)</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="c1"># Search</span>
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="n">collection</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>    <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">query_embedding</span><span class="p">],</span>
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>    <span class="n">anns_field</span><span class="o">=</span><span class="s2">"embedding"</span><span class="p">,</span>
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>    <span class="n">param</span><span class="o">=</span><span class="p">{</span><span class="s2">"metric_type"</span><span class="p">:</span> <span class="s2">"COSINE"</span><span class="p">,</span> <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"ef"</span><span class="p">:</span> <span class="mi">128</span><span class="p">}},</span>
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>    <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>    <span class="n">output_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span>
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a><span class="p">)</span>
+</code></pre></div>
+<h4 id="object-storage-high-throughput-read-optimization">Object Storage High-Throughput Read Optimization<a class="headerlink" href="#object-storage-high-throughput-read-optimization" title="Permanent link">¶</a></h4>
+<p>In GPU training scenarios, data loading speed often becomes the bottleneck. When training data is stored on S3/MinIO, network I/O latency and throughput limits can leave GPUs in a "starving" state—compute units waiting for data arrival. Key optimization strategies include:</p>
+<p><strong>Prefetching and pipelining</strong>: While GPU processes the current batch, CPU prefetches next batch data, overlapping compute and I/O.</p>
+<p><strong>Local SSD caching</strong>: Cache frequently accessed hot data on local NVMe SSD. First read pulls from S3, subsequent reads hit local cache. Tools like Alluxio and JuiceFS provide transparent caching layers.</p>
+<p><strong>Multi-threaded concurrent reads</strong>: S3 supports Range Requests; multiple concurrent segment requests can fully utilize network bandwidth.</p>
+<p><strong>Data format optimization</strong>: Use columnar formats (Parquet) with column pruning to load only training-needed columns; use Arrow IPC format for zero-copy reads.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">ray</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">optimized_data_loading</span><span class="p">(</span><span class="n">s3_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">):</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="sd">"""Optimized S3 data loading with Ray parallel prefetch"""</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="c1"># Use Ray Data streaming reads with automatic prefetch management</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">ds</span> <span class="o">=</span> <span class="n">ray</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>        <span class="n">s3_path</span><span class="p">,</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="n">parallelism</span><span class="o">=</span><span class="n">num_workers</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span>  <span class="c1"># Prefetch multiplier</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"input_ids"</span><span class="p">,</span> <span class="s2">"attention_mask"</span><span class="p">],</span>  <span class="c1"># Column pruning</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="p">)</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="c1"># Pipelining: read and process simultaneously</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">pipe</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">iter_batches</span><span class="p">(</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>        <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>        <span class="n">prefetch_batches</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>  <span class="c1"># Prefetch 4 batches</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>        <span class="n">local_shuffle_buffer_size</span><span class="o">=</span><span class="mi">10000</span>  <span class="c1"># Local shuffle</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    <span class="p">)</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    <span class="k">return</span> <span class="n">pipe</span>
+</code></pre></div>
+<h2 id="22-data-format-and-io-optimization">2.2 Data Format and I/O Optimization<a class="headerlink" href="#22-data-format-and-io-optimization" title="Permanent link">¶</a></h2>
+<p>With storage and compute selected, next is choosing data serialization format. Format selection may seem a technical detail but actually directly affects storage cost, read speed, and tool compatibility. Compression ratio differences between formats can reach tenfold; columnar vs row format query performance differences are equally huge; and not all frameworks support all formats.</p>
+<h3 id="221-mainstream-data-format-comparison">2.2.1 Mainstream Data Format Comparison<a class="headerlink" href="#221-mainstream-data-format-comparison" title="Permanent link">¶</a></h3>
+<p><strong>Parquet</strong> is the de facto standard for large-scale structured data. It uses columnar storage—data from the same column is physically contiguous—bringing two significant advantages: First, it facilitates compression—same-type data gathered together achieves higher compression ratio; second, it facilitates vectorized reads, when querying specific columns there's no need to scan the entire file. Parquet files are self-describing with Schema embedded in the file, no external metadata definition needed. It also supports nested types for JSON-like complex structures and native directory partitioning. Parquet is the preferred format for pre-training corpus storage, especially for analysis queries requiring column filtering; works well with Spark, DuckDB, Pandas, and other tools.</p>
+<p><strong>JSONL</strong> (JSON Lines) is another common format, each line an independent JSON object. Its biggest advantage is human readability—can directly view content with <code>head</code>, <code>cat</code>, and other commands. It also supports streaming processing, can read line by line without loading entire file to memory. Schema is very flexible, each line can have different field structure. JSONL is especially suitable for SFT instruction data, as this type of data requires frequent manual viewing and editing. It's also commonly used for data exchange and small-scale datasets (under 10GB). However, JSONL's disadvantages are also clear: without compression volume is three to five times Parquet, read speed is slow (must parse each line's JSON string).</p>
+<p><strong>WebDataset</strong> is a format spearheaded by NVIDIA, designed specifically for image-text, video, and other multimodal data. Its core idea is packaging related files (e.g., one image and its caption) into TAR archives. This design supports streaming reads—can sequentially read content without decompression; also very friendly to distributed processing—each TAR is an independent data shard. WebDataset is the best choice for LAION-style image-text pair datasets and video datasets, suitable for any multimodal data requiring multi-file association.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Parquet</th>
+<th>JSONL</th>
+<th>WebDataset</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Storage Efficiency</strong></td>
+<td>High (columnar compression)</td>
+<td>Low (text redundancy)</td>
+<td>Medium (no compression but compact)</td>
+</tr>
+<tr>
+<td><strong>Read Speed</strong></td>
+<td>Fast (vectorized)</td>
+<td>Slow (line-by-line parsing)</td>
+<td>Medium (sequential read)</td>
+</tr>
+<tr>
+<td><strong>Human Readable</strong></td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Multimodal Support</strong></td>
+<td>Weak (requires encoding)</td>
+<td>Weak</td>
+<td>Strong (native support)</td>
+</tr>
+<tr>
+<td><strong>Typical Use Case</strong></td>
+<td>Pre-training text corpus</td>
+<td>SFT instruction data</td>
+<td>Image-text pairs, video data</td>
+</tr>
+</tbody>
+</table>
+<h3 id="222-compression-algorithm-selection">2.2.2 Compression Algorithm Selection<a class="headerlink" href="#222-compression-algorithm-selection" title="Permanent link">¶</a></h3>
+<p>Regardless of format choice, compression algorithm significantly affects storage cost and read speed. Correct compression strategy requires finding balance between space efficiency and time efficiency.</p>
+<p>Snappy is the most common default choice. Its compression ratio is moderate but compression and decompression speeds are both fast, suitable for read-write balanced scenarios. LZ4 pursues extreme read speed—decompression performance even faster than Snappy, slightly lower compression ratio, suitable for read latency sensitive scenarios. Zstandard (ZSTD) provides highest compression ratio, especially at high levels (e.g., level 19), but compression speed is slower, suitable for storage cost sensitive archival scenarios. Gzip is the most compatible choice—almost all tools support it—suitable for scenarios requiring data exchange with external systems.</p>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Compression Ratio</th>
+<th>Compression Speed</th>
+<th>Decompression Speed</th>
+<th>Typical Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Snappy</strong></td>
+<td>Medium</td>
+<td>Fast</td>
+<td>Fast</td>
+<td>Default choice, read-write balanced</td>
+</tr>
+<tr>
+<td><strong>LZ4</strong></td>
+<td>Lower</td>
+<td>Very fast</td>
+<td>Very fast</td>
+<td>Extreme read speed</td>
+</tr>
+<tr>
+<td><strong>ZSTD</strong></td>
+<td>High</td>
+<td>Medium</td>
+<td>Fast</td>
+<td>Storage cost sensitive</td>
+</tr>
+<tr>
+<td><strong>Gzip</strong></td>
+<td>High</td>
+<td>Slow</td>
+<td>Medium</td>
+<td>High compatibility requirement</td>
+</tr>
+</tbody>
+</table>
+<p>In practice, a layered strategy can be adopted: cold data (archived storage, rarely read long-term) use ZSTD level 19 for maximum compression ratio; hot data (frequently read and processed) use Snappy or LZ4 to reduce decompression overhead; network transfer scenarios use ZSTD level 3 for balance between compression ratio and speed.</p>
+<h3 id="223-io-optimization-practical-tips">2.2.3 I/O Optimization Practical Tips<a class="headerlink" href="#223-io-optimization-practical-tips" title="Permanent link">¶</a></h3>
+<p>In large-scale data processing, I/O is often the performance bottleneck. The following three tips can significantly improve I/O efficiency.</p>
+<p><strong>Reasonable file size settings</strong> is the first key point. A common mistake is generating many small files—e.g., 100,000 files of 1MB each. This causes huge metadata overhead and extremely slow S3 ListObjects operations. The correct approach is consolidating data into fewer large files, each Parquet file should be 128MB to 1GB. Too small causes metadata bloat and insufficient parallelism; too large affects task load balancing.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Wrong: generate many small files</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">"s3://bucket/data/"</span><span class="p">,</span> <span class="n">maxRecordsPerFile</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Correct: generate fewer large files (recommend 128MB - 1GB)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">df</span><span class="o">.</span><span class="n">coalesce</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">"s3://bucket/data/"</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Partition Pruning</strong> is the second important tip. By partitioning by specific columns when writing, only needed partitions need to be scanned when reading, avoiding full table scan. Partition columns should be low cardinality (e.g., date, language, data source); avoid high cardinality columns (e.g., user ID) or you'll get massive small directories.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Partition by date when writing</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">partitionBy</span><span class="p">(</span><span class="s2">"date"</span><span class="p">)</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">"s3://bucket/data/"</span><span class="p">)</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Only scan needed partitions when reading</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">"s3://bucket/data/date=2024-01-01/"</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Column Pruning</strong> is the third tip. The biggest advantage of columnar storage is only reading needed columns. Ensure column selection happens early in query statements, avoid reading all columns then filtering.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Wrong: read all columns</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">"s3://bucket/data/"</span><span class="p">)</span>  <span class="c1"># If 100 columns, all loaded</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Correct: only read needed columns</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">"s3://bucket/data/"</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">"length"</span><span class="p">)</span>
+</code></pre></div>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part1/%E5%9B%BE2_5_IO%E4%BC%98%E5%8C%96%E6%95%88%E6%9E%9C%E5%AF%B9%E6%AF%94.png" data-desc-position="bottom"><img alt="Figure 2-5: I/O Optimization Effect Comparison" src="../../../images/part1/%E5%9B%BE2_5_IO%E4%BC%98%E5%8C%96%E6%95%88%E6%9E%9C%E5%AF%B9%E6%AF%94.png"></a></p>
+<p><em>Figure 2-5: I/O Optimization Effect Comparison — Partition pruning + column pruning can reduce query time by 91% and data scan volume by 92%</em></p>
+<p>Combined use of these three tips can reduce query time from 55 seconds to 5 seconds, data scan volume from 100GB to 8GB—very significant effect.</p>
+<hr>
+<h2 id="23-data-version-control-dataops">2.3 Data Version Control (DataOps)<a class="headerlink" href="#23-data-version-control-dataops" title="Permanent link">¶</a></h2>
+<p>Code has Git, machine learning models have MLflow—so how do you version control TB-level datasets? This is an often overlooked but extremely important question in LLM data engineering.</p>
+<h3 id="231-why-does-data-need-version-control">2.3.1 Why Does Data Need Version Control?<a class="headerlink" href="#231-why-does-data-need-version-control" title="Permanent link">¶</a></h3>
+<p>Consider this scenario: a model trained six months ago performed particularly well, and the boss wants reproduction. You search through servers and find the training data was already cleaned up—"Who told you to delete it?" "It took 10TB!" The data processing scripts are still there, but dependent upstream data has changed. Re-running the processing flow yields different results. Conclusion: cannot reproduce.</p>
+<p>This scenario is common in actual work. Data version control exists precisely to solve such problems. Its core value is reflected in four aspects: Reproducibility—exactly restore data state at any moment; Traceability—track complete chain from raw input to final output; Collaboration safety—multiple people modifying data simultaneously won't conflict; Rollback capability—quickly return to previous version when data issues are discovered.</p>
+<h3 id="232-tool-selection-dvc-vs-lakefs">2.3.2 Tool Selection: DVC vs LakeFS<a class="headerlink" href="#232-tool-selection-dvc-vs-lakefs" title="Permanent link">¶</a></h3>
+<p>The two most mainstream data version control tools today are DVC and LakeFS, with distinctly different design philosophies.</p>
+<p><strong>DVC (Data Version Control)</strong> design philosophy is "Git for Data"—making data version control experience as close to Git as possible. Its working principle: data files themselves are stored in remote storage (S3/GCS), Git repo only stores data metadata files (<code>.dvc</code> files), actual data synced via <code>dvc push/pull</code> commands.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Initialize DVC</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>dvc<span class="w"> </span>init
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># Add dataset to version control</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>dvc<span class="w"> </span>add<span class="w"> </span>data/training_corpus.parquet
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="c1"># Generates data/training_corpus.parquet.dvc and .gitignore</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="c1"># Commit to Git</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>git<span class="w"> </span>add<span class="w"> </span>data/training_corpus.parquet.dvc<span class="w"> </span>.gitignore
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"Add training corpus v1"</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="c1"># Push data to remote storage</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>dvc<span class="w"> </span>push
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="c1"># Switch to historical version</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>git<span class="w"> </span>checkout<span class="w"> </span>v1_0
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>dvc<span class="w"> </span>checkout<span class="w">  </span><span class="c1"># Sync corresponding version data</span>
+</code></pre></div>
+<p>DVC's advantage is seamless integration with existing Git workflow, gentle learning curve, ML pipeline definition support (via <code>dvc.yaml</code>), suitable for file-level version control scenarios. Its disadvantage is each dataset needs separate <code>.dvc</code> file management, no support for fine-grained "table-level" operations (e.g., rolling back a partition).</p>
+<p><strong>LakeFS</strong> design philosophy is "Git for Data Lake"—providing Git-style branches and commits on top of object storage. Its working principle: LakeFS acts as object storage proxy layer, all read/write requests go through LakeFS S3 gateway, system supports Branch, Commit, Merge and other Git-style operations.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Create development branch</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>lakectl<span class="w"> </span>branch<span class="w"> </span>create<span class="w"> </span>lakefs://repo/dev<span class="w"> </span>--source<span class="w"> </span>lakefs://repo/main
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Modify data on dev branch (via S3 protocol)</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>new_data.parquet<span class="w"> </span>s3://lakefs-repo/dev/data/
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># Commit changes</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>lakectl<span class="w"> </span>commit<span class="w"> </span>lakefs://repo/dev<span class="w"> </span>-m<span class="w"> </span><span class="s2">"Add new training data"</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="c1"># Merge to main branch after validation</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>lakectl<span class="w"> </span>merge<span class="w"> </span>lakefs://repo/dev<span class="w"> </span>lakefs://repo/main
+</code></pre></div>
+<p>LakeFS's core advantage is zero-copy branching—creating branches doesn't copy data, only records metadata, crucial for TB-level data lakes. It's fully S3 compatible; existing tools (Spark/Ray) work without modification. Its disadvantage is requiring deployment of additional service (LakeFS Server), slightly steeper learning curve than DVC.</p>
+<p><strong>Pachyderm</strong> is a third noteworthy data version control tool, unique in that it <strong>integrates data version control with data pipelines</strong>. Pachyderm is built on Kubernetes, where each data processing step runs in a container, and the system automatically tracks the correspondence between input data, processing code, and output data.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Pachyderm workflow example</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="c1"># Create data repository (similar to Git repo)</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>pachctl<span class="w"> </span>create<span class="w"> </span>repo<span class="w"> </span>raw_data
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="c1"># Upload data (auto-versioned)</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>pachctl<span class="w"> </span>put<span class="w"> </span>file<span class="w"> </span>raw_data@master:/corpus.parquet<span class="w"> </span>-f<span class="w"> </span>corpus.parquet
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="c1"># Create processing pipeline (declarative YAML)</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>pachctl<span class="w"> </span>create<span class="w"> </span>pipeline<span class="w"> </span>-f<span class="w"> </span>cleaning_pipeline.json
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="c1"># Pipeline defines: input repo, processing container, output repo</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="c1"># Pachyderm automatically tracks the complete input→processing→output lineage</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="c1"># View data lineage</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>pachctl<span class="w"> </span>inspect<span class="w"> </span>commit<span class="w"> </span>cleaned_data@master
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="c1"># Output shows which commit from raw_data, through which pipeline, generated this data</span>
+</code></pre></div>
+<p>Pachyderm’s core advantage is <strong>automated lineage tracking</strong>—when input data is updated, downstream pipelines automatically trigger incremental processing, with the system naturally recording complete data lineage relationships. This is very valuable in LLM projects that require frequent iteration of data processing flows. Its downside is requiring a Kubernetes cluster (highest deployment complexity) and the steepest learning curve.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>DVC</th>
+<th>LakeFS</th>
+<th>Pachyderm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Design Philosophy</strong></td>
+<td>Git extension for data</td>
+<td>Version layer for object storage</td>
+<td>Data pipeline + version control</td>
+</tr>
+<tr>
+<td><strong>Granularity</strong></td>
+<td>File-level</td>
+<td>Object-level (finer)</td>
+<td>File/directory-level</td>
+</tr>
+<tr>
+<td><strong>Branch Overhead</strong></td>
+<td>Need to copy .dvc files</td>
+<td>Zero-copy</td>
+<td>Zero-copy</td>
+</tr>
+<tr>
+<td><strong>S3 Compatibility</strong></td>
+<td>Requires dvc commands</td>
+<td>Native S3 API</td>
+<td>Native S3 API</td>
+</tr>
+<tr>
+<td><strong>Lineage Tracking</strong></td>
+<td>Manual</td>
+<td>Manual/integration</td>
+<td><strong>Automatic</strong></td>
+</tr>
+<tr>
+<td><strong>Incremental Processing</strong></td>
+<td>Manual</td>
+<td>Manual</td>
+<td><strong>Auto-triggered</strong></td>
+</tr>
+<tr>
+<td><strong>Deployment Complexity</strong></td>
+<td>Low (CLI tool)</td>
+<td>Medium (requires server)</td>
+<td>High (requires Kubernetes)</td>
+</tr>
+<tr>
+<td><strong>Suitable Scenario</strong></td>
+<td>ML experiment management, small data</td>
+<td>Data lake management, large-scale data</td>
+<td>End-to-end data pipelines</td>
+</tr>
+</tbody>
+</table>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part1/%E5%9B%BE2_6_DVC%E4%B8%8ELakeFS%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94.png" data-desc-position="bottom"><img alt="Figure 2-6: DVC vs LakeFS Architecture Comparison" src="../../../images/part1/%E5%9B%BE2_6_DVC%E4%B8%8ELakeFS%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94.png"></a></p>
+<p><em>Figure 2-6: DVC vs LakeFS Architecture Comparison — DVC provides file-level version control based on Git, LakeFS provides zero-copy object-level version control with branching</em></p>
+<p>Selection recommendations: If data volume under 1TB, team familiar with Git workflow, mainly for ML experiment management, choose <strong>DVC</strong>; if data volume TB-level or above, need data lake-level version control, multiple teams operating in parallel, choose <strong>LakeFS</strong>; if you need end-to-end data pipeline management and the team has Kubernetes operations capability, choose <strong>Pachyderm</strong>.</p>
+<h3 id="233-data-lineage-tracking">2.3.3 Data Lineage Tracking<a class="headerlink" href="#233-data-lineage-tracking" title="Permanent link">¶</a></h3>
+<p>Version control solves "what is the data"; lineage tracking solves "where did the data come from." Lineage tracking records: which upstream data was this data derived from? What processing scripts and parameters were used? When and by whom was the processing executed?</p>
+<p>There are multiple approaches to implement lineage tracking. If using Spark, automated lineage tracking can be obtained through OpenLineage integration. If using orchestration tools like Airflow, Marquez is a good choice. For enterprise data governance needs, DataHub and Apache Atlas provide more complete functionality. For simple scenarios, manual instrumentation to generate metadata files is a lightweight solution:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"v2_0"</span><span class="p">,</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="s2">"created_at"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="s2">"created_by"</span><span class="p">:</span> <span class="s2">"data-pipeline-v3_2"</span><span class="p">,</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    <span class="s2">"inputs"</span><span class="p">:</span> <span class="p">[</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>        <span class="p">{</span><span class="s2">"path"</span><span class="p">:</span> <span class="s2">"s3://bucket/raw/crawl_2024_01.parquet"</span><span class="p">,</span> <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"abc123"</span><span class="p">},</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>        <span class="p">{</span><span class="s2">"path"</span><span class="p">:</span> <span class="s2">"s3://bucket/raw/crawl_2024_02.parquet"</span><span class="p">,</span> <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"def456"</span><span class="p">}</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    <span class="p">],</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>    <span class="s2">"processing"</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>        <span class="s2">"script"</span><span class="p">:</span> <span class="s2">"cleaning_pipeline.py"</span><span class="p">,</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>        <span class="s2">"git_commit"</span><span class="p">:</span> <span class="s2">"789xyz"</span><span class="p">,</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>        <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"min_length"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"dedup_threshold"</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">}</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>    <span class="p">},</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>    <span class="s2">"outputs"</span><span class="p">:</span> <span class="p">[</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>        <span class="p">{</span><span class="s2">"path"</span><span class="p">:</span> <span class="s2">"s3://bucket/processed/clean_2024_q1.parquet"</span><span class="p">,</span> <span class="s2">"records"</span><span class="p">:</span> <span class="mi">1000000</span><span class="p">}</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>    <span class="p">]</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="p">}</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"clean_2024_q1.metadata.json"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<hr>
+<h2 id="24-common-mistakes-and-pitfall-guide">2.4 Common Mistakes and Pitfall Guide<a class="headerlink" href="#24-common-mistakes-and-pitfall-guide" title="Permanent link">¶</a></h2>
+<p>In the infrastructure selection process, even experienced engineers easily make some typical mistakes. Here we summarize three most common issues, hoping readers can take heed.</p>
+<p><strong>The first common mistake is premature optimization and over-engineering.</strong> Some teams have only five people and 500GB of data, yet build a "full-stack" infrastructure of Spark cluster + Iceberg + Airflow + LakeFS. Result: 80% of time spent maintaining infrastructure, only 20% on actual data processing. The correct approach is start simple, evolve on demand. For 500GB data volume, single machine + Parquet + DVC is completely sufficient; consider distributed solutions when data volume grows to 10TB.</p>
+<p><strong>The second common mistake is blindly chasing new technology while ignoring ecosystem.</strong> Some teams read a few blog posts and decide to abandon Spark entirely for Ray, only to find company Hive tables and Iceberg tables cannot be read directly. Finally need to write substantial data conversion scripts, increasing data consistency risk. The correct approach is fully evaluate existing data assets and upstream-downstream dependencies before technical selection. Technical selection is not a single-point decision but systems engineering—overall ecosystem compatibility must be considered.</p>
+<p><strong>The third common mistake is overly aggressive storage cost optimization.</strong> Some teams compress all data to ZSTD level 22 and store in S3 Glacier Deep Archive to save storage costs. Result: every time data needs to be read, wait 12 hours for thaw, decompression takes another 4 hours, model training has to be scheduled a week in advance. The correct approach is distinguish cold and hot data. Actively processed data goes in S3 Standard + Snappy compression; archival data unused for six months or more goes to Glacier. Storage cost and access efficiency need to find a balance point.</p>
+<hr>
+<h2 id="25-chapter-summary">2.5 Chapter Summary<a class="headerlink" href="#25-chapter-summary" title="Permanent link">¶</a></h2>
+<p>This chapter systematically introduced AI-native data stack technology selection, covering five core dimensions: storage, compute, vector databases, format, and version control.</p>
+<p>For storage selection: object storage (S3/MinIO) is the foundation of modern data stack; data lake formats (Iceberg/Hudi/Delta) solve ACID transactions, time travel, and other issues. For LLM scenarios, the recommended combination is S3 + Iceberg, because Iceberg has the best engine neutrality. For GPU training scenarios, I/O bottlenecks need optimization through prefetch pipelining, local SSD caching, and concurrent reads.</p>
+<p>For compute selection: Spark is known for maturity and stability and powerful SQL ecosystem, suitable for traditional big data teams; Ray Data is Python-native AI-friendly framework, suitable for ML/AI teams; Dask offers a zero-learning-curve option for teams with existing Pandas code. The three are not mutually exclusive—can be mixed according to needs.</p>
+<p>For vector databases: Milvus, Qdrant, Weaviate, and other systems provide foundational capabilities for RAG and semantic retrieval. Selection requires balancing QPS and Recall based on data scale and operations capability.</p>
+<p>For data format: Parquet is the default for structured data, JSONL suitable for small-scale data requiring manual viewing, WebDataset is the best format for multimodal data. Compression algorithms and I/O optimization tips can significantly affect performance and cost.</p>
+<p>For version control: DVC is lightweight and tightly integrated with Git, suitable for ML experiments; LakeFS provides data lake-level version control, suitable for large-scale production environments; Pachyderm integrates version control with data pipelines, suitable for teams needing end-to-end lineage tracking.</p>
+<p>The core principle throughout: start simple, evolve on demand, avoid over-engineering. Technical selection should serve business goals, not pursue technical advancement for its own sake.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part1/%E5%9B%BE2_7_%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E9%80%89%E5%9E%8B%E9%80%9F%E6%9F%A5%E8%A1%A8.png" data-desc-position="bottom"><img alt="Figure 2-7: Infrastructure Selection Quick Reference" src="../../../images/part1/%E5%9B%BE2_7_%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E9%80%89%E5%9E%8B%E9%80%9F%E6%9F%A5%E8%A1%A8.png"></a></p>
+<p><em>Figure 2-7: Data Infrastructure Selection Quick Reference — Four-quadrant decision guide for storage, table format, compute, and version control</em></p>
+<hr>
+<h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">¶</a></h2>
+<p>For readers wishing to deepen understanding of this chapter's content, the following resources are worth referencing:</p>
+<p>Ray Data official documentation (docs.ray.io) provides Ray Data best practices and detailed API reference. Apache Iceberg official documentation (iceberg.apache.org) contains table format detailed specifications and engine integration guides. DVC official tutorial (dvc.org/doc) is a good starting point for quick start. LakeFS official documentation (docs.lakefs.io) details architecture design and deployment options.</p>
+<p>Databricks' published data lake selection white paper provides in-depth comparative analysis of Delta, Iceberg, and Hudi formats. Uber's published "Scaling MLOps at Uber" article introduces how to manage ML data at PB scale. These materials can help readers build more comprehensive technical perspective.</p>
+<hr>
+<h2 id="preview-of-next-chapter">Preview of Next Chapter<a class="headerlink" href="#preview-of-next-chapter" title="Permanent link">¶</a></h2>
+<p>In the next chapter <em>Data Acquisition and Collection</em>, we will formally enter the pre-training data processing flow. You will learn how to obtain and parse open-source datasets like Common Crawl and The Pile, how to use Trafilatura to build high-performance web page parsers, and specialized strategies for crawling code and papers from GitHub and ArXiv.</p>
+<p>Take this question into the next chapter: Common Crawl adds 3-5PB of data monthly—how do you efficiently extract the content you need from it?</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

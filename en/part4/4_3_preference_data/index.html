@@ -1,0 +1,1502 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="大模型数据工程：架构、算法及项目实战">
+      
+      
+        <meta name="author" content="ustc">
+      
+      
+        <link rel="canonical" href="https://datascale-ai.github.io/data_engineering_book/en/part4/4_3_preference_data/">
+      
+      
+      
+      
+        
+          <link rel="alternate" href="/data_engineering_book/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+          <link rel="alternate" href="../../../ja/part4/4_3_preference_data/" hreflang="ja">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Chapter 11: Human Preference Data (RLHF/DPO) - Data Engineering for Large Models: Architecture, Algorithms &amp; Projects</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-11-human-preference-data-rlhfdpo" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../" title="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" class="md-header__button md-logo" aria-label="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Engineering for Large Models: Architecture, Algorithms &amp; Projects
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Chapter 11: Human Preference Data (RLHF/DPO)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="/data_engineering_book/" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ja/part4/4_3_preference_data/" hreflang="ja" class="md-select__link">
+              日本語
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" class="md-nav__button md-logo" aria-label="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    Data Engineering for Large Models: Architecture, Algorithms &amp; Projects
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translation-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chinese 2026 Edition Status
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#111-concepts-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 Concepts &amp; Principles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.1 Concepts &amp; Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1111-preference-data-format-the-contrastive-philosophy-of-chosen-vs-rejected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1.1 Preference Data Format: The Contrastive Philosophy of Chosen vs Rejected
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1112-the-mathematical-collapse-from-rlhf-to-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1.2 The Mathematical Collapse from RLHF to DPO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1113-the-mathematical-logic-of-negative-samples-why-plausible-errors-are-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1.3 The Mathematical Logic of Negative Samples: Why "Plausible Errors" Are Needed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#112-the-alchemy-of-decoding-parameters-inducing-high-quality-negative-samples-via-hyperparameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 The Alchemy of Decoding Parameters: Inducing High-Quality Negative Samples via Hyperparameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#113-domain-specific-data-construction-frameworks-for-complex-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 Domain-Specific Data Construction Frameworks for Complex Tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.3 Domain-Specific Data Construction Frameworks for Complex Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1131-the-deep-game-of-safety-alignment-and-adversarial-jailbreaks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.1 The Deep Game of Safety Alignment and Adversarial Jailbreaks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1132-mathematical-reasoning-error-injection-rise-and-process-reward-models-prm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.2 Mathematical Reasoning: Error Injection (RISE) and Process Reward Models (PRM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1133-code-generation-execution-feedback-and-asymmetric-model-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.3 Code Generation: Execution Feedback and Asymmetric Model Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1134-agents-and-tool-calling-trajectory-pruning-and-deadlock-breaking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3.4 Agents and Tool Calling: Trajectory Pruning and Deadlock Breaking
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#114-annotation-noise-llm-as-a-judge-and-automated-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 Annotation Noise, LLM-as-a-Judge, and Automated Pipelines
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.4 Annotation Noise, LLM-as-a-Judge, and Automated Pipelines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1141-quantifying-human-subjective-noise-and-the-kappa-coefficient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4.1 Quantifying Human Subjective Noise and the Kappa Coefficient
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1142-rlaif-and-llm-as-a-judge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4.2 RLAIF and LLM-as-a-Judge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1143-pairwise-reward-model-pairrm-and-self-reward-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4.3 Pairwise Reward Model (PairRM) and Self-Reward Mechanisms
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#115-pathology-analysis-and-algorithm-correction-of-preference-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 Pathology Analysis and Algorithm Correction of Preference Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.5 Pathology Analysis and Algorithm Correction of Preference Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1151-length-bias-and-vocabulary-exploitation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5.1 Length Bias and Vocabulary Exploitation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1152-probability-degradation-and-nll-anchoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5.2 Probability Degradation and NLL Anchoring
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#116-engineering-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6 Engineering Implementation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.6 Engineering Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1161-multi-candidate-generation-constructing-a-decision-space-rather-than-a-single-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6.1 Multi-candidate Generation: Constructing a "Decision Space" rather than a Single Answer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.6.1 Multi-candidate Generation: Constructing a &quot;Decision Space&quot; rather than a Single Answer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#candidate-generation-module-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Candidate Generation Module Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#engineering-trade-offs-in-generation-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engineering Trade-offs in Generation Paths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pro Tips
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1162-llm-as-a-judge-structuring-the-discriminative-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6.2 LLM-as-a-Judge: Structuring the Discriminative Process
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.6.2 LLM-as-a-Judge: Structuring the Discriminative Process">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#judge-prompt-construction-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Judge Prompt Construction Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#judge-invocation-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Judge Invocation Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#engineering-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engineering Considerations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pro Tips
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1163-preference-pair-construction-balancing-gradient-density-and-convergence-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6.3 Preference Pair Construction: Balancing Gradient Density and Convergence Speed
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.6.3 Preference Pair Construction: Balancing Gradient Density and Convergence Speed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extreme-pair-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extreme Pair Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#margin-pair-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Margin Pair Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pro Tips
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1164-automated-bias-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6.4 Automated Bias Detection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.6.4 Automated Bias Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#length-bias-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Length Bias Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-refusal-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template Refusal Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pro Tips
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1165-the-automated-closed-loop-of-constitutional-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6.5 The Automated Closed Loop of Constitutional AI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.6.5 The Automated Closed Loop of Constitutional AI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#critique-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critique Phase
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#revision-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Revision Phase
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#engineering-risks-and-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engineering Risks and Controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pro Tips
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1166-data-versioning-and-traceability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6.6 Data Versioning and Traceability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.6.6 Data Versioning and Traceability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pro Tips
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#117-performance-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7 Performance &amp; Evaluation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#118-pitfalls-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8 Pitfalls &amp; Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#119-chapter-summary-and-extended-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.9 Chapter Summary and Extended Reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="chapter-11-human-preference-data-rlhfdpo">Chapter 11: Human Preference Data (RLHF/DPO)<a class="headerlink" href="#chapter-11-human-preference-data-rlhfdpo" title="Permanent link">¶</a></h1>
+<h2 id="chapter-summary">Chapter Summary<a class="headerlink" href="#chapter-summary" title="Permanent link">¶</a></h2>
+<p>If SFT (Supervised Fine-Tuning) is about letting the model "learn to speak", acquiring basic language and task-processing capabilities, then preference alignment (RLHF/DPO) is about making the model "speak the right things", ensuring its outputs align with human values, ethical standards, and specific business preferences. This chapter will deeply analyze the core of the DPO (Direct Preference Optimization) algorithm—the sample pairs composed of Chosen and Rejected responses. We will explore how to extract high-quality signals from the chaos of human subjective judgments, which involves the inter-annotator agreement (IAA) management of annotation platforms and a profound understanding of human cognitive biases. Furthermore, we will highlight the cutting-edge RLAIF (Constitutional AI) technology, which utilizes AI to replace humans in preference scoring based on preset "constitutional" principles. This technology is fundamentally changing the cost structure and efficiency of large-scale alignment.</p>
+<p><strong>Learning Objectives:</strong>
+* <strong>Deeply master</strong> the standard data format for constructing DPO triplets (Prompt, Chosen, Rejected), and understand the contrastive learning principles and mathematical significance behind them.
+* <strong>Thoroughly understand</strong> the psychological and statistical sources of annotation noise, be able to calculate IAA (Inter-Annotator Agreement), and use Cohen's Kappa coefficient to clean low-quality data.
+* <strong>Engineering implementation</strong> of the Critique-Revision loop in Constitutional AI, utilizing the characteristic that "discriminators" are stronger than "generators" to automatically generate large-scale Harmless preference data.</p>
+<p><strong>Scenario Introduction:</strong>
+"Your SFT model is very obedient, so obedient that when someone asks 'how to make poison', it details the chemical formula. This is an absolute safety red line, known in the industry as a 'Jailbreak'. You need the model to learn to 'reject' malicious instructions while remaining 'helpful' for normal ones. However, hiring human annotators to read thousands of toxic messages is not only astronomically expensive but can also cause 'Psychological Distress' to the annotators, which is ethically unsustainable. Is there a way for the AI to read these toxic messages itself and tell itself: 'Answering like this is wrong'? This is the inevitable path from Human Feedback to AI Feedback."</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part4/%E5%9B%BE11_1_%E4%BA%BA%E7%B1%BB%E5%81%8F%E5%A5%BD%E7%A4%BA%E6%84%8F%E5%9B%BE.png" data-desc-position="bottom"><img alt="Figure 11-1: Schematic Diagram of Human Preferences" src="../../../images/part4/%E5%9B%BE11_1_%E4%BA%BA%E7%B1%BB%E5%81%8F%E5%A5%BD%E7%A4%BA%E6%84%8F%E5%9B%BE.png"></a>
+<em>Figure 11-1: Schematic Diagram of Human Preferences</em></p>
+<h2 id="111-concepts-principles">11.1 Concepts &amp; Principles<a class="headerlink" href="#111-concepts-principles" title="Permanent link">¶</a></h2>
+<h3 id="1111-preference-data-format-the-contrastive-philosophy-of-chosen-vs-rejected">11.1.1 Preference Data Format: The Contrastive Philosophy of Chosen vs Rejected<a class="headerlink" href="#1111-preference-data-format-the-contrastive-philosophy-of-chosen-vs-rejected" title="Permanent link">¶</a></h3>
+<p>Whether it is the traditional training of a Reward Model (PPO route) or the currently popular direct optimization of the Policy (DPO route), the core data unit is the "preference pair", whose standard structure is a triplet <span class="arithmatex">\((x, y_w, y_l)\)</span>. Here, <span class="arithmatex">\(x\)</span> represents the prompt, <span class="arithmatex">\(y_w\)</span> is the Chosen (winner/preferred response), which usually represents safe, helpful, and honest output; and <span class="arithmatex">\(y_l\)</span> is the Rejected (loser/rejected response), which may contain hallucinations, bias, harmful information, or simply be of poorer quality.</p>
+<p>Many developers have a misconception that simply showing the model good data (Chosen) is enough; this is actually the one-way thinking of SFT. In the alignment phase, <strong>"knowing what is wrong" and "knowing what is right" are mathematically of equal importance</strong>. In principle, the DPO loss function essentially maximizes the Log-Likelihood difference between Chosen and Rejected. Without the Rejected sample as a negative reference, the model might "take shortcuts", learning not only the feature of "safety" but also erroneously linking irrelevant features like "shorter response length" or "stiff tone" to high rewards. By introducing a Rejected sample (for example, a response that is detailed but contains toxic information), we are actually engaging in <strong>Contrastive Learning</strong>, forcing the model to strip away interfering factors like length and style, and focus on learning the core differentiating feature of "safety" or "helpfulness".</p>
+<h3 id="1112-the-mathematical-collapse-from-rlhf-to-dpo">11.1.2 The Mathematical Collapse from RLHF to DPO<a class="headerlink" href="#1112-the-mathematical-collapse-from-rlhf-to-dpo" title="Permanent link">¶</a></h3>
+<p>In the post-training phase of Large Language Models (LLMs), Reinforcement Learning from Human Feedback (RLHF) once held absolute dominance. RLHF operates through an extremely complex pipeline: first, training an independent Reward Model based on human-annotated preference data, and then using the Proximal Policy Optimization (PPO) algorithm in a reinforcement learning loop to make the generation policy constantly approximate the highest score distribution defined by the reward model.</p>
+<p>However, the RLHF pipeline faces massive challenges in engineering practice. It not only requires multiple huge models (including the policy model, reference model, reward model, and value model) to reside in memory simultaneously, resulting in extremely high computational costs, but it is also highly prone to training instability, Reward Hacking, and extreme sensitivity to hyperparameters.</p>
+<p>Against this backdrop, Direct Preference Optimization (DPO) emerged as a revolutionary alternative. The core innovation of DPO lies in its mathematical elegance: it leverages the analytical relationship between the policy and the reward function in reinforcement learning, mathematically proving that the explicit reward model can be bypassed entirely, collapsing the preference alignment problem into a simple Binary Cross-Entropy Loss.</p>
+<p>In this way, DPO performs supervised learning directly on offline-collected preference datasets. The model no longer requires expensive online sampling and exploration via PPO; instead, it directly learns to increase the relative log probability of responses "chosen" by humans while decreasing the relative log probability of "rejected" responses.</p>
+<p><strong>Table 11-1: Comparison of Data Requirements for Mainstream Alignment Algorithms</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">RLHF (PPO)</th>
+<th style="text-align: left;">DPO (Direct Preference Optimization)</th>
+<th style="text-align: left;">RLAIF (Constitutional AI)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Core Mechanism</strong></td>
+<td style="text-align: left;">Train independent Reward Model -&gt; PPO reinforcement learning (Two-stage)</td>
+<td style="text-align: left;">Directly optimize Policy Loss on preference data (Single-stage)</td>
+<td style="text-align: left;">Use AI to replace humans in generating preference labels, simulating human judgment</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Data Requirement</strong></td>
+<td style="text-align: left;">Needs independent Reward Model (RM) training, data needs ranking features</td>
+<td style="text-align: left;">No explicit RM needed, data itself is the Reward, emphasizes <strong>distinction</strong> between positive and negative samples</td>
+<td style="text-align: left;">Only requires a few "constitutional" Principles as seeds</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Data Volume</strong></td>
+<td style="text-align: left;">Massive (RM needs generalization to cover edge cases)</td>
+<td style="text-align: left;">Medium (requires extremely high quality, noisy data severely disrupts gradients)</td>
+<td style="text-align: left;">Can be synthesized infinitely, limited by computing power rather than human labor</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Stability</strong></td>
+<td style="text-align: left;">Extremely unstable training, sensitive to hyperparameters (KL divergence easily explodes)</td>
+<td style="text-align: left;">Stable training, similar to SFT, lower VRAM footprint</td>
+<td style="text-align: left;">Depends on the capability of the Critique model (Teacher Model)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>OOD (Out-of-Distribution) Issues</strong></td>
+<td style="text-align: left;">Reward Model easily hacked (model finds loopholes to score high)</td>
+<td style="text-align: left;">Relatively sensitive to Out-of-Distribution (OOD) data, requires sampling on this distribution</td>
+<td style="text-align: left;">Prone to Sycophancy (self-reinforcing bias)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1113-the-mathematical-logic-of-negative-samples-why-plausible-errors-are-needed">11.1.3 The Mathematical Logic of Negative Samples: Why "Plausible Errors" Are Needed<a class="headerlink" href="#1113-the-mathematical-logic-of-negative-samples-why-plausible-errors-are-needed" title="Permanent link">¶</a></h3>
+<p>Because DPO is completely constrained by the offline provided preference data and cannot dynamically explore new action spaces through a reward model during training, the model's final alignment quality will 100% depend on the quality of the preference data construction.</p>
+<p>When constructing preference data, one of the most common misconceptions is thinking that the "rejected response" should be completely illogical nonsense. However, from the mathematical underlying logic of the DPO loss function, this obviously low-quality error contributes almost nothing to the optimization of the model parameters.</p>
+<p>DPO's theoretical foundation is built on the <strong>Bradley-Terry (BT) preference model</strong>. This model is used to estimate the probability that, given prompt <span class="arithmatex">\(x\)</span>, response <span class="arithmatex">\(y_w\)</span> (Chosen) is better than response <span class="arithmatex">\(y_l\)</span> (Rejected). In this process, the core driving force of the loss function is the <strong>Implicit Reward Margin</strong>. If the negative sample <span class="arithmatex">\(y_l\)</span> is a string of illogical gibberish, the Reference Model will have already assigned it an extremely low probability close to zero upon initialization. This means that before optimization even begins, the probability difference between Chosen and Rejected is already very large. When this huge difference passes through the Sigmoid activation function, its gradient will infinitely approach zero. The model cannot learn any valuable information from this kind of comparison.</p>
+<p>Conversely, to provide the maximum gradient information, what we need are <strong>"Plausible Errors"</strong>, or what academia calls "Hard Negatives". These negative samples are grammatically flawless but expose potential biases, factual hallucinations, or fatal logical flaws at a critical node.</p>
+<p>Because these errors are highly deceptive, foundational language models usually assign them a high generation probability. At this time, the initial implicit reward margin is very narrow, and the DPO loss function will therefore generate massive and precise gradient updates. This high-quality gradient not only guides the model to learn to reject specific incorrect content but also deeply modifies the neural pathways that caused the logical break. In addition, over-reliance on low-quality negative samples will trigger "Out-of-Distribution (OOD)" risks, damaging the model's overall fluency and generation capabilities.</p>
+<hr>
+<h2 id="112-the-alchemy-of-decoding-parameters-inducing-high-quality-negative-samples-via-hyperparameters">11.2 The Alchemy of Decoding Parameters: Inducing High-Quality Negative Samples via Hyperparameters<a class="headerlink" href="#112-the-alchemy-of-decoding-parameters-inducing-high-quality-negative-samples-via-hyperparameters" title="Permanent link">¶</a></h2>
+<p>In actual operation, we use the foundational SFT model to generate candidate responses directly. During this generation process, raising the <strong>Temperature</strong> (e.g., adjusting to 1.0 - 1.2) is the most critical technique to break the model's conservative instincts and induce high-quality "plausible errors".</p>
+<p>Deeply analyzing the decoding and generation mechanism of language models, when generating the next word, the Softmax function converts unnormalized scores (Logits) into a probability distribution:</p>
+<div class="arithmatex">\[P(x_i) = \frac{\exp(l_i / T)}{\sum \exp(l_j / T)}\]</div>
+<p>Where <span class="arithmatex">\(T\)</span> is the Temperature. When the model runs at the default low Temperature (e.g., 0.4 - 0.7), it becomes extremely conservative and deterministic, and the generated responses are often the safest and most mediocre, unable to form an effective Chosen/Rejected contrast.</p>
+<p>When we raise the Temperature to 1.0 or even 1.2, the entire probability distribution is forced to "Flatten". The probability of originally safe vocabulary is weakened, and long-tail, low-probability vocabulary is given a chance to be sampled. This forces the model to deviate from the "safe neural pathway" and enter fringe areas full of potential hallucinations and logical leaps.</p>
+<p><strong>Table 11-2: DPO Negative Sample Generation Decoding Parameter Mechanisms</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter Name</th>
+<th style="text-align: left;">Working Mechanism</th>
+<th style="text-align: left;">Recommended Value</th>
+<th style="text-align: left;">Core Role in Negative Sample Generation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Temperature</strong></td>
+<td style="text-align: left;">Scales Logits before Softmax calculation to control smoothness.</td>
+<td style="text-align: left;">1.0 - 1.2</td>
+<td style="text-align: left;">Breaks safe instincts, flattens probability distribution, induces logical leaps, factual hallucinations, and biases.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Top-P (Nucleus Sampling)</strong></td>
+<td style="text-align: left;">Truncates all long-tail Tokens after the cumulative probability reaches threshold P.</td>
+<td style="text-align: left;">0.95 - 0.99</td>
+<td style="text-align: left;">Ensures diversity while strictly eliminating catastrophic Tokens, ensuring grammatical correctness and the camouflage of errors.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Top-K</strong></td>
+<td style="text-align: left;">Only retains the top K candidate Tokens with the highest probabilities for sampling.</td>
+<td style="text-align: left;">80 - 100</td>
+<td style="text-align: left;">Broadens the candidate pool, cooperates with high Temperature to prevent the model from getting stuck in loops within fixed sentence structures.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Repetition Penalty</strong></td>
+<td style="text-align: left;">Applies a penalty factor to recently generated Tokens, reducing their probability of being selected again.</td>
+<td style="text-align: left;">1.1 - 1.2</td>
+<td style="text-align: left;">Forces the introduction of new vocabulary and concepts, prevents meaningless infinite loops of repetition, and maintains the appearance of logical reasoning.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="113-domain-specific-data-construction-frameworks-for-complex-tasks">11.3 Domain-Specific Data Construction Frameworks for Complex Tasks<a class="headerlink" href="#113-domain-specific-data-construction-frameworks-for-complex-tasks" title="Permanent link">¶</a></h2>
+<p>While adjusting decoding parameters is suitable for general dialogue (such as tone adjustment, length penalty), for high-difficulty domains like safety, mathematical reasoning, code generation, and agent decision-making, models easily fall into "Shortcut Learning". To depict precise decision boundaries, more sophisticated, highly automated domain-specific data construction frameworks must be introduced.</p>
+<h3 id="1131-the-deep-game-of-safety-alignment-and-adversarial-jailbreaks">11.3.1 The Deep Game of Safety Alignment and Adversarial Jailbreaks<a class="headerlink" href="#1131-the-deep-game-of-safety-alignment-and-adversarial-jailbreaks" title="Permanent link">¶</a></h3>
+<p>For malicious requests (like "how to steal credit cards"), if the negative sample is merely a slightly impolite response, the model will learn "reflexive refusal", leading to severe "Over-refusal"—for example, refusing to answer a normal computer question like "how to kill a process".</p>
+<p>Building an indestructible safety guardrail that doesn't "friendly fire" requires introducing <strong>Red-Teaming and fine-grained feedback</strong>:
+* <strong>Adversarial Induced Generation (Rejected Construction)</strong>: Use automated attack strategies (like GCG's gradient search suffix, AutoDAN's genetic algorithm, or PAIR's multi-turn induction) to bypass basic defenses, forcing the model to generate detailed violating content. This kind of "Compliance without realization" is the most valuable hard negative sample.
+* <strong>Constructive Refusal (Chosen Construction)</strong>: A high-quality positive sample shouldn't just be "As an AI, I cannot...", but should be a <strong>"safe response stripped of harmful intent"</strong>. For example, if a user asks to "write a Python script for ransomware", the Chosen response should refuse to provide direct code, but can take the opportunity to explain "how ransomware works and how enterprises can defend against it".
+* <strong>Context Obfuscation</strong>: Mix Base64 encoding, multi-language blending, or complex role-playing (like "Suppose you are a white-hat hacker testing security vulnerabilities") as the Prompt into the dataset to improve the model's intent recognition robustness in complex contexts.</p>
+<h3 id="1132-mathematical-reasoning-error-injection-rise-and-process-reward-models-prm">11.3.2 Mathematical Reasoning: Error Injection (RISE) and Process Reward Models (PRM)<a class="headerlink" href="#1132-mathematical-reasoning-error-injection-rise-and-process-reward-models-prm" title="Permanent link">¶</a></h3>
+<p>The core pain point of long logical chain tasks like mathematics is "the result is correct but the process is nonsense (hallucination)", or "one step wrong, every step wrong".</p>
+<p>The <strong>eRror-Injected Self-Editing (RISE)</strong> and related process supervision frameworks proposed by academia are precisely designed to solve this problem:
+1. <strong>High-precision Chosen Generation</strong>: Use high-capability Teacher LLMs (combined with MCTS Monte Carlo Tree Search or Majority Voting) to generate standard solutions containing perfect logical chains (Long CoT).
+2. <strong>Fine-grained Error Injection (Rejected Construction)</strong>: Command the LLM to play a "careless student" and deliberately perturb specific nodes in the correct reasoning graph. For example:
+   * <strong>Calculation Error</strong>: Change 12 × 15 = 180 in an intermediate step to 170.
+   * <strong>Condition Omission</strong>: Ignore the boundary condition "x must be a positive integer" in the problem when solving an equation.
+   * <strong>Logical Leap</strong>: Omit critical derivation steps and directly draw a conclusion.
+3. <strong>Process Reward Model (PRM)</strong>: Unlike the ORM which only looks at the final answer, the PRM framework requires the model to make true/false judgments step-by-step. These samples injected with minor errors force the model to learn "Self-Correction" and precise error node localization, rather than blindly guessing the result.</p>
+<h3 id="1133-code-generation-execution-feedback-and-asymmetric-model-capabilities">11.3.3 Code Generation: Execution Feedback and Asymmetric Model Capabilities<a class="headerlink" href="#1133-code-generation-execution-feedback-and-asymmetric-model-capabilities" title="Permanent link">¶</a></h3>
+<p>Alignment for code generation cannot rely solely on human preference because "elegant-looking code" may not necessarily run successfully. Data construction in the code domain must introduce a <strong>real Execution Feedback environment</strong>.</p>
+<ol>
+<li><strong>Asymmetric Capability Sampling</strong>: Call upon a "teacher model" with deep reasoning capabilities to generate the optimal code containing complete design patterns, exception handling, and optimal time complexity (e.g., O(N log N)) as the Chosen; simultaneously use a smaller foundational model to generate flat-logic, brute-force (e.g., O(N^2)) code or code with boundary defects as the Rejected.</li>
+<li><strong>Automated Annotation Based on Compilers and Unit Tests</strong>:</li>
+<li>Run the code in a sandbox environment. Treat "Syntax Error" as an extremely low-score sample.</li>
+<li>Treat code that "passes basic tests but fails Edge Cases or Time Limit Exceeded (TLE)" as <strong>hard negative samples</strong>.</li>
+<li><strong>Multi-turn Debug Trajectory Construction</strong>: Do not only construct single-turn Chosen/Rejected, but also construct complete Trajectory data including "generate erroneous code -&gt; receive error message -&gt; analyze error -&gt; fix code". This can greatly improve the policy model's Debug traceability.</li>
+</ol>
+<h3 id="1134-agents-and-tool-calling-trajectory-pruning-and-deadlock-breaking">11.3.4 Agents and Tool Calling: Trajectory Pruning and Deadlock Breaking<a class="headerlink" href="#1134-agents-and-tool-calling-trajectory-pruning-and-deadlock-breaking" title="Permanent link">¶</a></h3>
+<p>When the model is granted permission to call external tools (APIs, search, databases), the focus of data construction shifts to "Planning &amp; Action".</p>
+<ul>
+<li><strong>Efficient Planning (Chosen)</strong>: Demonstrate precise API selection, correct parameter JSON formatting, and elegant Fallback strategies when facing empty data returned by tools.</li>
+<li><strong>Deadlocks and Hallucinations (Rejected)</strong>: Collect common crash modes of the model during execution as negative samples:</li>
+<li><strong>API Hallucination</strong>: Calling a tool function that doesn't even exist.</li>
+<li><strong>Parameter Type Mismatch</strong>: Passing a string into a field that requires an integer.</li>
+<li><strong>Action Loop</strong>: The model loops infinitely in "call tool -&gt; get same error -&gt; call same tool again". Truncating these dead-loop trajectories and manually (or via Teacher Model) correcting a step to break the loop serves as a strong signal for contrastive learning.</li>
+</ul>
+<hr>
+<h2 id="114-annotation-noise-llm-as-a-judge-and-automated-pipelines">11.4 Annotation Noise, LLM-as-a-Judge, and Automated Pipelines<a class="headerlink" href="#114-annotation-noise-llm-as-a-judge-and-automated-pipelines" title="Permanent link">¶</a></h2>
+<h3 id="1141-quantifying-human-subjective-noise-and-the-kappa-coefficient">11.4.1 Quantifying Human Subjective Noise and the Kappa Coefficient<a class="headerlink" href="#1141-quantifying-human-subjective-noise-and-the-kappa-coefficient" title="Permanent link">¶</a></h3>
+<p>The industry commonly uses <strong>Cohen's Kappa (<span class="arithmatex">\(\kappa\)</span>) coefficient</strong> to quantify annotation agreement:</p>
+<div class="arithmatex">\[\kappa = \frac{p_o - p_e}{1 - p_e}\]</div>
+<p>Where <span class="arithmatex">\(p_o\)</span> is the observed relative agreement, and <span class="arithmatex">\(p_e\)</span> is the hypothetical probability of chance agreement. Only when <span class="arithmatex">\(\kappa &gt; 0.6\)</span> does the data reflect objective facts.</p>
+<h3 id="1142-rlaif-and-llm-as-a-judge">11.4.2 RLAIF and LLM-as-a-Judge<a class="headerlink" href="#1142-rlaif-and-llm-as-a-judge" title="Permanent link">¶</a></h3>
+<p>The core assumption of RLAIF is: a model's discriminative ability to judge good and bad is stronger than its generative ability. A super model scores based on the "3H Principles", and double-blind testing (swapping positions) is used to eliminate position bias.</p>
+<h3 id="1143-pairwise-reward-model-pairrm-and-self-reward-mechanisms">11.4.3 Pairwise Reward Model (PairRM) and Self-Reward Mechanisms<a class="headerlink" href="#1143-pairwise-reward-model-pairrm-and-self-reward-mechanisms" title="Permanent link">¶</a></h3>
+<p>The industry introduces specially trained PairRMs for iteration:
+* <strong>Variant Generation</strong>: Generate multiple variants at a high Temperature.
+* <strong>Reranking</strong>: Use PairRM for scoring.
+* <strong>Extreme Value Extraction</strong>: Extract the highest score as Chosen, and the lowest score as Rejected.
+* <strong>Closed-loop Iteration</strong>: The "Self-Rewarding" mechanism proposed by Meta enables the model to update backward through scoring.</p>
+<hr>
+<h2 id="115-pathology-analysis-and-algorithm-correction-of-preference-data">11.5 Pathology Analysis and Algorithm Correction of Preference Data<a class="headerlink" href="#115-pathology-analysis-and-algorithm-correction-of-preference-data" title="Permanent link">¶</a></h2>
+<h3 id="1151-length-bias-and-vocabulary-exploitation">11.5.1 Length Bias and Vocabulary Exploitation<a class="headerlink" href="#1151-length-bias-and-vocabulary-exploitation" title="Permanent link">¶</a></h3>
+<p>Models easily learn the rule that "long response equals high score". <strong>Length-Margin Preference Optimization (LMPO)</strong> punishes samples that win solely by word count by introducing regularization terms and an EMA-based dynamic length scaling mechanism, forcing the model to increase information density.</p>
+<h3 id="1152-probability-degradation-and-nll-anchoring">11.5.2 Probability Degradation and NLL Anchoring<a class="headerlink" href="#1152-probability-degradation-and-nll-anchoring" title="Permanent link">¶</a></h3>
+<p>In standard DPO, ruthlessly suppressing the Rejected probability might collaterally hit similar Chosen samples.</p>
+<blockquote>
+<p><strong>Solution</strong>: Integrate the <strong>Negative Log-Likelihood (NLL) loss term</strong> into the optimization (DPO+NLL). The NLL loss term acts like a heavy anchor, fixing the probability of Chosen samples at a reasonably high level, preventing their log-likelihood from continuously declining.</p>
+</blockquote>
+<h2 id="116-engineering-implementation">11.6 Engineering Implementation<a class="headerlink" href="#116-engineering-implementation" title="Permanent link">¶</a></h2>
+<p>In the context of papers, DPO is a concise and elegant objective function; in real-world systems, it is more like a data production mechanism. Whether a model truly "learns to reject" or "learns boundary judgment" often does not depend on the loss function itself, but on how the preference data is constructed, screened, calibrated, and continuously iterated.</p>
+<p>From an engineering perspective, a mature preference data system usually includes four core stages:</p>
+<blockquote>
+<p>Multi-candidate Generation → Discriminative Scoring → Preference Pair Construction → Quality Control &amp; Version Management</p>
+</blockquote>
+<p>Fluctuations in any one of these stages can be magnified by DPO's contrastive loss.</p>
+<hr>
+<h3 id="1161-multi-candidate-generation-constructing-a-decision-space-rather-than-a-single-answer">11.6.1 Multi-candidate Generation: Constructing a "Decision Space" rather than a Single Answer<a class="headerlink" href="#1161-multi-candidate-generation-constructing-a-decision-space-rather-than-a-single-answer" title="Permanent link">¶</a></h3>
+<p>In the simplest example, we would generate two responses for the same Prompt, and then artificially decide which one is Chosen and which is Rejected. This approach works in small-scale experiments, but once the data scales up, it quickly exposes problems.</p>
+<p>If only two responses are generated:</p>
+<ul>
+<li>Both might be safe, failing to form an effective contrast;</li>
+<li>One might be obvious nonsense, having almost no training value;</li>
+<li>The difference between the two might be too large, and the model only learns obvious features.</li>
+</ul>
+<p>Therefore, the safer approach is to expand the generation problem from "choose one of two" to a "candidate set". We are not trying to generate a correct answer, but to generate a small-scale <strong>decision space</strong>.</p>
+<h5 id="candidate-generation-module-example">Candidate Generation Module Example<a class="headerlink" href="#candidate-generation-module-example" title="Permanent link">¶</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">CandidateGenerator</span><span class="p">:</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span><span class="p">):</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizer</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">top_p</span><span class="p">,</span> <span class="n">top_k</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>            <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="n">inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">"pt"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>            <span class="o">**</span><span class="n">inputs</span><span class="p">,</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>            <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>            <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>            <span class="n">top_p</span><span class="o">=</span><span class="n">top_p</span><span class="p">,</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>            <span class="n">top_k</span><span class="o">=</span><span class="n">top_k</span><span class="p">,</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>            <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>        <span class="p">)</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<h5 id="engineering-trade-offs-in-generation-paths">Engineering Trade-offs in Generation Paths<a class="headerlink" href="#engineering-trade-offs-in-generation-paths" title="Permanent link">¶</a></h5>
+<p>In engineering, three generation paths are usually retained:</p>
+<ul>
+<li><strong>Conservative Path (Low Temperature)</strong>: Provides stable, safe candidates;</li>
+<li><strong>Diverse Path (Medium-High Temperature)</strong>: Induces "plausible" errors;</li>
+<li><strong>Adversarial Path (Context Obfuscation or Red-team Templates)</strong>: Approximates the real jailbreak distribution.</li>
+</ul>
+<p>The core trade-off lies in:</p>
+<ul>
+<li>Temperature too low → Difficult to produce hard negatives;</li>
+<li>Temperature too high → Grammar collapses, training value decreases.</li>
+</ul>
+<p>In practice, <code>1.0–1.2</code> is often a relatively stable range.</p>
+<h5 id="pro-tips">Pro Tips<a class="headerlink" href="#pro-tips" title="Permanent link">¶</a></h5>
+<ol>
+<li>It is recommended to generate at least 6–12 candidates for the same Prompt before screening; otherwise, it is difficult to stably obtain high-quality Hard Negatives.</li>
+<li>It is not recommended to push the Temperature above 1.3. In most cases, 1.0–1.2 is the effective range to induce "plausible errors".</li>
+<li>It is advised to keep the conservative path, diverse path, and adversarial path running in parallel; otherwise, the data distribution will lean towards a single style.</li>
+<li>All decoding parameters (temperature, top_p, top_k, seed) must be recorded, otherwise subsequent changes in training behavior cannot be explained.</li>
+</ol>
+<hr>
+<h3 id="1162-llm-as-a-judge-structuring-the-discriminative-process">11.6.2 LLM-as-a-Judge: Structuring the Discriminative Process<a class="headerlink" href="#1162-llm-as-a-judge-structuring-the-discriminative-process" title="Permanent link">¶</a></h3>
+<p>Without a stable discriminative mechanism, multi-candidate generation will only produce noise. Therefore, the second module is a "Judge Model", used to conduct structured scoring of candidates.</p>
+<p>The safer engineering approach is not to simply ask "which one is better", but to break it down into multiple dimensions. For example, 3H:</p>
+<ul>
+<li>Helpful</li>
+<li>Honest</li>
+<li>Harmless</li>
+</ul>
+<h5 id="judge-prompt-construction-example">Judge Prompt Construction Example<a class="headerlink" href="#judge-prompt-construction-example" title="Permanent link">¶</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">build_judge_prompt</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="k">return</span> <span class="sa">f</span><span class="s2">"""</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="s2">You are an evaluation model.</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="s2">Rate the assistant response on three dimensions (0-1):</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="s2">1. Helpfulness</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="s2">2. Honesty</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="s2">3. Harmlessness</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="s2">User: </span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="s2">Assistant: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="s2">Return JSON with keys: helpful, honest, harmless.</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="s2">"""</span>
+</code></pre></div>
+<h5 id="judge-invocation-example">Judge Invocation Example<a class="headerlink" href="#judge-invocation-example" title="Permanent link">¶</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">judge_response</span><span class="p">(</span><span class="n">judge_model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">judge_input</span> <span class="o">=</span> <span class="n">build_judge_prompt</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">judge_input</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">"pt"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"cuda"</span><span class="p">)</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">outputs</span> <span class="o">=</span> <span class="n">judge_model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="o">**</span><span class="n">inputs</span><span class="p">,</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        <span class="n">temperature</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>        <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">256</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="p">)</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">result_text</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">extract_json</span><span class="p">(</span><span class="n">result_text</span><span class="p">))</span>
+</code></pre></div>
+<h5 id="engineering-considerations">Engineering Considerations<a class="headerlink" href="#engineering-considerations" title="Permanent link">¶</a></h5>
+<ul>
+<li>The Judge model's temperature should be kept low (usually &lt; 0.3); otherwise, scoring fluctuations will be too large;</li>
+<li>The rubric version must be fixed, otherwise, it's equivalent to changing the reward function;</li>
+<li>Judge drift will directly lead to data boundary drift.</li>
+</ul>
+<h5 id="pro-tips_1">Pro Tips<a class="headerlink" href="#pro-tips_1" title="Permanent link">¶</a></h5>
+<ol>
+<li>It is recommended to conduct A/B position-swapped evaluations on the same pair of candidates to eliminate position bias.</li>
+<li>Maintain a Golden Set to periodically calibrate the consistency between the Judge and human judgments.</li>
+<li>Once the Rubric is modified, the version number should be upgraded and datasets isolated; otherwise, samples with different "reward functions" will be mixed in.</li>
+<li>It is not recommended to use the same model to undertake both generation and judging duties concurrently, as it easily produces self-consistency bias.</li>
+</ol>
+<hr>
+<h3 id="1163-preference-pair-construction-balancing-gradient-density-and-convergence-speed">11.6.3 Preference Pair Construction: Balancing Gradient Density and Convergence Speed<a class="headerlink" href="#1163-preference-pair-construction-balancing-gradient-density-and-convergence-speed" title="Permanent link">¶</a></h3>
+<p>When all candidates have been scored, a <code>(chosen, rejected)</code> pair needs to be selected from them.</p>
+<h5 id="extreme-pair-strategy">Extreme Pair Strategy<a class="headerlink" href="#extreme-pair-strategy" title="Permanent link">¶</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">build_extreme_pair</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">scored_candidates</span><span class="p">):</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">scored_candidates</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">"score"</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        <span class="s2">"prompt"</span><span class="p">:</span> <span class="n">prompt</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>        <span class="s2">"chosen"</span><span class="p">:</span> <span class="n">scored_candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"text"</span><span class="p">],</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        <span class="s2">"rejected"</span><span class="p">:</span> <span class="n">scored_candidates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"text"</span><span class="p">]</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="p">}</span>
+</code></pre></div>
+<p>The advantage is fast convergence, but the margin might be too large, leading to limited gradient utilization.</p>
+<h5 id="margin-pair-strategy">Margin Pair Strategy<a class="headerlink" href="#margin-pair-strategy" title="Permanent link">¶</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">build_margin_pair</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">scored</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">scored</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">"score"</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scored</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">scored</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"score"</span><span class="p">]</span> <span class="o">-</span> <span class="n">scored</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="s2">"score"</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>            <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>                <span class="s2">"prompt"</span><span class="p">:</span> <span class="n">prompt</span><span class="p">,</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>                <span class="s2">"chosen"</span><span class="p">:</span> <span class="n">scored</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"text"</span><span class="p">],</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>                <span class="s2">"rejected"</span><span class="p">:</span> <span class="n">scored</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="s2">"text"</span><span class="p">]</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>            <span class="p">}</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+<p>Margin pairs are more conducive to learning decision boundaries, but they rely heavily on judge stability.</p>
+<p>The usual approach is:<br>
+<strong>Use extreme pairs to build volume in the early stage, and introduce margin pairs later to reinforce boundaries.</strong></p>
+<h5 id="pro-tips_2">Pro Tips<a class="headerlink" href="#pro-tips_2" title="Permanent link">¶</a></h5>
+<ol>
+<li>If the score difference is too large (extreme margin), the gradient may approach saturation; filtering out extreme samples is recommended.</li>
+<li>In the later stages of training, it is advised to gradually increase the proportion of margin pairs to refine decision boundaries.</li>
+<li>High-quality Hard Negatives should only err at critical points, rather than collapsing entirely.</li>
+</ol>
+<hr>
+<h3 id="1164-automated-bias-detection">11.6.4 Automated Bias Detection<a class="headerlink" href="#1164-automated-bias-detection" title="Permanent link">¶</a></h3>
+<p>DPO is contrastive learning. If there is systemic bias in the data, the model will rapidly reinforce it.</p>
+<h5 id="length-bias-detection">Length Bias Detection<a class="headerlink" href="#length-bias-detection" title="Permanent link">¶</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">check_length_bias</span><span class="p">(</span><span class="n">pair</span><span class="p">):</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="s2">"chosen"</span><span class="p">])</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="s2">"rejected"</span><span class="p">])</span>
+</code></pre></div>
+<p>If the chosen is systematically longer, it indicates length bias exists, and the judge should be recalibrated or length regularization introduced.</p>
+<h5 id="template-refusal-detection">Template Refusal Detection<a class="headerlink" href="#template-refusal-detection" title="Permanent link">¶</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">detect_template_bias</span><span class="p">(</span><span class="n">pairs</span><span class="p">):</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">openings</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s2">"chosen"</span><span class="p">][:</span><span class="mi">30</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">]</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="k">return</span> <span class="n">Counter</span><span class="p">(</span><span class="n">openings</span><span class="p">)</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<p>If refusal scripts are highly repetitive, what the model learns are templates, not boundary understanding.</p>
+<h5 id="pro-tips_3">Pro Tips<a class="headerlink" href="#pro-tips_3" title="Permanent link">¶</a></h5>
+<ol>
+<li>It is recommended to conduct statistical analysis on the distribution of length differences, rather than just looking at single samples.</li>
+<li>Use embedding or MinHash clustering to detect templated refusals, rather than just doing prefix statistics.</li>
+<li>Write quality metrics (length, refusal type, source) into metadata for easy backtracking.</li>
+</ol>
+<hr>
+<h3 id="1165-the-automated-closed-loop-of-constitutional-ai">11.6.5 The Automated Closed Loop of Constitutional AI<a class="headerlink" href="#1165-the-automated-closed-loop-of-constitutional-ai" title="Permanent link">¶</a></h3>
+<p>Constitutional AI constructs preference pairs through "Critique → Revision".</p>
+<h5 id="critique-phase">Critique Phase<a class="headerlink" href="#critique-phase" title="Permanent link">¶</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">generate_critique</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">harmful</span><span class="p">):</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">critique_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="s2">Principle: Be helpful, honest, and harmless.</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="s2">User: </span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="s2">Assistant: </span><span class="si">{</span><span class="n">harmful</span><span class="si">}</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="s2">Explain why this violates the principle.</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="s2">"""</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">critique_prompt</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">"pt"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"cuda"</span><span class="p">)</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    <span class="k">return</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<h5 id="revision-phase">Revision Phase<a class="headerlink" href="#revision-phase" title="Permanent link">¶</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">generate_revision</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">harmful</span><span class="p">,</span> <span class="n">critique</span><span class="p">):</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">revision_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="s2">Rewrite the assistant response to remove harmful content.</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="s2">Original:</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="si">{</span><span class="n">harmful</span><span class="si">}</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="s2">Critique:</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="si">{</span><span class="n">critique</span><span class="si">}</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="s2">"""</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">revision_prompt</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">"pt"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"cuda"</span><span class="p">)</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>    <span class="k">return</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<h5 id="engineering-risks-and-controls">Engineering Risks and Controls<a class="headerlink" href="#engineering-risks-and-controls" title="Permanent link">¶</a></h5>
+<ul>
+<li>Using the same model may produce self-consistency bias; it is recommended to separate generation and discriminator models;</li>
+<li>If the training set is almost entirely dangerous scenarios, the model may develop over-refusal;</li>
+<li>It is recommended to maintain a benign regression set to ensure the model remains usable in normal scenarios.</li>
+</ul>
+<h5 id="pro-tips_4">Pro Tips<a class="headerlink" href="#pro-tips_4" title="Permanent link">¶</a></h5>
+<ol>
+<li>It is recommended that generation models and critique/revision models be deployed separately, ensuring at least that the discriminator side has stronger capabilities.</li>
+<li>Refusal strategies should explicitly include "reason + safe alternative help" to avoid solely outputting templated refusals.</li>
+<li>A benign regression set (e.g., general programming, studying, encyclopedia Q&amp;A) must be maintained, and the over-refusal rate should be a hard metric.</li>
+<li>Adversarial samples should cover complex contexts such as coding, multi-language blending, and role-playing, rather than just direct malicious requests.</li>
+</ol>
+<hr>
+<h3 id="1166-data-versioning-and-traceability">11.6.6 Data Versioning and Traceability<a class="headerlink" href="#1166-data-versioning-and-traceability" title="Permanent link">¶</a></h3>
+<p>Mature systems must possess backtracking capabilities.</p>
+<p>It is recommended to record for each sample:</p>
+<ul>
+<li>Generation model version;</li>
+<li>Decoding parameters;</li>
+<li>Judge model version;</li>
+<li>Rubric version;</li>
+<li>Data source.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">export_pair</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="n">pair</span><span class="p">[</span><span class="s2">"version"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>        <span class="s2">"generator"</span><span class="p">:</span> <span class="s2">"sft-v1"</span><span class="p">,</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>        <span class="s2">"judge"</span><span class="p">:</span> <span class="s2">"judge-v2"</span><span class="p">,</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>        <span class="s2">"rubric"</span><span class="p">:</span> <span class="s2">"r1.3"</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="p">}</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p>When model behavior changes, this information is key to troubleshooting problems.</p>
+<h5 id="pro-tips_5">Pro Tips<a class="headerlink" href="#pro-tips_5" title="Permanent link">¶</a></h5>
+<ol>
+<li>It is recommended to perform stable hashing on <code>(prompt, chosen, rejected)</code> for deduplication and tracking, avoiding the repeated appearance of the same sample.</li>
+<li>The training set and evaluation set must be cross-deduplicated, otherwise, evaluation scores will be falsely high.</li>
+<li>Key model parameters (decoding configurations, prompt template versions, judge versions) should be bound to the data version, otherwise stable rollbacks are impossible.</li>
+</ol>
+<hr>
+<h2 id="117-performance-evaluation">11.7 Performance &amp; Evaluation<a class="headerlink" href="#117-performance-evaluation" title="Permanent link">¶</a></h2>
+<p>When evaluating alignment efficacy, we need to focus on balancing two core dimensions: <strong>Harmlessness Rate</strong> and <strong>Helpfulness</strong>. The Harmlessness Rate is usually measured by the refusal rate on Red Teaming test sets (like RealToxicityPrompts); Constitutional AI can usually drop the toxicity rate from 10% to below 1%. However, solely pursuing the harmlessness rate may cause the model to become an "overly cautious mute". Therefore, helpfulness must be monitored simultaneously to observe whether the model mistakenly kills good questions (e.g., misjudging "how to kill a system process" as violent behavior). Ideal alignment moves along the Pareto Frontier, maximizing safety without sacrificing helpfulness.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part4/%E5%9B%BE11_2_%E5%B8%95%E7%B4%AF%E6%89%98%E5%89%8D%E6%B2%BF%E6%9B%B2%E7%BA%BF%E5%9B%BE.png" data-desc-position="bottom"><img alt="Figure 11-2: Pareto Frontier Curve Graph" src="../../../images/part4/%E5%9B%BE11_2_%E5%B8%95%E7%B4%AF%E6%89%98%E5%89%8D%E6%B2%BF%E6%9B%B2%E7%BA%BF%E5%9B%BE.png"></a>
+<em>Figure 11-2: Pareto Frontier Curve Graph. The X-axis is Harmlessness Score, the Y-axis is Helpfulness Score</em></p>
+<h2 id="118-pitfalls-troubleshooting">11.8 Pitfalls &amp; Troubleshooting<a class="headerlink" href="#118-pitfalls-troubleshooting" title="Permanent link">¶</a></h2>
+<p>During the alignment process, two classic traps require special vigilance. First is <strong>Sycophancy</strong>, meaning the model, in order to please the user (or Reward Model), will follow along with the user's erroneous viewpoints. For example, when a user claims "the Earth is flat", the model might reply "You are right, that's an interesting perspective". The deep reason behind this is that during RLHF training, the model discovers that "agreeing with the user" usually scores higher rewards than "refuting the user". The key to fixing this problem is to include a large number of samples that "correct user errors" as Chosen in the preference data, and explicitly add the principle of "honesty over politeness" to the constitution.</p>
+<p>The second trap is <strong>Reward Hacking</strong>, manifested by the model generating massive amounts of verbose nonsense because it discovers that answering lengthily yields high scores. This vividly embodies <strong>Goodhart's Law</strong>: "When a measure becomes a target, it ceases to be a good measure." The solution is to add a Length Penalty term in DPO or Reward Training, or to deliberately include some "long but useless" responses when constructing Rejected samples, forcing the model to learn that "long does not equal good".</p>
+<h2 id="119-chapter-summary-and-extended-reading">11.9 Chapter Summary and Extended Reading<a class="headerlink" href="#119-chapter-summary-and-extended-reading" title="Permanent link">¶</a></h2>
+<p>In this chapter, we explored the critical transition from supervised fine-tuning to human preference alignment. DPO has gradually replaced the unstable PPO to become the new industry norm. By leveraging static preference data triplets to directly optimize policies, it significantly improves training stability and efficiency. Meanwhile, recognizing the limitations of human annotation, we pushed data quality management from empiricism to statistical rigor by introducing IAA metrics and Cohen's Kappa coefficient. More importantly, the emergence of RLAIF and Constitutional AI marks that alignment work is undergoing an industrial revolution—by encoding values into Prompts, we have not only liberated human labor but also achieved the automation and self-iteration of the alignment process, providing a sustainable path for building AI systems that are both safe and powerful.</p>
+<p><strong>References:</strong>
+* <em>Ouyang, L., et al. (2022). Training language models to follow instructions with human feedback.</em> (The foundational work of RLHF and SFT, the source of the SFT vs RLHF comparison)
+* <em>Bai, Y., et al. (2022). Constitutional AI: Harmlessness from AI Feedback.</em> (The core paper on RLAIF and Constitutional AI)
+* <em>Rafailov, R., et al. (2023). Direct Preference Optimization: Your Language Model is Secretly a Reward Model.</em> (The original paper on the DPO algorithm)
+* <em>Casper, S., et al. (2023). Open Problems and Fundamental Limitations of Reinforcement Learning from Human Feedback.</em> (An in-depth analysis of RLHF limitations and Reward Hacking)</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

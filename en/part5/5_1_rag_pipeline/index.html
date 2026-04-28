@@ -1,0 +1,1165 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="大模型数据工程：架构、算法及项目实战">
+      
+      
+        <meta name="author" content="ustc">
+      
+      
+        <link rel="canonical" href="https://datascale-ai.github.io/data_engineering_book/en/part5/5_1_rag_pipeline/">
+      
+      
+      
+      
+        
+          <link rel="alternate" href="/data_engineering_book/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+          <link rel="alternate" href="../../../ja/part5/5_1_rag_pipeline/" hreflang="ja">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>5 1 rag pipeline - Data Engineering for Large Models: Architecture, Algorithms &amp; Projects</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-12-rag-data-pipeline" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../" title="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" class="md-header__button md-logo" aria-label="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Engineering for Large Models: Architecture, Algorithms &amp; Projects
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              5 1 rag pipeline
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="/data_engineering_book/" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ja/part5/5_1_rag_pipeline/" hreflang="ja" class="md-select__link">
+              日本語
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" class="md-nav__button md-logo" aria-label="Data Engineering for Large Models: Architecture, Algorithms &amp; Projects" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    Data Engineering for Large Models: Architecture, Algorithms &amp; Projects
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/datascale-ai/data_engineering_book/tree/main" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translation-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chinese 2026 Edition Status
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario Introduction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scenario Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-engineering-pain-points-behind-the-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Engineering Pain Points Behind the Scenario
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#121-deep-document-parsing-conquering-the-last-mile-of-unstructured-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1 Deep Document Parsing: Conquering the "Last Mile" of Unstructured Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.1 Deep Document Parsing: Conquering the &quot;Last Mile&quot; of Unstructured Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1211-complex-pdf-processing-more-than-text-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1.1 Complex PDF Processing: More Than Text Extraction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1212-parser-tool-selection-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1.2 Parser Tool Selection Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#122-chunking-strategy-the-art-of-balancing-context-and-retrieval-granularity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2 Chunking Strategy: The Art of Balancing Context and Retrieval Granularity
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.2 Chunking Strategy: The Art of Balancing Context and Retrieval Granularity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1221-basic-strategy-recursive-character-splitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2.1 Basic Strategy: Recursive Character Splitter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1222-advanced-strategy-i-structural-chunking-markdownhtml-parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2.2 Advanced Strategy I: Structural Chunking (Markdown/HTML Parsing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1223-advanced-strategy-ii-semantic-chunking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2.3 Advanced Strategy II: Semantic Chunking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1224-advanced-strategy-parent-child-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2.4 Advanced Strategy: Parent-Child Indexing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#123-vectorization-and-storage-teaching-machines-industry-jargon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3 Vectorization and Storage: Teaching Machines Industry "Jargon"
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.3 Vectorization and Storage: Teaching Machines Industry &quot;Jargon&quot;">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1231-embedding-model-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3.1 Embedding Model Fine-tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1232-hybrid-search-the-engineering-fusion-of-bm25-and-vector-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3.2 Hybrid Search: The Engineering Fusion of BM25 and Vector Indexing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#124-engineering-implementation-building-parent-child-indexing-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.4 Engineering Implementation: Building Parent-Child Indexing Pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.4 Engineering Implementation: Building Parent-Child Indexing Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1241-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.4.1 Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1242-core-code-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.4.2 Core Code Breakdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1243-pro-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.4.3 Pro Tips
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#125-performance-and-evaluation-performance-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.5 Performance and Evaluation (Performance &amp; Evaluation)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.5 Performance and Evaluation (Performance &amp; Evaluation)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1251-evaluation-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.5.1 Evaluation Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1252-benchmarks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.5.2 Benchmarks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#126-common-misconceptions-and-pitfalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.6 Common Misconceptions and Pitfalls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.6 Common Misconceptions and Pitfalls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#misconception-1-pypdf-is-enough-for-pdf-parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Misconception 1: "PyPDF is enough for PDF parsing"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#misconception-2-smaller-chunks-are-better" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Misconception 2: "Smaller chunks are better"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#misconception-3-ignoring-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Misconception 3: "Ignoring metadata"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further Reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<hr>
+<h1 id="chapter-12-rag-data-pipeline">Chapter 12: RAG Data Pipeline<a class="headerlink" href="#chapter-12-rag-data-pipeline" title="Permanent link">¶</a></h1>
+<hr>
+<h2 id="chapter-summary">Chapter Summary<a class="headerlink" href="#chapter-summary" title="Permanent link">¶</a></h2>
+<p>Retrieval-Augmented Generation (RAG) has become the preferred architecture for enterprise LLM deployment. However, many RAG systems shine in demo but fail in production due to low retrieval accuracy. This chapter reveals RAG's core truth: <strong>retrieval quality ceiling is determined by data parsing and chunking granularity</strong>. We delve into the "last mile" of unstructured data—document parsing—exploring PDF table restoration and multi-column recognition challenges; comparing semantic chunking and parent-child indexing; and analyzing Embedding model fine-tuning and vector database optimization critical paths.</p>
+<h2 id="learning-objectives">Learning Objectives<a class="headerlink" href="#learning-objectives" title="Permanent link">¶</a></h2>
+<ul>
+<li><strong>Master unstructured parsing strategies</strong>: Learn to select correct parsing tools (Rule-based vs. Vision-based) for multi-column PDFs and complex tables.</li>
+<li><strong>Implement advanced chunking algorithms</strong>: Write Python code for "Parent-Child Indexing" strategy to solve context loss issues.</li>
+<li><strong>Build hybrid retrieval pipeline</strong>: Master combining Dense Embedding with BM25 keyword retrieval and RRF ranking fusion.</li>
+<li><strong>Evaluation and optimization</strong>: Learn to use RAGAS framework for retrieval quality evaluation and domain-specific Embedding model fine-tuning.</li>
+</ul>
+<hr>
+<h2 id="scenario-introduction">Scenario Introduction<a class="headerlink" href="#scenario-introduction" title="Permanent link">¶</a></h2>
+<p>The team's enterprise knowledge Q&amp;A system finally launched. The CEO excitedly entered: "According to 2023 Q4 earnings report, what is our East China region's net profit?"</p>
+<p>The system confidently answered: "According to the report, net profit is 15%."
+The CEO frowned: "I want the specific amount, not profit margin! And that's company-wide, not East China region."</p>
+<p>As data lead, you urgently investigated logs and found the problem at the source:
+1.  <strong>Parsing error</strong>: The earnings PDF uses a two-column layout; ordinary parsing tools read line by line, merging left column text with right column data, causing semantic chaos.
+2.  <strong>Table loss</strong>: East China data was in a cross-page table; parsing tools completely ignored the table structure, turning it into garbled strings.
+3.  <strong>Chunk fragmentation</strong>: "East China region" header and specific numbers were split into different chunks; vector retrieval lost context association.</p>
+<h3 id="core-engineering-pain-points-behind-the-scenario">Core Engineering Pain Points Behind the Scenario<a class="headerlink" href="#core-engineering-pain-points-behind-the-scenario" title="Permanent link">¶</a></h3>
+<p>This "failure" scene reveals RAG's cruel reality: <strong>Garbage In, Garbage Out</strong>. If pre-training is "eating a full feast," RAG is "precision surgery." Any data parsing deviation is infinitely amplified in retrieval and generation stages. In a real engineering environment, moving from Demo to Production requires facing two major pain points:</p>
+<ol>
+<li><strong>Implementation obstacles of Advanced Chunking Strategies</strong>: Ordinary chunking by characters or tokens often rigidly severs business logic and context. In engineering, we must abandon this "one-size-fits-all" approach and implement advanced intelligent chunking based on semantics (Semantic Chunking) or underlying document structures (like Markdown/HTML Parsing).</li>
+<li><strong>Engineering fusion barriers of Hybrid Search</strong>: Pure dense vector retrieval is extremely poor at matching proper nouns and exact numerical values like "East China region" or "Q4". An enterprise-grade architecture must deeply integrate traditional keyword sparse indexes (BM25) with modern vector dense indexes. This brings massive engineering challenges in heterogeneous database synchronization, multi-path recall, and unifying heterogeneous scores.</li>
+</ol>
+<hr>
+<h2 id="121-deep-document-parsing-conquering-the-last-mile-of-unstructured-data">12.1 Deep Document Parsing: Conquering the "Last Mile" of Unstructured Data<a class="headerlink" href="#121-deep-document-parsing-conquering-the-last-mile-of-unstructured-data" title="Permanent link">¶</a></h2>
+<p>In RAG data flow, the hardest to handle often isn't pure text but <strong>PDF</strong>, <strong>PPT</strong>, and <strong>scanned documents</strong> carrying enterprise core knowledge. These formats are designed for "human reading"—extremely unfriendly to machines.</p>
+<h3 id="1211-complex-pdf-processing-more-than-text-extraction">12.1.1 Complex PDF Processing: More Than Text Extraction<a class="headerlink" href="#1211-complex-pdf-processing-more-than-text-extraction" title="Permanent link">¶</a></h3>
+<p>PDF is essentially a collection of drawing instructions, not structured data. Ordinary Python libraries (e.g., PyPDF2) can only extract text streams, unable to understand layout information.</p>
+<p><strong>Pain Point One: Multi-column Layout</strong>
+In academic papers and technical manuals, two- or even three-column layout is common. Simple text extraction reads across columns, generating meaningless concatenations like "left column first line + right column first line." The key to solving this is <strong>Layout Analysis</strong>. Modern tools (e.g., Microsoft's LayoutLM series) use vision models to first identify layout blocks, then extract text in reading order.</p>
+<p><strong>Pain Point Two: Table Restoration</strong>
+Tables are RAG's nightmare. Once tables are flattened to text, row-column correspondence is lost.
+* <strong>Rule-based</strong>: Use PDF line drawing instructions to rebuild grid (e.g., <code>pdfplumber</code>). Suitable for native PDF.
+* <strong>Vision-based</strong>: Convert PDF to images, use object detection models to identify cell structure, then combine OCR for content. This is the only approach for scanned documents and complex nested tables.</p>
+<h3 id="1212-parser-tool-selection-comparison">12.1.2 Parser Tool Selection Comparison<a class="headerlink" href="#1212-parser-tool-selection-comparison" title="Permanent link">¶</a></h3>
+<p>Facing complex enterprise documents, we need to build parsing pipelines based on document type and budget.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Unstructured (Open Source)</th>
+<th style="text-align: left;">LlamaParse (Proprietary)</th>
+<th style="text-align: left;">PyPDF/PDFMiner (Basic)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Core Principle</strong></td>
+<td style="text-align: left;">Rules + basic OCR hybrid model</td>
+<td style="text-align: left;">Large model vision understanding (Vision LLM)</td>
+<td style="text-align: left;">Extract underlying text stream</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Table Handling</strong></td>
+<td style="text-align: left;">Medium (can identify table regions; complex headers prone to confusion)</td>
+<td style="text-align: left;"><strong>Very strong</strong> (reconstructs as Markdown table, preserves semantics)</td>
+<td style="text-align: left;">Poor (rows/columns completely scrambled)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Multi-column Recognition</strong></td>
+<td style="text-align: left;">Supported (detection model based)</td>
+<td style="text-align: left;">Supported (native layout understanding)</td>
+<td style="text-align: left;">Not supported (cross-column reading)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Cost</strong></td>
+<td style="text-align: left;">Low (local compute)</td>
+<td style="text-align: left;">High (API per-page billing)</td>
+<td style="text-align: left;">Very low</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Use Cases</strong></td>
+<td style="text-align: left;">Simple Word/HTML, rule-fixed PDF</td>
+<td style="text-align: left;"><strong>Complex earnings reports, scanned docs, nested tables</strong></td>
+<td style="text-align: left;">Pure text e-books</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Recommendation</strong>: For core business documents (contracts, earnings reports), prioritize LlamaParse or Azure Document Intelligence; for massive ordinary documents, use Unstructured for cleaning to reduce cost.</p>
+</blockquote>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part5/%E5%9B%BE12_1_%E6%96%87%E6%A1%A3%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B%E5%AF%B9%E6%AF%94.png" data-desc-position="bottom"><img alt="Figure 12-1: Document Parsing Flow Comparison" src="../../../images/part5/%E5%9B%BE12_1_%E6%96%87%E6%A1%A3%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B%E5%AF%B9%E6%AF%94.png"></a></p>
+<p><em>Figure 12-1: Traditional Parsing vs. Intelligent Parsing —— Intelligent parsing preserves multi-column order and table structure through layout analysis</em></p>
+<hr>
+<h2 id="122-chunking-strategy-the-art-of-balancing-context-and-retrieval-granularity">12.2 Chunking Strategy: The Art of Balancing Context and Retrieval Granularity<a class="headerlink" href="#122-chunking-strategy-the-art-of-balancing-context-and-retrieval-granularity" title="Permanent link">¶</a></h2>
+<p>After document parsing, we need to split it into model-processable chunks. Chunking strategy directly determines retrieval accuracy.</p>
+<h3 id="1221-basic-strategy-recursive-character-splitter">12.2.1 Basic Strategy: Recursive Character Splitter<a class="headerlink" href="#1221-basic-strategy-recursive-character-splitter" title="Permanent link">¶</a></h3>
+<p>The simplest method is fixed character count splitting (e.g., cut every 500 chars). But this often cuts complete sentences or logical paragraphs in half.
+<strong>Recursive chunking</strong> is the current baseline. It defines delimiter priority (e.g., <code>\n\n</code> &gt; <code>\n</code> &gt; <code>.</code> &gt; <code></code>), prioritizing paragraph splits, then sentence splits. This preserves semantic integrity as much as possible.</p>
+<h3 id="1222-advanced-strategy-i-structural-chunking-markdownhtml-parsing">12.2.2 Advanced Strategy I: Structural Chunking (Markdown/HTML Parsing)<a class="headerlink" href="#1222-advanced-strategy-i-structural-chunking-markdownhtml-parsing" title="Permanent link">¶</a></h3>
+<p>In engineering practice, blind chunking of plain text is often unreliable. Fortunately, many enterprise documents (like Wikis, webpages, regulations) inherently contain strong structural tags (e.g., <code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;table&gt;</code>).</p>
+<p>The core of <strong>structural chunking</strong> lies in parsing the document's DOM tree or Markdown Abstract Syntax Tree (AST):
+* <strong>Pack by hierarchy</strong>: Identify HTML or Markdown heading hierarchies, and extract the content under the same heading and its child nodes as a complete logical chunk.
+* <strong>Protect independent structures</strong>: For tables or code blocks, ensure they are not forcibly truncated by character length thresholds. Instead, preserve them as a whole or convert them into Markdown key-value descriptions with headers.</p>
+<p>This structure-based strategy can maximally preserve the author's original logical framework when processing highly hierarchical long technical documents and legal contracts.</p>
+<h3 id="1223-advanced-strategy-ii-semantic-chunking">12.2.3 Advanced Strategy II: Semantic Chunking<a class="headerlink" href="#1223-advanced-strategy-ii-semantic-chunking" title="Permanent link">¶</a></h3>
+<p>Even recursive chunking can't judge whether two paragraphs discuss the same topic. <strong>Semantic chunking</strong> uses Embedding models to solve this problem:
+1.  Compute vector similarity between adjacent sentences.
+2.  Set threshold; when adjacent sentence similarity drops sharply (meaning a topic shift), split there.</p>
+<p>This method produces variable-length chunks but extremely high semantic purity, avoiding "one chunk contains half product intro and half after-sales policy" noise.</p>
+<h3 id="1224-advanced-strategy-parent-child-indexing">12.2.4 Advanced Strategy: Parent-Child Indexing<a class="headerlink" href="#1224-advanced-strategy-parent-child-indexing" title="Permanent link">¶</a></h3>
+<p>This is the ultimate weapon for resolving RAG's <strong>"retrieval granularity" vs. "generation context"</strong> contradiction.
+* <strong>Contradiction</strong>: Smaller chunks = more focused semantics, more accurate vector retrieval; but too small = lost context, LLM can't generate comprehensive answers.
+* <strong>Solution</strong>:
+    1.  Split document into <strong>large chunks (Parent Chunk)</strong>, e.g., 1000 tokens.
+    2.  Further split each large chunk into <strong>small chunks (Child Chunk)</strong>, e.g., 200 tokens.
+    3.  Vectorize and index <strong>small chunks</strong>.
+    4.  At retrieval, match small chunks but return the <strong>large chunk</strong> containing the matched small chunk to the LLM.</p>
+<p>This "small-to-big retrieval" strategy (Small-to-Big Retrieval) ensures retrieval precision while providing sufficient context for generation.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part5/%E5%9B%BE12_2_%E7%88%B6%E5%AD%90%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86%E5%9B%BE.png" data-desc-position="bottom"><img alt="Figure 12-2: Parent-Child Indexing Principle" src="../../../images/part5/%E5%9B%BE12_2_%E7%88%B6%E5%AD%90%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86%E5%9B%BE.png"></a>
+<em>Figure 12-2: Parent-Child Indexing Mechanism —— Retrieved Child Node, actually return Parent Node, balancing precision and context</em></p>
+<hr>
+<h2 id="123-vectorization-and-storage-teaching-machines-industry-jargon">12.3 Vectorization and Storage: Teaching Machines Industry "Jargon"<a class="headerlink" href="#123-vectorization-and-storage-teaching-machines-industry-jargon" title="Permanent link">¶</a></h2>
+<p>After data chunking, convert to vectors via Embedding models and store in a vector database. In this stage, general solutions often fall short.</p>
+<h3 id="1231-embedding-model-fine-tuning">12.3.1 Embedding Model Fine-tuning<a class="headerlink" href="#1231-embedding-model-fine-tuning" title="Permanent link">¶</a></h3>
+<p>General Embedding models (e.g., OpenAI text-embedding-3 or BGE-M3) are trained on general corpus. In vertical domains, they may perform poorly.
+E.g., in healthcare, "cold" and "fever" are semantically close in general sense but may point to completely different pathologies in diagnostic logic.
+<strong>Fine-tuning</strong> aims to adjust vector space distribution so similar professional concepts cluster closer. Typically uses <strong>Contrastive Learning</strong> loss:</p>
+<div class="arithmatex">\[L = - \log \frac{e^{sim(q, d^+)/\tau}}{\sum_{i} e^{sim(q, d^-_i)/\tau}}\]</div>
+<p>Where <span class="arithmatex">\(d^+\)</span> is positive (correct document) and <span class="arithmatex">\(d^-\)</span> is negative (incorrect document). By constructing "query-relevant document" positive pairs and "query-irrelevant document" negative pairs for fine-tuning, can significantly improve domain-specific retrieval recall.</p>
+<h3 id="1232-hybrid-search-the-engineering-fusion-of-bm25-and-vector-indexing">12.3.2 Hybrid Search: The Engineering Fusion of BM25 and Vector Indexing<a class="headerlink" href="#1232-hybrid-search-the-engineering-fusion-of-bm25-and-vector-indexing" title="Permanent link">¶</a></h3>
+<p>Relying solely on vector retrieval (Dense Retrieval) has a fatal defect: it is not sensitive to <strong>keyword matching</strong> for proper nouns, exact numbers, product models, etc. Enterprise-grade RAG must achieve a "double swords combined" fusion of two retrieval engines at the engineering architecture level:</p>
+<ul>
+<li><strong>Sparse Index (Sparse Index / BM25)</strong>: Relying on traditional search engines (e.g., Elasticsearch, OpenSearch), utilizing the advanced TF-IDF algorithm BM25 to capture exact literal matches (e.g., product ID "A123-X").</li>
+<li><strong>Dense Index (Dense Index / Vector)</strong>: Relying on vector databases (e.g., Milvus, Pinecone) to capture generalized semantic relevance (e.g., "apple" and "fruit").</li>
+</ul>
+<p><strong>Engineering Fusion Pain Points and Solutions</strong>:
+Fusing the two is not simply piecing the results together. The core pain point lies in the <strong>alignment of heterogeneous scores</strong>: BM25 scores are unbounded (even reaching tens or hundreds), while the cosine similarity of vector retrieval is usually between [-1, 1].</p>
+<p>To smoothly aggregate these two recall results at the query layer, the industry-standard engineering solution is to introduce the <strong>Reciprocal Rank Fusion (RRF)</strong> algorithm.
+RRF does not care about specific scores, but uses the <strong>Rank</strong> of documents in their respective retrieval lists to fuse and score:</p>
+<div class="arithmatex">\[RRF\_Score = \sum \frac{1}{k + Rank}\]</div>
+<p>(Where <span class="arithmatex">\(k\)</span> is usually set to 60 to smooth the weights). Through RRF re-ranking, the system can elegantly and robustly combine "exact search" with "fuzzy semantic understanding," completely solving the engineering bottleneck of low accuracy in single-path recall. Additionally, vector database selection must also consider Metadata Filtering performance, so that data can be filtered by conditions like "year=2023" before retrieval to greatly reduce computation.</p>
+<hr>
+<h2 id="124-engineering-implementation-building-parent-child-indexing-pipeline">12.4 Engineering Implementation: Building Parent-Child Indexing Pipeline<a class="headerlink" href="#124-engineering-implementation-building-parent-child-indexing-pipeline" title="Permanent link">¶</a></h2>
+<p>This section implements the core strategy mentioned—<strong>Parent-Child Indexing</strong>. We use Python to define a reusable processing class, simulating the full process from document loading to vector storage.</p>
+<h3 id="1241-dependencies">12.4.1 Dependencies<a class="headerlink" href="#1241-dependencies" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>langchain<span class="w"> </span>lancedb<span class="w"> </span>numpy<span class="w"> </span>unstructured
+</code></pre></div>
+<h3 id="1242-core-code-breakdown">12.4.2 Core Code Breakdown<a class="headerlink" href="#1242-core-code-breakdown" title="Permanent link">¶</a></h3>
+<p>We don't directly call packaged high-level APIs but break down logic to understand data flow.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nd">@dataclass</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">class</span><span class="w"> </span><span class="nc">Document</span><span class="p">:</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">page_content</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">metadata</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">doc_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">class</span><span class="w"> </span><span class="nc">ParentChildIndexer</span><span class="p">:</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="sd">"""</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="sd">    Implements Parent-Child Indexing strategy:</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="sd">    1. Parent Chunk: For storage and generation, preserves full context.</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="sd">    2. Child Chunk: For vectorization and retrieval, ensures semantic precision.</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="sd">    """</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_chunk_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">child_chunk_size</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">parent_size</span> <span class="o">=</span> <span class="n">parent_chunk_size</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">child_size</span> <span class="o">=</span> <span class="n">child_chunk_size</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>        <span class="c1"># Simulate vector database (KV Store + Vector Store)</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">doc_store</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Store Parent documents: {doc_id: content}</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">vector_index</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Store Child vectors: [(vector, parent_doc_id)]</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">process_documents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_docs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]):</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">        </span><span class="sd">"""Step 1: Data processing pipeline"""</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">raw_docs</span><span class="p">:</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>            <span class="c1"># Generate unique ID</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">doc</span><span class="o">.</span><span class="n">doc_id</span><span class="p">:</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>                <span class="n">doc</span><span class="o">.</span><span class="n">doc_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>            <span class="c1"># 1. Store Parent Document (KV Store)</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">doc_store</span><span class="p">[</span><span class="n">doc</span><span class="o">.</span><span class="n">doc_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>            <span class="c1"># 2. Generate Child Chunks</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>            <span class="n">child_chunks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_child_chunks</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>            <span class="c1"># 3. Vectorize and build index</span>
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_index_children</span><span class="p">(</span><span class="n">child_chunks</span><span class="p">,</span> <span class="n">doc</span><span class="o">.</span><span class="n">doc_id</span><span class="p">)</span>
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_create_child_chunks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_doc</span><span class="p">:</span> <span class="n">Document</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="w">        </span><span class="sd">"""</span>
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="sd">        Step 2: Chunking logic</span>
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="sd">        Simplified to fixed character split here; production recommend RecursiveCharacterTextSplitter</span>
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a><span class="sd">        """</span>
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>        <span class="n">text</span> <span class="o">=</span> <span class="n">parent_doc</span><span class="o">.</span><span class="n">page_content</span>
+<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>        <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_size</span><span class="p">):</span>
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>            <span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>            <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">end</span><span class="p">])</span>
+<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>        <span class="k">return</span> <span class="n">children</span>
+<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>
+<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_index_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">children</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">parent_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a><span class="w">        </span><span class="sd">"""Step 3: Vectorization logic (pseudocode)"""</span>
+<a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>        <span class="k">for</span> <span class="n">child_text</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+<a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>            <span class="c1"># Simulate Embedding process</span>
+<a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>            <span class="c1"># vector = embedding_model.encode(child_text) </span>
+<a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a>            <span class="n">vector</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]</span> <span class="c1"># Placeholder</span>
+<a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a>
+<a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a>            <span class="c1"># Key: Store Parent ID in Child metadata</span>
+<a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">vector_index</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+<a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a>                <span class="s2">"vec"</span><span class="p">:</span> <span class="n">vector</span><span class="p">,</span>
+<a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a>                <span class="s2">"text"</span><span class="p">:</span> <span class="n">child_text</span><span class="p">,</span>
+<a id="__codelineno-1-64" name="__codelineno-1-64" href="#__codelineno-1-64"></a>                <span class="s2">"parent_id"</span><span class="p">:</span> <span class="n">parent_id</span>
+<a id="__codelineno-1-65" name="__codelineno-1-65" href="#__codelineno-1-65"></a>            <span class="p">})</span>
+<a id="__codelineno-1-66" name="__codelineno-1-66" href="#__codelineno-1-66"></a>
+<a id="__codelineno-1-67" name="__codelineno-1-67" href="#__codelineno-1-67"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<a id="__codelineno-1-68" name="__codelineno-1-68" href="#__codelineno-1-68"></a><span class="w">        </span><span class="sd">"""</span>
+<a id="__codelineno-1-69" name="__codelineno-1-69" href="#__codelineno-1-69"></a><span class="sd">        Step 4: Retrieval logic (Small-to-Big)</span>
+<a id="__codelineno-1-70" name="__codelineno-1-70" href="#__codelineno-1-70"></a><span class="sd">        Retrieve matching Child -&gt; Return Parent</span>
+<a id="__codelineno-1-71" name="__codelineno-1-71" href="#__codelineno-1-71"></a><span class="sd">        """</span>
+<a id="__codelineno-1-72" name="__codelineno-1-72" href="#__codelineno-1-72"></a>        <span class="c1"># 1. Vector retrieval finds Top-K Children (simulated)</span>
+<a id="__codelineno-1-73" name="__codelineno-1-73" href="#__codelineno-1-73"></a>        <span class="c1"># top_children = vector_db.search(query)</span>
+<a id="__codelineno-1-74" name="__codelineno-1-74" href="#__codelineno-1-74"></a>        <span class="c1"># Note: Example only; should sort by vector similarity</span>
+<a id="__codelineno-1-75" name="__codelineno-1-75" href="#__codelineno-1-75"></a>        <span class="n">top_child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Assume first match</span>
+<a id="__codelineno-1-76" name="__codelineno-1-76" href="#__codelineno-1-76"></a>
+<a id="__codelineno-1-77" name="__codelineno-1-77" href="#__codelineno-1-77"></a>        <span class="c1"># 2. Trace back to Parent</span>
+<a id="__codelineno-1-78" name="__codelineno-1-78" href="#__codelineno-1-78"></a>        <span class="n">parent_id</span> <span class="o">=</span> <span class="n">top_child</span><span class="p">[</span><span class="s2">"parent_id"</span><span class="p">]</span>
+<a id="__codelineno-1-79" name="__codelineno-1-79" href="#__codelineno-1-79"></a>        <span class="n">parent_doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_store</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">parent_id</span><span class="p">)</span>
+<a id="__codelineno-1-80" name="__codelineno-1-80" href="#__codelineno-1-80"></a>
+<a id="__codelineno-1-81" name="__codelineno-1-81" href="#__codelineno-1-81"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Retrieved chunk: </span><span class="si">{</span><span class="n">top_child</span><span class="p">[</span><span class="s1">'text'</span><span class="p">][:</span><span class="mi">20</span><span class="p">]</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+<a id="__codelineno-1-82" name="__codelineno-1-82" href="#__codelineno-1-82"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Traced parent doc ID: </span><span class="si">{</span><span class="n">parent_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-1-83" name="__codelineno-1-83" href="#__codelineno-1-83"></a>        <span class="k">return</span> <span class="p">[</span><span class="n">parent_doc</span><span class="p">]</span>
+<a id="__codelineno-1-84" name="__codelineno-1-84" href="#__codelineno-1-84"></a>
+<a id="__codelineno-1-85" name="__codelineno-1-85" href="#__codelineno-1-85"></a><span class="c1"># --- Usage Example ---</span>
+<a id="__codelineno-1-86" name="__codelineno-1-86" href="#__codelineno-1-86"></a><span class="n">indexer</span> <span class="o">=</span> <span class="n">ParentChildIndexer</span><span class="p">()</span>
+<a id="__codelineno-1-87" name="__codelineno-1-87" href="#__codelineno-1-87"></a><span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="s2">"RAG system core lies in data quality..."</span> <span class="o">*</span> <span class="mi">50</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">"source"</span><span class="p">:</span> <span class="s2">"manual.pdf"</span><span class="p">})</span>
+<a id="__codelineno-1-88" name="__codelineno-1-88" href="#__codelineno-1-88"></a><span class="n">indexer</span><span class="o">.</span><span class="n">process_documents</span><span class="p">([</span><span class="n">doc</span><span class="p">])</span>
+<a id="__codelineno-1-89" name="__codelineno-1-89" href="#__codelineno-1-89"></a><span class="n">result</span> <span class="o">=</span> <span class="n">indexer</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="s2">"data quality"</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="1243-pro-tips">12.4.3 Pro Tips<a class="headerlink" href="#1243-pro-tips" title="Permanent link">¶</a></h3>
+<blockquote>
+<p><strong>💡 Tip: ID Management is Critical</strong>
+In production, <code>doc_id</code> must be deterministic (e.g., <code>hash(file_path + update_time)</code>). Otherwise, when source files update and re-run, vector database will accumulate large amounts of undeletable "zombie chunks."</p>
+</blockquote>
+<hr>
+<h2 id="125-performance-and-evaluation-performance-evaluation">12.5 Performance and Evaluation (Performance &amp; Evaluation)<a class="headerlink" href="#125-performance-and-evaluation-performance-evaluation" title="Permanent link">¶</a></h2>
+<p>RAG performance isn't just "answer accuracy"—it includes index build cost and retrieval latency.</p>
+<h3 id="1251-evaluation-metrics">12.5.1 Evaluation Metrics<a class="headerlink" href="#1251-evaluation-metrics" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Description</th>
+<th>Target (Reference)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hit Rate (Recall@K)</strong></td>
+<td>Proportion of top K retrieved documents containing correct answer</td>
+<td>&gt; 85%</td>
+</tr>
+<tr>
+<td><strong>MRR (Mean Reciprocal Rank)</strong></td>
+<td>Ranking weight of correct document in retrieval list</td>
+<td>&gt; 0.7</td>
+</tr>
+<tr>
+<td><strong>Faithfulness</strong></td>
+<td>Whether generated answer faithfully reflects retrieved context (anti-hallucination)</td>
+<td>&gt; 90% (RAGAS based)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1252-benchmarks">12.5.2 Benchmarks<a class="headerlink" href="#1252-benchmarks" title="Permanent link">¶</a></h3>
+<p>We tested on server (Dual Xeon 6226R + 1x RTX 3090) with 10,000-page PDF docs (mixed text and tables):</p>
+<ul>
+<li><strong>Parsing time (Unstructured)</strong>:</li>
+<li>Pure CPU: 28 minutes</li>
+<li>
+<p>GPU accelerated (OCR): 11 minutes (<strong>2.5x speedup</strong>)</p>
+</li>
+<li>
+<p><strong>Retrieval latency (10M vectors)</strong>:</p>
+</li>
+<li>Pure Dense retrieval: 9ms</li>
+<li>Hybrid retrieval (Dense + Sparse + RRF): 45ms</li>
+<li><em>Conclusion: Hybrid retrieval adds latency but for high-precision scenarios (e.g., contract review), 36ms extra overhead is fully worth it.</em></li>
+</ul>
+<hr>
+<h2 id="126-common-misconceptions-and-pitfalls">12.6 Common Misconceptions and Pitfalls<a class="headerlink" href="#126-common-misconceptions-and-pitfalls" title="Permanent link">¶</a></h2>
+<h3 id="misconception-1-pypdf-is-enough-for-pdf-parsing">Misconception 1: "PyPDF is enough for PDF parsing"<a class="headerlink" href="#misconception-1-pypdf-is-enough-for-pdf-parsing" title="Permanent link">¶</a></h3>
+<p>Many beginners underestimate PDF complexity. For earnings reports or manuals with charts and multi-columns, simple text extraction causes serious information loss. Recommend introducing Layout Analysis tools at project start.</p>
+<h3 id="misconception-2-smaller-chunks-are-better">Misconception 2: "Smaller chunks are better"<a class="headerlink" href="#misconception-2-smaller-chunks-are-better" title="Permanent link">¶</a></h3>
+<p>Oversmall chunks improve retrieval cosine similarity but cause "out-of-context." LLM lacks sufficient context to infer correct answers.</p>
+<h3 id="misconception-3-ignoring-metadata">Misconception 3: "Ignoring metadata"<a class="headerlink" href="#misconception-3-ignoring-metadata" title="Permanent link">¶</a></h3>
+<p>Storing only text vectors without metadata (filename, page number, publish date) prevents time filtering or source tracing, reducing system usability.</p>
+<hr>
+<h2 id="chapter-summary_1">Chapter Summary<a class="headerlink" href="#chapter-summary_1" title="Permanent link">¶</a></h2>
+<p>RAG's core competitiveness lies in data processing precision. This chapter parsed RAG data pipeline's three major checkpoints:</p>
+<ol>
+<li><strong>Parsing checkpoint</strong>: Must understand document structure from visual level, solving table and multi-column issues.</li>
+<li><strong>Chunking checkpoint</strong>: Move beyond single fixed splitting; adopt parent-child indexing or semantic chunking to balance retrieval precision and context integrity.</li>
+<li><strong>Retrieval checkpoint</strong>: Adapt Embedding models to domain knowledge through fine-tuning; combine hybrid retrieval to compensate for vector matching limitations.</li>
+</ol>
+<p>With these in place, your RAG system evolves from "usable" to "useful."</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../images/part5/%E5%9B%BE12_3_RAG%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E5%85%A8%E6%99%AF%E5%9B%BE.png" data-desc-position="bottom"><img alt="Figure 12-3: RAG Data Processing Overview" src="../../../images/part5/%E5%9B%BE12_3_RAG%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E5%85%A8%E6%99%AF%E5%9B%BE.png"></a></p>
+<p><em>Figure 12-3: Enterprise RAG Data Pipeline Architecture —— Emphasizing full-flow optimization from unstructured parsing to hybrid retrieval</em></p>
+<hr>
+<h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">¶</a></h2>
+<p><strong>Tools and Frameworks</strong></p>
+<ul>
+<li><strong>LlamaIndex</strong>: Currently most advanced RAG data framework; rich Data Loaders and Indexing strategies (including parent-child indexing discussed).</li>
+<li><strong>RAGAS</strong>: Framework for evaluating RAG pipeline performance; focuses on retrieval accuracy and generation faithfulness.</li>
+</ul>
+<p><strong>Core Papers</strong></p>
+<ul>
+<li>Lewis et al.'s 2020 <em>Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</em> is RAG's foundational work.</li>
+<li>Karpukhin et al.'s <em>Dense Passage Retrieval for Open-Domain Question Answering (DPR)</em> laid the foundation for modern dual-tower vector retrieval.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
