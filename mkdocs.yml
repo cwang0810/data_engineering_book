@@ -49,25 +49,9 @@ theme:
 plugins:
   - search                           # 全文搜索 (内置)
   - glightbox                        # 图片点击放大 (书籍中架构图较多，必备)
-  - redirects:
-      redirect_maps:
-        zh/part4/4_1_SFT.md: zh/part4/ch12_sft.md
-        zh/part4/4_2_preference.md: zh/part4/ch13_preference.md
-        zh/part4/4_3_qa.md: zh/part4/ch14_qa.md
-        zh/part5/5_1_data_synthesis.md: zh/part5/ch15_data_synthesis.md
-        zh/part5/5_2_distillation.md: zh/part5/ch16_distillation.md
-        zh/part5/5_3_quality.md: zh/part5/ch17_quality.md
-        zh/part6/6_1_COT.md: zh/part6/ch18_cot.md
-        zh/part6/6_2_tool.md: zh/part6/ch19_tool.md
-        zh/part6/6_3_agent.md: zh/part6/ch20_agent.md
-        zh/part7/7_1_rag_pipeline.md: zh/part7/ch21_rag_pipeline.md
-        zh/part7/7_2_multimodal_rag_visual_retrieval.md: zh/part7/ch22_multimodal_rag_visual_retrieval.md
-        zh/part7/7_3_online_feedback_knowledge_update.md: zh/part7/ch23_online_feedback_knowledge_update.md
-        zh/part8/8_1_dataops_flywheel_team.md: zh/part8/ch24_dataops_flywheel_team.md
-        zh/part8/8_2_data_versioning_experiment_tracking.md: zh/part8/ch25_data_versioning_experiment_tracking.md
-        zh/part8/8_3_data_platform_observability.md: zh/part8/ch26_data_platform_observability.md
-        zh/part9/Ch27_compliance_framework_and_governance.md: zh/part9/ch27_compliance_framework_and_governance.md
-        zh/part9/Ch28_federated_learning_and_privacy_preserving_technologies.md: zh/part9/ch28_federated_learning_and_privacy_preserving_technologies.md
+  # Old chapter slugs (e.g. part4/4_1_SFT) redirect to new (part4/ch12_sft) via
+  # a custom hook that writes <meta refresh> stub pages at old locations during build.
+  # See scripts/mkdocs_chapter_redirects.py.
   - i18n:
       reconfigure_material: true     # 自动适配 Material 主题
       docs_structure: folder         # 文件夹策略：zh/ 和 en/ 目录
@@ -176,6 +160,10 @@ plugins:
             - 目次: index.md
             - 序文: preface.md
             - 中国語2026年版の翻訳状況: translation-status.md
+
+# 构建钩子：旧章节路径生成跳转页（保护外链）
+hooks:
+  - scripts/mkdocs_chapter_redirects.py
 
 # 必选插件：增强书籍排版能力
 markdown_extensions:
