@@ -1,28 +1,19 @@
-# 第十篇：项目实战
+# 第十篇：智能化数据工程与 Data Engineering Agent
 
 ## 本篇定位
 
-第十篇将前九篇的方法论落到可运行项目，围绕预训练、SFT、多模态、RAG、Agent、DataOps 与隐私保护，形成十个端到端实践闭环。
+第十篇讨论 Agentic Data Engineering，聚焦数据工程 Agent 如何参与采集、解析、清洗、标注、合成、评测、DataOps 与安全协同。
 
 ## 本篇目录
 
-- [项目一：基于 Ray 构建分布式 Mini-C4 数据流水线](10_1_mini_c4.md)
-- [项目二：垂直领域专家 SFT（法律）](10_2_legal_sft.md)
-- [项目三：LLaVA 多模态指令数据工厂](10_3_llava_instruct.md)
-- [项目四：合成数学与代码教材工厂](10_4_synthetic_textbook.md)
-- [项目五：多模态 RAG 企业财报助手](10_5_mm_rag.md)
-- [项目六：CoT 推理数据集构建与 PRM 训练](10_6_PRM.md)
-- [项目七：Agent Tool-Use 数据工厂](10_7_Agent_Tooluse.md)
-- [项目八：企业级 DataOps 平台搭建：从数据项目到组织级治理能力](10_8_dataops.md)
-- [项目九：隐私保护数据流水线](10_9_privacy_pipeline.md)
-- [项目十：端到端 LLM 数据飞轮](10_10_flywheel.md)
+- [第31章：数据工程 Agent 的架构与任务边界](ch31_agent_architecture.md)
+- [第32章：自动化采集、解析与清洗 Agent](ch32_auto_collection_parsing_cleaning.md)
+- [第33章：标注、合成与评测 Agent](ch33_labeling_synthesis_evaluation.md)
+- [第34章：DataOps Agent 与平台自治](ch34_dataops_agent.md)
+- [第35章：数据工程 Agent 的安全、权限与人机协同](ch35_security_permission_collaboration.md)
 
 ## 建议阅读顺序
 
-- 可按与前九篇对应的主题阅读，也可按项目复杂度由 P01 到 P10 逐步推进。
-- 若目标是快速复现，优先从 P01、P02、P05 入手。
-- 若目标是平台化建设，优先关注 P07、P08、P09、P10 的协同关系。
-
-## 本篇索引
-
-- [第十篇索引词](index_terms.md)
+- 先读第31章，明确数据工程 Agent 的架构、任务边界和自动化等级。
+- 再读第32章到第34章，理解采集清洗、标注合成评测和 DataOps 自治的核心闭环。
+- 最后读第35章，把权限、安全、审计和人机协同作为上线前门禁。

@@ -1,19 +1,18 @@
-# 第九篇：隐私合规与数据安全
+# 第九篇：数据资产、数据产品与数据契约
 
 ## 本篇定位
 
-第九篇聚焦数据合规、隐私保护、联邦学习与安全边界，强调在工程流程中把法规要求、风险控制与可审计能力前置到数据生命周期。
+第九篇补齐数据资产化、数据产品、价值评估和企业内部共享治理，使前文的数据流水线进一步沉淀为可发现、可复用、可审计的组织级资产。
 
 ## 本篇目录
 
-- [第27章：数据合规框架与治理](ch27_compliance_framework_and_governance.md)
-- [第28章：联邦学习与隐私保护技术](ch28_federated_learning_and_privacy_preserving_technologies.md)
+- [第27章：数据资产目录与元数据治理](ch27_data_catalog_and_metadata_governance.md)
+- [第28章：数据产品化与数据契约](ch28_data_productization_and_data_contracts.md)
+- [第29章：数据资产价值评估与复用机制](ch29_data_valuation_and_reuse.md)
+- [第30章：企业内部数据市场与共享治理](ch30_internal_data_market_and_sharing_governance.md)
 
 ## 建议阅读顺序
 
-- 先读第27章，理解数据分级、用途约束、审计闭环与治理职责。
-- 再读第28章，掌握联邦学习、差分隐私与隐私增强技术的工程落地方式。
-
-## 本篇索引
-
-- [第九篇索引词](index_terms.md)
+- 先读第27章，建立资产目录、元数据、血缘和生命周期视角。
+- 再读第28章和第29章，把数据契约、SLA、价值评估与复用机制串起来。
+- 最后读第30章，理解企业内部数据市场、共享授权和审计治理。
