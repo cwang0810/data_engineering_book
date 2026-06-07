@@ -4,6 +4,9 @@
 
 本章围绕“RAG 数据流水线”展开，聚焦大模型数据工程中的关键设计问题。章节从场景约束、数据对象、流水线设计、质量评估和工程治理等维度展开，说明如何把零散的数据处理动作收敛为可复盘、可验证、可交付的系统方法，并为后续章节和项目实战建立统一分析框架。
 
+## 关键词
+
+RAG 数据流水线；文档工程；检索增强生成；chunk 切分；知识更新；评测回灌
 
 ------
 
@@ -975,7 +978,6 @@ Khattab O, Zaharia M (2020) ColBERT: Efficient and Effective Passage Search via 
 Sculley D, Holt G, Golovin D, Davydov E, Phillips T, Ebner D, Chaudhary V, Young M, Crespo J-F, Dennison D (2015) Hidden Technical Debt in Machine Learning Systems. In: Advances in Neural Information Processing Systems 28, pp 2503–2511.
 
 Huyen C (2022) Designing Machine Learning Systems: An Iterative Process for Production-Ready Applications. O’Reilly Media.
-
 
 
 

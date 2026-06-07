@@ -4,6 +4,9 @@
 
 本章围绕“数据资产目录与元数据治理”展开，聚焦大模型数据工程中的关键设计问题。章节从场景约束、数据对象、流水线设计、质量评估和工程治理等维度展开，说明如何把零散的数据处理动作收敛为可复盘、可验证、可交付的系统方法，并为后续章节和项目实战建立统一分析框架。
 
+## 关键词
+
+数据资产目录；元数据治理；Dataset Registry；数据血缘；权限治理；生命周期管理
 
 ------
 
@@ -561,6 +564,5 @@ Sculley D, Holt G, Golovin D, Davydov E, Phillips T, Ebner D, Chaudhary V, Young
 Stonebraker M, Bruckner D, Ilyas I F, Beskales G, Cherniack M, Zdonik S, Pagan A, Xu S (2013) Data Curation at Scale: The Data Tamer System. In: 6th Biennial Conference on Innovative Data Systems Research (CIDR).
 
 Wang R Y, Strong D M (1996) Beyond Accuracy: What Data Quality Means to Data Consumers. Journal of Management Information Systems 12(4):5–33.
-
 
 
