@@ -1,4 +1,4 @@
-# 第18章 思维链与推理数据工程
+# 第18章：思维链与推理数据工程
 
 ## 章前导读
 
@@ -10,7 +10,7 @@
 
 ## 摘要
 
-本章围绕“思维链与推理数据工程”展开，聚焦大模型数据工程中的关键设计问题。章节从场景约束、数据对象、流水线设计、质量评估和工程治理等维度展开，说明如何把零散的数据处理动作收敛为可复盘、可验证、可交付的系统方法，并为后续章节和项目实战建立统一分析框架。
+推理数据工程的核心对象，是答案背后的求解过程，而非孤立的最终结果。本章针对数学、逻辑、代码等高约束推理任务，论述为何仅依赖结果监督（outcome supervision）会掩盖逻辑跳步、伪解释与幻觉步骤等过程缺陷，进而误导对模型能力的判断。在表示层面，本章比较思维链（Chain-of-Thought，CoT）、草稿纸（scratchpad）、思维程序（Program-of-Thought，PoT）与思维树（Tree-of-Thought，ToT）四类轨迹形式的可读性、可验证性与成本差异，强调表示方式的选择应服从后续验证需求，并区分线性轨迹与分支轨迹、显式状态与隐式状态、轨迹长度与轨迹密度。在质量层面，本章建立由规则验证、执行验证、单元测试与裁判模型构成的多层自动验证体系，将错误细分为算术错误、逻辑跳步、伪解释、幻觉步骤、规则越权与状态漂移等类型，并落实到步骤级标签与过程质量评分；过程奖励模型（Process Reward Model，PRM）所代表的过程监督正是其训练目标。最后，本章借助难度分桶与课程学习（curriculum learning）组织正例、反例、纠错与自反思样本，把推理数据从零散堆积推进为可持续迭代的数据课程。
 
 某团队希望训练一个能够根据 issue 描述、报错日志和仓库上下文自动生成补丁的大模型，于是从真实开源仓库中收集了大量“问题描述—代码差异—测试结果”样本。为了提高数据质量，团队没有只保留最终补丁，还让模型为每个补丁生成一段解释性推理，说明它如何定位 bug、为什么修改这些文件、修改后为什么能够通过测试。随后，数据管线用单元测试作为主要验收标准：只要补丁能够让失败测试转为通过，样本就被标记为高质量正例，进入后续训练集。
 
@@ -29,6 +29,13 @@
 ## 关键词
 
 思维链与推理数据工程；推理数据；工具调用；Agent 记忆；多轮交互
+
+## 学习目标
+
+- 能够解释仅依赖结果监督为何会掩盖逻辑跳步、伪解释与幻觉步骤，进而误导对模型推理能力的判断。
+- 能够对比思维链、草稿纸、思维程序与思维树四类轨迹表示的可读性、可验证性与成本，并依据验证需求选择表示方式。
+- 能够构建由规则验证、执行验证、单元测试与裁判模型组成的多层自动验证体系，并将错误细分为算术错误、逻辑跳步、伪解释、幻觉步骤等类型落实到步骤级标签。
+- 能够借助难度分桶与课程学习组织正例、反例、纠错与自反思样本，把推理数据推进为可持续迭代的数据课程。
 
 ## 18.1 为什么只看最终答案会掩盖推理缺陷
 
@@ -169,7 +176,7 @@ Tree-of-Thought (Yao et al. 2023a) 将推理过程从单一线性链扩展为多
 
 这意味着，表示设计时就应同时考虑哪些部分可以规则验证，哪些可以执行验证，哪些需要裁判模型，哪些必须保留人工抽检。例如，若数学步骤采用显式动作标签和中间表达式，那么规则程序就更容易检查合法性；若代码样本显式分离“原因分析”和“代码变更”，就更容易判断分析与实现是否一致；若逻辑样本记录了前提引用关系，就更容易识别跨步跳推。
 
-从工程上讲，推理轨迹的结构化程度，实际上决定了自动化验证的上限。轨迹越混杂、越自由、越依赖隐含理解，验证成本就越高；轨迹越清晰、越字段化、越显式，后续质控就越容易稳定运行。因此，一个成熟的数据系统从来不会把表示方式当成单纯的书写风格问题，而会把它视为整个推理数据管线的基础设施。
+从工程上讲，推理轨迹的结构化程度，实际上决定了自动化验证的上限。轨迹越混杂、越自由、越依赖隐含理解，验证成本就越高；轨迹越清晰、越字段化、越显式，后续质控就越容易稳定运行。因此，一个成熟的数据系统从来不会把表示方式当成单纯的书写风格问题，而会把它视为整个推理数据管线的基础设施。常见的推理样本类型及其表示形式、适用任务与优劣对比如表 18-1 所示。从样本构造到自动验证、错误分类再回流训练的整体流程则如图 18-1 所示。
 
 
 
@@ -269,7 +276,7 @@ if __name__ == "__main__":
     print(verify_step("x = __import__('os').system('rm -rf /')"))  # False
 ```
 
-单元测试主要服务于代码修复、程序合成和结构化工具调用任务；HumanEval、APPS 和 MBPP 都把测试用例或程序行为作为代码生成评测的重要依据 (Chen et al. 2021; Austin et al. 2021)。它不仅检查最终程序是否运行，还检查修复是否真正满足预期行为。对于代码任务来说，只看生成文本往往是不够的，真正的质量标准在于程序行为是否正确、边界条件是否覆盖、是否引入新副作用。单元测试在这里承担的是“行为真值”角色，它比文本相似度、表面解释质量更接近实际使用标准。
+单元测试主要服务于代码修复、程序合成和结构化工具调用任务；HumanEval、APPS 和 MBPP 都把测试用例或程序行为作为代码生成评测的重要依据 (Chen et al. 2021; Hendrycks et al. 2021b; Austin et al. 2021)。它不仅检查最终程序是否运行，还检查修复是否真正满足预期行为。对于代码任务来说，只看生成文本往往是不够的，真正的质量标准在于程序行为是否正确、边界条件是否覆盖、是否引入新副作用。单元测试在这里承担的是“行为真值”角色，它比文本相似度、表面解释质量更接近实际使用标准。
 
 裁判模型 (Zheng et al. 2023; Liu et al. 2023) 则用于补足规则和执行都难以覆盖的语义判断。例如，一个解释是否真的支撑了后续结论，一个逻辑步骤是否属于跳步，一个代码修复理由是否与 patch 行为一致，一段自反思是否真正识别了错误根因。这类问题往往无法完全形式化，但又不能放任不管。裁判模型的价值就在于，它能在大规模场景下提供一种近似语义审核能力。当然，它本身并不绝对可靠，因此通常应与规则和执行验证共同使用，避免单独作为最终标准。
 
@@ -305,7 +312,7 @@ if __name__ == "__main__":
 
 验证结果若只停留在“通过”或“失败”，其价值仍然有限。真正能支撑过程监督和后续训练的是步骤级标签，也就是把质量信息落实到具体中间步骤上。一个推理样本不应只是整题正确或整题错误，而应尽可能标明每一步是正确、可疑、错误、冗余、跳步、不可验证，还是已在后续被修正。只有当错误被定位到步骤，后续的训练、过滤和纠偏才可能更有针对性。
 
-步骤级标签的意义首先在于，它让样本从整体黑盒变成可定位的过程对象；过程监督研究直接将反馈落实到中间步骤，而非只给最终答案奖励 (Lightman et al. 2024)。团队可以知道究竟是哪个局部位置最容易出错，哪类动作最容易失败，哪类任务在什么阶段更容易发生跳步或幻觉。其次，步骤级标签能支撑更灵活的训练策略。有错误的样本不一定都要整体丢弃。若一个长样本中前面大部分过程都可靠，只有局部一步出错，那么它仍然可能具有很高价值。团队可以只屏蔽错误步骤、构造局部纠错任务，或把该样本改造成“错误识别—修正”型训练数据。
+步骤级标签的意义首先在于，它让样本从整体黑盒变成可定位的过程对象；过程监督研究直接将反馈落实到中间步骤，而非只给最终答案奖励 (Lightman et al. 2024)。如图 18-2 所示，过程监督标签会把正确、可疑、错误等判定逐步附着到每一个中间步骤上。团队可以知道究竟是哪个局部位置最容易出错，哪类动作最容易失败，哪类任务在什么阶段更容易发生跳步或幻觉。其次，步骤级标签能支撑更灵活的训练策略。有错误的样本不一定都要整体丢弃。若一个长样本中前面大部分过程都可靠，只有局部一步出错，那么它仍然可能具有很高价值。团队可以只屏蔽错误步骤、构造局部纠错任务，或把该样本改造成“错误识别—修正”型训练数据。
 
 过程质量评分则是在步骤标签之上，对整条轨迹进行更综合的评价。一个样本的过程质量，通常不止取决于最终是否答对，还取决于局部正确性、一致性、完整性、可验证性、冗余度、解释与行为对齐程度等多个维度。数学任务中，局部合法性和链条完整性尤为重要；代码任务中，行为验证和修复理由一致性更关键；逻辑任务中，前提覆盖和规则适用性通常更重要。通过质量评分，团队可以在“是否保留”之外再增加“优先级”维度，让训练更多吸收那些真正稳定、清晰、可复用的高质量过程。
 
@@ -317,7 +324,7 @@ if __name__ == "__main__":
 ![图18-2：过程监督标签示意图](../../images/part6/图18_2.png)
 *图18-2：过程监督标签示意图*
 
-例如，一个样本最终答错，但前面九成步骤都正确，且最后一步错误清晰可纠，那么它对训练局部修正能力和过程稳健性仍然很有价值。相反，一个样本最终答对，但中间充满跳步、伪解释和隐含幻觉，那么它虽然在结果上通过，却未必值得高分。换句话说，过程评分必须敢于把“答对但过程差”的样本压低，也要敢于把“答错但过程主体优良”的样本与普通失败样本区分开来。只有这样，评分体系才不会反过来强化结果导向的旧习惯。
+例如，一个样本最终答错，但前面九成步骤都正确，且最后一步错误清晰可纠，那么它对训练局部修正能力和过程稳健性仍然很有价值。相反，一个样本最终答对，但中间充满跳步、伪解释和隐含幻觉，那么它虽然在结果上通过，却未必值得高分。换句话说，过程评分必须敢于把“答对但过程差”的样本压低，也要敢于把“答错但过程主体优良”的样本与普通失败样本区分开来。只有这样，评分体系才不会反过来强化结果导向的旧习惯。针对不同错误类型的典型表现、常见成因与推荐纠偏动作，可参照表 18-2 进行系统化处置。
 
 
 
@@ -481,9 +488,9 @@ if __name__ == "__main__":
 
 ### 代码修复与程序合成推理数据案例
 
-代码任务的工程流程与数学相似，但验证机制更依赖程序执行环境；HumanEval、APPS 和 MBPP 都采用程序运行或测试用例来评估生成代码的功能正确性 (Chen et al. 2021; Austin et al. 2021)。一个高质量代码修复数据集，不能只保存“错误代码—正确代码”对，还应包括触发缺陷的测试、错误日志、定位过程、修改理由、patch 内容以及修复后的测试结果；Defects4J 与 SWE-bench 都把缺陷、测试和修复上下文作为软件修复研究的重要数据对象 (Jimenez et al. 2024; Just et al. 2014)。这样模型学习的是完整的问题求解闭环，而不只是静态文本映射。
+代码任务的工程流程与数学相似，但验证机制更依赖程序执行环境；HumanEval、APPS 和 MBPP 都采用程序运行或测试用例来评估生成代码的功能正确性 (Chen et al. 2021; Hendrycks et al. 2021b; Austin et al. 2021)。一个高质量代码修复数据集，不能只保存“错误代码—正确代码”对，还应包括触发缺陷的测试、错误日志、定位过程、修改理由、patch 内容以及修复后的测试结果；Defects4J 与 SWE-bench 都把缺陷、测试和修复上下文作为软件修复研究的重要数据对象 (Jimenez et al. 2024; Just et al. 2014)。这样模型学习的是完整的问题求解闭环，而不只是静态文本映射。
 
-程序合成任务同样需要过程表示；MBPP、APPS (Austin et al. 2021) 与 CodeGen 的多轮程序合成研究 (Nijkamp et al. 2023)都说明，自然语言规格到代码实现之间存在可被分解与评测的中间结构。对于一段自然语言需求到代码实现的样本，团队可以保留需求分析、中间设计、关键函数草图、边界条件说明和最终实现，再通过单元测试、静态检查、运行结果对齐来完成验证。若把这些中间状态全都省略，只保留需求与代码，那么模型很容易学会表面模式，却无法在新任务中稳定规划程序结构。
+程序合成任务同样需要过程表示；MBPP (Austin et al. 2021)、APPS (Hendrycks et al. 2021b) 与 CodeGen 的多轮程序合成研究 (Nijkamp et al. 2023)都说明，自然语言规格到代码实现之间存在可被分解与评测的中间结构。对于一段自然语言需求到代码实现的样本，团队可以保留需求分析、中间设计、关键函数草图、边界条件说明和最终实现，再通过单元测试、静态检查、运行结果对齐来完成验证。若把这些中间状态全都省略，只保留需求与代码，那么模型很容易学会表面模式，却无法在新任务中稳定规划程序结构。
 
 代码数据还特别适合构造纠错样本。因为程序环境天然支持“失败—定位—修复—再验证”的闭环，这比纯自然语言场景更容易形成高价值过程数据。团队完全可以基于已有代码仓库、OJ 题目、测试集和失败日志，构建一套持续扩展的推理修复数据流水线。
 
@@ -523,7 +530,7 @@ if __name__ == "__main__":
 
 代码推理数据的来源大致可以分成两类。一类来自真实工程环境，例如代码仓库中的 issue、历史 bug 修复记录、pull request、CI 失败日志、回归测试报告等；SWE-bench 正是从真实 GitHub issue 与 pull request 中构造软件工程任务 (Jimenez et al. 2024)。这类数据的优势在于真实性强、错误自然、上下文丰富，特别适合训练接近真实开发流程的修复与分析能力。但它的问题也很明显：上下文可能过长、噪声较多、依赖环境复杂，且标注清洗成本通常较高。
 
-另一类来自题库与受控环境，例如 OJ 题、教学案例、人工构造 bug 集、受限编程任务等；APPS 的 10,000 个编程题、MBPP 的入门级 Python 任务和 Defects4J 的受控真实缺陷都属于这类可评测数据资源的重要代表 (Austin et al. 2021; Just et al. 2014)。这类数据更容易控制任务边界、测试环境和难度层级，也更适合做程序合成和基础代码修复训练。其不足在于真实复杂性相对有限，错误分布可能与真实工程场景存在差距。
+另一类来自题库与受控环境，例如 OJ 题、教学案例、人工构造 bug 集、受限编程任务等；APPS 的 10,000 个编程题、MBPP 的入门级 Python 任务和 Defects4J 的受控真实缺陷都属于这类可评测数据资源的重要代表 (Hendrycks et al. 2021b; Austin et al. 2021; Just et al. 2014)。这类数据更容易控制任务边界、测试环境和难度层级，也更适合做程序合成和基础代码修复训练。其不足在于真实复杂性相对有限，错误分布可能与真实工程场景存在差距。
 
 成熟团队通常会把两者结合起来，而不会只依赖其中一类。题库数据适合作为基础能力训练与过程格式统一的主要来源，真实工程数据则适合作为高阶鲁棒性、复杂上下文处理和实际修复行为学习的补充。通过这样的组合，代码推理数据系统既能保持可控性，又不至于脱离真实开发场景。
 
@@ -573,7 +580,7 @@ Wang, X., Wei, J., Schuurmans, D., et al. (2023). Self-Consistency Improves Chai
 
 Zhou, D., Schärli, N., Hou, L., et al. (2023). Least-to-Most Prompting Enables Complex Reasoning in Large Language Models. International Conference on Learning Representations. arXiv:2205.10625.
 
-Yao, S., Yu, D., Zhao, J., et al. (2023). Tree of Thoughts: Deliberate Problem Solving with Large Language Models. Advances in Neural Information Processing Systems, 36, 11809–11822. arXiv:2305.10601.
+Yao, S., Yu, D., Zhao, J., et al. (2023a). Tree of Thoughts: Deliberate Problem Solving with Large Language Models. Advances in Neural Information Processing Systems, 36, 11809–11822. arXiv:2305.10601.
 
 Chen, W., Ma, X., Wang, X., & Cohen, W. W. (2023). Program of Thoughts Prompting: Disentangling Computation from Reasoning for Numerical Reasoning Tasks. Transactions on Machine Learning Research. arXiv:2211.12588.
 
@@ -585,7 +592,7 @@ Cobbe, K., Kosaraju, V., Bavarian, M., et al. (2021). Training Verifiers to Solv
 
 Lightman, H., Kosaraju, V., Burda, Y., et al. (2024). Let’s Verify Step by Step. International Conference on Learning Representations. arXiv:2305.20050.
 
-Hendrycks, D., Burns, C., Kadavath, S., et al. (2021). Measuring Mathematical Problem Solving With the MATH Dataset. Advances in Neural Information Processing Systems Datasets and Benchmarks Track. arXiv:2103.03874.
+Hendrycks, D., Burns, C., Kadavath, S., et al. (2021a). Measuring Mathematical Problem Solving With the MATH Dataset. Advances in Neural Information Processing Systems Datasets and Benchmarks Track. arXiv:2103.03874.
 
 Bengio, Y., Louradour, J., Collobert, R., & Weston, J. (2009). Curriculum Learning. Proceedings of the 26th Annual International Conference on Machine Learning, 41–48.
 
@@ -597,7 +604,7 @@ Zheng, L., Chiang, W.-L., Sheng, Y., et al. (2023). Judging LLM-as-a-Judge with 
 
 Liu, Y., Iter, D., Xu, Y., et al. (2023). G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment. Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, 2511–2522. arXiv:2303.16634.
 
-Hendrycks, D., Basart, S., Kadavath, S., et al. (2021). Measuring Coding Challenge Competence With APPS. Advances in Neural Information Processing Systems Datasets and Benchmarks Track. arXiv:2105.09938.
+Hendrycks, D., Basart, S., Kadavath, S., et al. (2021b). Measuring Coding Challenge Competence With APPS. Advances in Neural Information Processing Systems Datasets and Benchmarks Track. arXiv:2105.09938.
 
 Chen, M., Tworek, J., Jun, H., et al. (2021). Evaluating Large Language Models Trained on Code. arXiv:2107.03374.
 
@@ -613,4 +620,4 @@ Monperrus, M. (2018). Automatic Software Repair: A Bibliography. ACM Computing S
 
 Nijkamp, E., Pang, B., Hayashi, H., et al. (2023). CodeGen: An Open Large Language Model for Code with Multi-Turn Program Synthesis. International Conference on Learning Representations. arXiv:2203.13474.
 
-Yao, S., Zhao, J., Yu, D., et al. (2023). ReAct: Synergizing Reasoning and Acting in Language Models. International Conference on Learning Representations. arXiv:2210.03629.
+Yao, S., Zhao, J., Yu, D., et al. (2023b). ReAct: Synergizing Reasoning and Acting in Language Models. International Conference on Learning Representations. arXiv:2210.03629.
