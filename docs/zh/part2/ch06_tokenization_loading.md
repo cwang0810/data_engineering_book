@@ -404,12 +404,14 @@ dataloader = DataLoader(
 接续开篇匿名化复合案例，下面记录该团队完成存储格式迁移后的量化收益对比。所有吞吐、时间和成本节省均为示例性参数，实际结果取决于硬件、存储、数据格式、batch size 和框架实现。
 
 **迁移前**（JSONL.gz，HDD，在线分词）：
+
 - 磁盘读取速度（IPC 读取）：约 180MB/s（HDD 上限）
 - DataLoader 吞吐：约 12,000 tokens/s（64 GPU）
 - GPU 利用率：38%
 - 每 1B token 处理时间：约 83,333 秒（约 23 小时）
 
 **迁移后**（MDS，NVMe SSD，离线预分词）：
+
 - 磁盘读取速度：约 4.5GB/s（NVMe RAID）
 - DataLoader 吞吐：约 380,000 tokens/s
 - GPU 利用率：88%
@@ -422,24 +424,28 @@ dataloader = DataLoader(
 以下是一份可直接使用的输入管道优化检查清单，建议在每个新训练任务启动前逐项核对：
 
 **存储与格式**
+
 - [ ] 数据以二进制格式存储（MDS / .bin memmap），而非 JSONL
 - [ ] 存储在高速设备（NVMe SSD / 高性能网络存储），而非 HDD 或 NFS
 - [ ] Shard 大小在 256MB-1GB 之间
 - [ ] 数据已完成校验和（checksum）验证，确保无损坏 shard
 
 **分词与序列化**
+
 - [ ] 分词已于预处理阶段离线完成，DataLoader 不做在线分词
 - [ ] 序列已打包（Packing），padding token 比例 < 5%
 - [ ] 已启用全局 Shuffle（跨 shard 的随机性）
 - [ ] 序列长度分布与目标 max_seq_len 匹配
 
 **DataLoader 配置**
+
 - [ ] `num_workers` ≥ 2 × GPU 数量
 - [ ] `pin_memory=True`
 - [ ] `persistent_workers=True`（避免 epoch 间重启开销）
 - [ ] 已运行 Smoke Test（100 步，确认 GPU util ≥ 80%）
 
 **监控与可观测性**
+
 - [ ] 训练过程中持续记录 tokens/s、GPU util、DataLoader wait time
 - [ ] 设置了 DataLoader 超时告警（如 batch 等待 > 10s 触发告警）
 - [ ] 保留了完整的数据来源元数据，支持问题回溯

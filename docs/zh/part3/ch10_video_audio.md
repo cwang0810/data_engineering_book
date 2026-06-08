@@ -36,6 +36,7 @@
 ### 10.1.2 表面丰富：无用过采样与高模态噪声
 
 硬盘里确实有 1000 TB，但这里面 80% 可能是：
+
 1. **静止冗余**：一个长达两小时的在线网课视频，画面可能有一整个小时仅仅是静态不变的 PPT 背景与右下角的人脸。如果框架将这几千张高度同质化的画面全部编码进去，训练信号会被低信息帧稀释。这类数据对模型认知提升有限，甚至可能降低有效样本比例。
 2. **底噪与音画分离**：大量生活 VLOG 里混杂风噪、背景轰鸣，甚至经常出现画面里的人在打高尔夫、背景音乐却播放流行歌的“音画不相关（Audio-Visual Misalignment）”情况。对于需要学习物理因果（例如看到玻璃碎裂画面，应匹配玻璃碎裂声）的模型来说，这类野生音视频会提供错误监督信号。
 
@@ -147,12 +148,14 @@
 ### 10.4.1 解码器算力（CPU/GPU）与 I/O 带宽量化
 
 关键问题是“到底用什么硬件解码（Decoding）视频帧”。
+
 1. **纯 CPU 软件解码的局限**：在早期架构设计中，团队可能使用高配 CPU、多线程 ffmpeg 或 Python OpenCV 进行软件解码。高并发下，内存搬运和 PCIe/RAM 带宽会很快成为瓶颈。
 2. **硬件编解码引擎加速（Hardware Video Decoders, NVDEC）**：更适合大规模清洗的方案，是将解码任务卸载至专有硬件。通过调用 GPU 芯片里的视频解码模块（例如 NVDEC API），可以减少 CPU 解码压力并提升吞吐。虽然需要购买 GPU 实例，但在大规模清洗下通常是降本的核心手段。
 
 ### 10.4.2 音视频综合质量评估指标（A/V Quality Assessment）
 
 为了决定一条经过解压的视频是否值得送入下一层流水线，我们需要建立自动化质量评估指标集：
+
 - **画面美学与清晰度得分（Aesthetic & Sharpness Score）**：使用诸如 LAION-Aesthetic 模型对抽取关键帧打分，过滤严重模糊或马赛克画质。
 - **动态模糊与运动过载指数（Motion Blur & Optical Flow Overload）**：如果镜头抖动剧烈，其光流位移方差很大，将降低视觉编码质量，应被剔除或降权。
 - **语音信噪比与声学失真度（SNR & Clipping Ratio）**：检测环境底噪掩盖人声的程度，剔除刺耳破音片段。
@@ -219,6 +222,7 @@ AVSync_Module: Subtitle timestamp [1.21s] completely drifts out of matched acous
 ```
 
 **[根因与修复]**：
+
 - **根因**：未设置随机抖动退避（Exponential Backoff），所有 worker 在同一毫秒同时发起大块请求。
 - **修复**：①在 PyTorch DataLoader 读取逻辑中加入 `jitter_sleep(0–500ms)` 重试机制；②执行 `ulimit -n 1048576` 扩大文件句柄池上限；③将每次 S3 分块颗粒度从 128MB 降至 2MB，改用边缘缓存网关节点（Edge Caching Layer）预热到 NVMe 本地盘后再读取。
 
@@ -241,6 +245,7 @@ Decoder context invalidated. All queued frames dropped (estimated loss: 2.3TB).
 ```
 
 **[根因与修复]**：
+
 - **根因**：4K 分辨率超过 NVDEC 单实例容量上限；多路并发解码未做显存配额隔离。
 - **修复**：①在解码前强制降采样到 1080p（`-vf scale=1920:1080`）；②每张 GPU 限制最大并发解码路数（H100 建议 ≤24 路 1080p）；③使用 DALI 的 `VideoReader` 替代 OpenCV，内置显存 quota 管理。
 
@@ -262,6 +267,7 @@ Alignment quality score: 0.23 (threshold: 0.75). Segment rejected and quarantine
 ```
 
 **[根因与修复]**：
+
 - **根因**：WhisperX 使用 VAD（语音活动检测）切段时，静音片段被错误跳过，导致时间戳累积偏移；长视频中 BGM 混音干扰 VAD 判断。
 - **修复**：①将超过 15 分钟的视频强制切割为 10 分钟子段后再转写；②在 VAD 前先做 Demucs 人声分离，去除 BGM；③以 30 秒为窗口滑动校验时间戳锚点，超过 0.5 秒漂移立即触发重对齐。
 
@@ -284,6 +290,7 @@ Unprocessed queue depth at crash: 3,421 audio segments (est. 68h audio).
 ```
 
 **[根因与修复]**：
+
 - **根因**：pyannote Pipeline 对象在批次间未被显式销毁，嵌入缓存不断累积；PyTorch 计算图未及时释放。
 - **修复**：①每批次处理完后显式调用 `del pipeline; torch.cuda.empty_cache(); gc.collect()`；②使用独立子进程（`multiprocessing.spawn`）运行每批 Diarization，批次结束后进程退出自动回收内存；③限制每批次处理音频长度上限为 2 小时。
 
@@ -305,6 +312,7 @@ DataLoader worker 0: Pipe broken, resetting shard iterator. Skipping shard.
 ```
 
 **[根因与修复]**：
+
 - **根因**：未使用写锁（file lock）或分 shard 策略，多进程并发写同一文件导致字节流交叉写入。
 - **修复**：①每个 worker 分配独立 shard 文件（按 worker_id 命名）；②写完后再由主进程合并或直接上传到 S3；③使用 `wids`（WebDataset Indexed Shards）格式替代 `.tar`，支持安全随机写入与索引。
 

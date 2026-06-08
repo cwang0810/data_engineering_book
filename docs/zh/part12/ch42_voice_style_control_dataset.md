@@ -7,6 +7,7 @@
 **关键词**：可控语音交互；VoiceStyleControl；TTS；S2S；情绪控制；语音数据合规
 
 **学习目标**
+
 - 理解可控语音交互数据与普通 ASR/TTS 数据的差异。
 - 区分语义通道、风格通道和声学监督通道的字段责任。
 - 掌握 S2SEmoControl 与 TTSSpeakerControl 的互补训练价值。

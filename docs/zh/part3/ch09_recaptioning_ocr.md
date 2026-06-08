@@ -88,6 +88,7 @@
 #### （2）中间层：多模型交叉互审机制（Multi-Model-as-a-Judge）
 当面对复杂的交错场景、密集环境或含有细微文化特征的图片时，单一开源模型容易出现幻觉发散（例如把地上的黑色花园灌溉水管识别成黑色蛇）。
 为了降低单一模型的隐性缺陷，流水线会自动将此类复杂批次升级到 **“三盲交叉互审制（MoE-Judge）”**：
+
 1. **并行分诊（Parallel Inference）**：图像同时且独立地送入架构截然不同的视觉引擎 $V_1$ (如基于 CLIP 偏向的 LLaVA)、$V_2$ (如参数量庞大的专有版 InternVL)、以及 $V_3$ (如偏向结构化认知的 Pix2Struct (Lee et al. 2023) 或 Donut (Kim et al. 2022))。
 2. **异构输出（Heterogeneous Output）**：三个视觉模型会同时生成三段不同描述 $C_1, C_2, C_3$。
 3. **文本裁决与融合（LLM Judgement & Fusion）**：再调用一个纯文本模型（如 Claude-3.5-Sonnet 或 GPT-4-Turbo）提取三个描述中的重叠高频语义实体（Overlapping Semantics），并对只有单方观察到的边缘名词或可疑实体进行降权，生成兼顾细节和事实一致性的重述结果。
@@ -146,6 +147,7 @@
 }
 ```
 **字段解释**：
+
 - `original_caption`：原始爬取的低信息标签。
 - `recaption`：大模型合成的长文本描述与生成模型源记录。
 - `grounding_bboxes`：通过 GroundingDINO 提取并映射的细粒度实体坐标，是训练基座具备“指认能力”的核心。
@@ -178,6 +180,7 @@
    第一层通常是专门的版面定位网络（如基于 YOLOv8 或 LayoutLMv3 (Huang et al. 2022)）。它的任务是在页面中定位标题组（Title）、正文池（Body Text）、脚注（Footnote）、柱状图容器及代码块（Code Snippet）。
 2. **第二级 OCR：多维领域特化提取管线（Domain-specific Extraction Pipeline）**
    完整 PDF 被切分为独立像素模块（Cropped Patches）后，会被并发推送（Dispatch）给领域特化的提取管线：
+
    - **文档级文本提取**：对于纯文字段落，分发给 Tesseract 或 PaddleOCR 进行高精度拼写矫正提取。
    - **数学公式逆向编译**：遇到密集公式组，标准 OCR 错误率极高。路由给专门微调的开源引擎（如 Nougat (Blecher et al. 2023)）或商业服务（如 Mathpix），将图像直接还原为严格的 LaTeX 代码流（如：`\int_{0}^{\infty} e^{-x^2} dx`）。
    - **复杂表格拓扑重构**：带有合并单元格与跨页表头的表格最难处理。可以使用类似 TableMaster 的专门架构，将视觉上的横竖线转换为机器可读的 HTML 表格标签链或 Markdown 树。

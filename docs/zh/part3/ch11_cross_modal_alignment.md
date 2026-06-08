@@ -128,6 +128,7 @@
 如果训练数据中 90% 都是图文对，模型就会慢慢退化，丧失了纯文本逻辑推理的能力。这种现象被称为**跨模态遗忘（Cross-modal Catastrophic Forgetting）**。因此，样本配比（Data Mixing）是模型能否成功的关键工程决策。
 
 在生产环境中，多模态样本配比应通过消融实验（Ablation Study）确定。以下比例为截至 2026-06 的示例性参数，实际配置需要根据模型阶段、任务目标和验证集表现重新校准：
+
 - **纯文本保留池（20%~30%）**：保留高质量数学、代码和逻辑推理纯文本（如第一篇提到的 Mini-C4 精选语料），降低跨模态训练对语言推理能力的侵蚀。
 - **粗粒度图文对齐（40%~50%）**：海量的广域图文样本（如 LAION-5B 提纯版），用来构建最基础的世界实体认知词典。
 - **细粒度与交错数据（10%~20%）**：高成本的 BBox 对应图、多图交错长文档、OCR 结构树。这类数据有助于提升空间定位、文档理解和复杂图文推理能力。
@@ -195,6 +196,7 @@
 ### 11.5.4 跨模态融合与对齐工程检查清单
 
 在将多模态数据集推送给训练集群前，建议逐项核对：
+
 - [ ] **对齐防泄漏**：是否确保数据增强（如翻转、裁剪）时，对应的文本描述（如左右关系）和 BBox 坐标同步更新了？
 - [ ] **时序锚点核验**：音视频片段切分后，是否抽检过绝对时间戳（Global Timestamps）没有发生偏移倒挂？
 - [ ] **负样本难度分布**：是否检查了 In-batch 负样本的相似度分布？阈值是否过高导致了真阳性被误杀（False Negatives）？
@@ -233,6 +235,7 @@ Cross-Modal Feature Match Score dropped from 0.89 to 0.00000000003.
 ```
 
 **[根因与修复]**：
+
 - **根因**：极少量含啸叫噪声或纯黑屏的异常样本进入批次，触发交叉注意力层权重的零除法极化；伪负样本（Noisy Negatives）同时干扰对比损失。
 - **修复**：①在融合节点前加高通余弦裁切滤波器，强制对特征向量做 Norm Clipping（L2 norm 上限为 10）；②从难负样本池中撤出所有损坏样本（CLIP-Score < 0.1 或音频 SNR < 5dB）；③启用梯度裁剪 `max_norm=1.0` 防止极端梯度传播。
 
@@ -255,6 +258,7 @@ Suspected data augmentation mirror flip applied AFTER bbox annotation.
 ```
 
 **[根因与修复]**：
+
 - **根因**：数据增强管线中随机水平翻转（HorizontalFlip）在图像翻转后未同步更新 BBox 的 x 坐标（应将 `x1` 替换为 `W - x2`，`x2` 替换为 `W - x1`）；医疗影像 X 光胶片还额外存在物理扫描仪镜像输出问题。
 - **修复**：①所有涉及几何变换的数据增强操作强制绑定 BBox 同步变换（使用 Albumentations 框架的 `BboxParams`）；②对医疗影像增加物理方向元数据字段校验（`metadata.orientation`）；③在流入训练前加 BBox-Text 一致性检测（检查 BBox 内区域的 CLIP 向量与标注文本余弦距离）。
 
@@ -277,6 +281,7 @@ Contrastive loss variance: 4.82 (expected < 0.8). Training instability detected.
 ```
 
 **[根因与修复]**：
+
 - **根因**：Hard Negative 挖掘的相似度阈值（0.92）过高，大量真正的正样本对被错误分类为难负样本，产生"假负例污染（False Negative Contamination）"。
 - **修复**：①将阈值从 0.92 降至 0.75，并引入两阶段判断：先用 CLIP 做粗过滤，再用人工规则（如图文是否有词汇级别共现）做精筛；②限制每批次 Hard Negative 占比不超过正样本数的 2 倍；③部署独立的 False Negative 检测器，定期抽样人工审核。
 
@@ -298,6 +303,7 @@ Queue depth at crash: 14,382 pending segments. Estimated loss: 890h of aligned a
 ```
 
 **[根因与修复]**：
+
 - **根因**：标准 DTW 的时间和空间复杂度均为 O(N×M)，对 4500 帧 × 6200 词的长片段分配矩阵高达 94GB；未对输入序列长度做限制。
 - **修复**：①强制将超过 60 秒的片段切割为 30 秒子段后再做 DTW；②使用 FastDTW（线性复杂度近似算法）替代标准 DTW；③为每个 DTW worker 设置最大内存配额（32GB），超限后触发降采样而非直接 OOM。
 
@@ -320,6 +326,7 @@ Affected batch: 256 samples. Training step 28,441 aborted.
 ```
 
 **[根因与修复]**：
+
 - **根因**：JSONL 打包脚本在写入多模样本时，对包含特殊字符（`<`、`>`、`|`）的 Placeholder 进行了 HTML 转义（`&lt;` 等），导致 Tokenizer 无法识别哨兵 Token；部分样本还遗漏了 `<|image_start|>` 前缀。
 - **修复**：①在 JSONL 序列化时对 Placeholder 字段使用 `ensure_ascii=False` 且跳过 HTML 转义；②在 DataLoader 的 `__getitem__` 中加断言，确保每条多模样本包含成对的 `<|image_start|>...<|image_end|>` 哨兵；③建立格式校验器（Linter），在入库前 100% 扫描所有 JSONL 文件的 Placeholder 完整性。
 
