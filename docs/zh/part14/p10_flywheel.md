@@ -236,78 +236,31 @@ P10 的 registry 应按照第十四篇 P01-P15 的完整目录维护。早期实
 
 `src/collect_upstream_projects.py` 负责汇总上游项目资产，并将项目信息整理为统一规格。
 
-Listing P10-2 给出了 Python 实现片段，用于说明本节中的输入输出关系、结构约束或执行方式。
+Listing P10-2 保留出版稿中的关键结构。完整项目清单、指标文件路径和接口字段应维护在配套资源的 `src/collect_upstream_projects.py` 中，正文只展示支撑飞轮装配的最小数据模型。
 ```python
 PROJECT_SPECS = [
     {
         "project_id": "p1",
-        "title": "Mini-C4 Pretraining Corpus",
-        "project_dir": "project_1_mini_c4",
-        "metrics_file": "data/reports/p1_metrics.json",
-        "test_file": "data/reports/p1_test_results.json",
         "phase": "acquisition",
-        "deliverables": ["raw_corpus", "cleaned_corpus", "train_val_split"],
         "interfaces_out": ["foundation_corpus", "training_manifest"],
     },
     {
         "project_id": "p2",
-        "title": "Legal SFT Factory",
-        "project_dir": "project_2_sft_data",
-        "metrics_file": "data/reports/p2_metrics.json",
-        "test_file": "data/reports/p2_test_results.json",
         "phase": "alignment",
-        "deliverables": ["domain_sft_dataset", "preference_pairs", "risk_refusals"],
         "interfaces_out": ["sft_corpus", "preference_data"],
     },
     {
         "project_id": "p10",
-        "title": "End-to-End LLM Data Flywheel",
-        "project_dir": "project_10_flywheel",
         "phase": "governance",
-        "deliverables": ["upstream_registry", "stage_plan", "risk_ledger", "release_dashboard"],
         "interfaces_out": ["project_registry", "release_gate", "feedback_routing"],
         "registry_role": "assembly_layer",
     },
     {
         "project_id": "p11",
-        "title": "Mini-DeepSeek Pretraining Recipe",
-        "project_dir": "project_11_mini_deepseek",
         "phase": "foundation_recipe",
-        "deliverables": ["mixed_corpus", "tokenizer", "packed_dataset", "training_smoke_report"],
         "interfaces_out": ["pretraining_recipe", "tokenizer_artifact", "packed_training_data"],
     },
-    {
-        "project_id": "p12",
-        "title": "Teaching-scale R1 Reasoning Data Flywheel",
-        "project_dir": "project_12_r1_flywheel",
-        "phase": "reasoning",
-        "deliverables": ["cold_start_data", "sampled_traces", "verifier_results", "merged_sft_data"],
-        "interfaces_out": ["reasoning_traces", "rejection_sampled_sft", "verifier_manifest"],
-    },
-    {
-        "project_id": "p13",
-        "title": "Multimodal Instruction Factory",
-        "project_dir": "project_13_mm_instruction_factory",
-        "phase": "multimodal_instruction",
-        "deliverables": ["seed_manifest", "judge_scores", "multilingual_pack", "mm_sft_jsonl"],
-        "interfaces_out": ["qwen_vl_instruction_data", "quality_judge_records"],
-    },
-    {
-        "project_id": "p14",
-        "title": "Video Generation Dataset Pipeline",
-        "project_dir": "project_14_video_generation",
-        "phase": "generative_media",
-        "deliverables": ["source_video_manifest", "shot_clips", "motion_scores", "t2v_training_samples"],
-        "interfaces_out": ["video_caption_data", "t2v_manifest"],
-    },
-    {
-        "project_id": "p15",
-        "title": "DataAgent Semantic BI Assistant",
-        "project_dir": "project_15_dataagent_semantic_bi",
-        "phase": "enterprise_application",
-        "deliverables": ["agent_yaml", "semantic_service_config", "sql_outputs", "csv_outputs", "audit_trace"],
-        "interfaces_out": ["semantic_bi_service", "a2a_endpoint", "workspace_assets"],
-    },
+    # P12-P15 follow the same schema in the accompanying project script.
 ]
 ```
 
@@ -357,25 +310,20 @@ P10 的价值之一，就是把飞轮拆成了更清晰的阶段体系。当前�
 
 `src/build_flywheel.py` 负责把第十四篇项目映射到飞轮结构中。早期最小实现只覆盖 P01-P09；当前出版口径应把 P10-P15 继续映射到 governance、foundation recipe、reasoning、multimodal instruction、generative media 和 enterprise application 等阶段。
 
-Listing P10-3 给出了 Python 实现片段，用于说明本节中的输入输出关系、结构约束或执行方式。
+Listing P10-3 保留层级映射的核心骨架。完整实现可在配套资源的 `src/build_flywheel.py` 中维护，并随项目清单增减同步更新。
 ```python
 def build_architecture(registry: list[dict]) -> dict:
     return {
         "layers": [
             {
                 "name": "data_source_layer",
-                "responsibilities": ["web/data ingestion", "sensitive data intake", "document intake"],
+                "responsibilities": ["web/data ingestion", "document intake"],
                 "mapped_projects": ["p1", "p5", "p9", "p11", "p14"],
             },
             {
                 "name": "processing_layer",
-                "responsibilities": ["cleaning", "dedup", "de-identification", "instruction synthesis", "curriculum packaging"],
+                "responsibilities": ["cleaning", "dedup", "instruction synthesis"],
                 "mapped_projects": ["p1", "p2", "p3", "p4", "p9", "p11", "p13", "p14"],
-            },
-            {
-                "name": "modeling_layer",
-                "responsibilities": ["SFT", "PRM", "agent tool-use training", "multimodal training"],
-                "mapped_projects": ["p2", "p3", "p4", "p6", "p7", "p11", "p12", "p13"],
             },
             {
                 "name": "application_layer",

@@ -111,7 +111,7 @@ FineWeb 的论文（Penedo et al. 2024）提供了一个重要观察：在相同
 | **垂直行业模型（如金融/医疗）** | 中 | 低 | 中 | 中 | 高 | 领域数据占比显著提升，通用语料保底维持通用能力 |
 | **多语言base模型** | 高 | 中 | 低-中 | 低-中 | 按语言目标分配 | 网页数据中需控制各语言分布与目标语言能力需求一致 |
 
-表4-2使用"高/中/低"而非固定百分比，是为了避免把某个项目的实验配方误读为通用规律。配比策略还需要考量**动态调整机制**：不同阶段的训练（预训练初期 vs Cooldown 阶段）应当采用不同的配比权重。越接近训练后期，越应当提高高质量精选数据（书籍、学术论文、企业数据）的权重，同时降低低质量海量数据（原始网页）的权重。LLaMA 3 技术报告披露了 15T 级训练数据和多阶段后训练流程 (Dubey et al. 2024)，但没有给出可直接复用的完整数据配方；生产项目仍需通过小模型消融和冻结评测集校准。
+表4-2使用"高/中/低"而非固定百分比，是为了避免把某个项目的实验配方误读为通用规律。配比策略还需要考量**动态调整机制**：不同阶段的训练（预训练初期 vs Cooldown 阶段）应当采用不同的配比权重。越接近训练后期，越应当提高高质量精选数据（书籍、学术论文、企业数据）的权重，同时降低低质量海量数据（原始网页）的权重。LLaMA 3 技术报告披露了 15T 级训练数据和多阶段后训练流程 (Grattafiori et al. 2024)，但没有给出可直接复用的完整数据配方；生产项目仍需通过小模型消融和冻结评测集校准。
 
 ---
 
@@ -402,7 +402,7 @@ Barbaresi A (2021) Trafilatura: A Web Scraping Library and Command-Line Tool for
 
 Blecher L, Cucurull G, Scialom T, Stojnic R (2023) Nougat: Neural Optical Understanding for Academic Documents. arXiv preprint arXiv:2308.13418.
 
-Dubey A, Jauhri A, Pandey A, Khandelwal A, Al-Dahle A, Letman A, Mathur A, Schelten A, Yang A, Fan A, others (2024) The Llama 3 Herd of Models. arXiv preprint arXiv:2407.21783.
+Grattafiori A, Dubey A, Jauhri A, Pandey A, Kadian A, Al-Dahle A, Letman A, Mathur A, Schelten A, Vaughan A, others (2024) The Llama 3 Herd of Models. arXiv preprint arXiv:2407.21783.
 
 
 Lopez P (2009) GROBID: Combining Automatic Bibliographic Data Recognition and Term Extraction for Scholarship Publications. In: Proceedings of the 13th European Conference on Digital Libraries, pp 473-474.

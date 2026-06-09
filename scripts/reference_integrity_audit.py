@@ -16,6 +16,7 @@ confirm it strongly enough for publisher handoff.
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import re
 import time
@@ -48,6 +49,8 @@ URL_RE = re.compile(r"https?://[^\s<>)]+")
 AUTHOR_TOKEN_RE = r"[A-Z][A-Za-zÀ-ÖØ-öø-ÿ'’`.-]+"
 CITATION_PATTERNS = [
     re.compile(r"\b(National Institute of Standards and Technology)\s*\(?((?:19|20)\d{2})\)?"),
+    re.compile(r"\b(Nait\s+Saada|Jimeno\s+Yepes)\s+et\s+al\.\s*\(?((?:19|20)\d{2})\)?"),
+    re.compile(r"\b(Kimi\s+Team|Qwen\s+Team|Gemini\s+Team|Open-Sora\s+Team|Wan\s+Team)\s*\(?((?:19|20)\d{2})\)?"),
     re.compile(rf"\b({AUTHOR_TOKEN_RE})\s+et\s+al\.\s*\(?((?:19|20)\d{{2}})\)?"),
     re.compile(rf"\b({AUTHOR_TOKEN_RE}),\s+{AUTHOR_TOKEN_RE}\s+and\s+{AUTHOR_TOKEN_RE}\s*\(?((?:19|20)\d{{2}})\)?"),
     re.compile(rf"\b({AUTHOR_TOKEN_RE}),\s+{AUTHOR_TOKEN_RE}\s*&\s+{AUTHOR_TOKEN_RE}\s*\(?((?:19|20)\d{{2}})\)?"),
@@ -172,7 +175,12 @@ def normalize_word(text: str) -> str:
 def author_key(author: str) -> str:
     if author == "National Institute of Standards and Technology":
         return "nist"
-    return normalize_word(author)
+    key = normalize_word(author)
+    aliases = {
+        "teamkimi": "kimiteam",
+        "teamqwen": "qwenteam",
+    }
+    return aliases.get(key, key)
 
 
 def normalize_title(text: str) -> str:
@@ -239,6 +247,15 @@ def first_author_from_entry(entry: str) -> str:
     entry = re.sub(r"^\d+\.\s*", "", entry).strip()
     if entry.startswith("National Institute of Standards and Technology"):
         return "NIST"
+    if entry.startswith("Nait Saada"):
+        return "Nait Saada"
+    if entry.startswith("Jimeno Yepes"):
+        return "Jimeno Yepes"
+    if entry.startswith("Team Kimi"):
+        return "Kimi Team"
+    for team_name in ("Qwen Team", "Gemini Team", "Open-Sora Team", "Wan Team"):
+        if entry.startswith(team_name):
+            return team_name
     if entry.startswith("van den Oord"):
         return "Oord"
     if entry.startswith("OWASP"):
@@ -469,7 +486,61 @@ def verify_arxiv(ref: ReferenceEntry) -> tuple[str, str, str, float, str, list[s
         status = "verified" if not issues else "metadata-mismatch"
         return status, "arxiv", title, year, score, ref.arxiv, issues
     except Exception as exc:
-        return "check-error", "arxiv", "", "", 0.0, ref.arxiv, [f"arxiv-error:{exc.__class__.__name__}"]
+        return verify_arxiv_html(ref, f"arxiv-error:{exc.__class__.__name__}")
+
+
+def verify_arxiv_html(ref: ReferenceEntry, prior_issue: str = "") -> tuple[str, str, str, float, str, list[str]]:
+    arxiv_id = re.sub(r"v\d+$", "", ref.arxiv)
+    url = "https://arxiv.org/abs/" + urllib.parse.quote(arxiv_id)
+    issues: list[str] = [prior_issue] if prior_issue else []
+    try:
+        html_text = fetch_text(url)
+        title_match = re.search(r'<meta\s+name="citation_title"\s+content="([^"]+)"', html_text, re.I)
+        date_match = re.search(r'<meta\s+name="citation_date"\s+content="([^"]+)"', html_text, re.I)
+        title = html.unescape(title_match.group(1)) if title_match else ""
+        year = date_match.group(1)[:4] if date_match else ""
+        score = similarity(ref.title, title) if ref.title else similarity(ref.entry, title)
+        if not title:
+            issues.append("arxiv-html-title-not-found")
+        elif score < 0.62:
+            issues.append("title-mismatch")
+        if year_delta_too_large(ref.year, year):
+            issues.append("year-mismatch")
+        blocking = [issue for issue in issues if not issue.startswith("arxiv-error:")]
+        status = "verified" if not blocking else "metadata-mismatch"
+        return status, "arxiv-html", title, year, score, ref.arxiv, issues
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:
+            return "not-found", "arxiv-html", "", "", 0.0, ref.arxiv, issues + ["arxiv-id-not-found"]
+        return "check-error", "arxiv-html", "", "", 0.0, ref.arxiv, issues + [f"arxiv-html-http:{exc.code}"]
+    except Exception as exc:
+        return "check-error", "arxiv-html", "", "", 0.0, ref.arxiv, issues + [f"arxiv-html-error:{exc.__class__.__name__}"]
+
+
+def verify_datacite_doi(ref: ReferenceEntry, prior_issue: str = "") -> tuple[str, str, str, float, str, list[str]]:
+    doi = ref.doi.lower()
+    url = "https://api.datacite.org/dois/" + urllib.parse.quote(doi, safe="")
+    issues: list[str] = [prior_issue] if prior_issue else []
+    try:
+        data = fetch_json(url)
+        attrs = data.get("data", {}).get("attributes", {})
+        titles = attrs.get("titles") or []
+        title = titles[0].get("title", "") if titles else ""
+        year = str(attrs.get("publicationYear") or "")
+        score = similarity(ref.title, title) if ref.title else similarity(ref.entry, title)
+        if score < 0.62:
+            issues.append("title-mismatch")
+        if year_delta_too_large(ref.year, year):
+            issues.append("year-mismatch")
+        blocking = [issue for issue in issues if issue != "doi-not-found-crossref"]
+        status = "verified" if not blocking else "metadata-mismatch"
+        return status, "datacite-doi", title, year, score, doi, issues
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:
+            return "not-found", "datacite-doi", "", "", 0.0, doi, issues + ["doi-not-found-datacite"]
+        return "check-error", "datacite-doi", "", "", 0.0, doi, issues + [f"datacite-http:{exc.code}"]
+    except Exception as exc:
+        return "check-error", "datacite-doi", "", "", 0.0, doi, issues + [f"datacite-error:{exc.__class__.__name__}"]
 
 
 def verify_doi(ref: ReferenceEntry) -> tuple[str, str, str, float, str, list[str]]:
@@ -492,9 +563,14 @@ def verify_doi(ref: ReferenceEntry) -> tuple[str, str, str, float, str, list[str
         return status, "crossref-doi", title, year, score, doi, issues
     except urllib.error.HTTPError as exc:
         if exc.code == 404:
-            return "not-found", "crossref-doi", "", "", 0.0, doi, ["doi-not-found"]
+            return verify_datacite_doi(ref, "doi-not-found-crossref")
         return "check-error", "crossref-doi", "", "", 0.0, doi, [f"doi-http:{exc.code}"]
     except Exception as exc:
+        datacite_status, datacite_source, datacite_title, datacite_year, datacite_score, datacite_id, datacite_issues = verify_datacite_doi(
+            ref, f"doi-error:{exc.__class__.__name__}"
+        )
+        if datacite_status != "check-error":
+            return datacite_status, datacite_source, datacite_title, datacite_year, datacite_score, datacite_id, datacite_issues
         return "check-error", "crossref-doi", "", "", 0.0, doi, [f"doi-error:{exc.__class__.__name__}"]
 
 
@@ -716,7 +792,7 @@ def write_markdown(
         "| --- | ---: | --- |",
     ]
     status_labels = {
-        "verified": "arXiv / DOI / Crossref / OpenAlex 强匹配",
+        "verified": "arXiv / DOI / DataCite / Crossref / OpenAlex 强匹配",
         "metadata-mismatch": "外部记录存在，但题名或年份弱匹配/不一致",
         "url-reachable": "URL 可访问，但非论文元数据强校验",
         "url-problem": "URL 不可访问或状态异常",
@@ -727,7 +803,7 @@ def write_markdown(
     for status, count in sorted(status_counts.items()):
         out.append(f"| `{status}` | {count} | {status_labels.get(status, '')} |")
     out.extend(["", "## 主要结论", ""])
-    blockers = [row for row in checks if row.status in {"metadata-mismatch", "url-problem", "not-found"}]
+    blockers = [row for row in checks if row.status in {"metadata-mismatch", "url-problem", "not-found", "needs-manual-review"}]
     no_identifier = format_issue_counts.get("missing-doi-arxiv-url", 0)
     out.append(f"- 需要优先人工复核的外部核验问题：{len(blockers)} 条。")
     out.append(f"- 缺少 DOI / arXiv / URL 的条目：{no_identifier} 条；其中一部分可由 Crossref/OpenAlex 题名检索确认，但 Springer 终稿仍建议补 DOI 或稳定 URL。")

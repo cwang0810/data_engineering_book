@@ -217,10 +217,15 @@ This budget rule carries two implications. First, latent steps are not arbitrary
 
 In the student sequence, a sample can be abstractly written as:
 
-$$
-\texttt{<latent\_think>}~l_1,\ldots,l_m~\texttt{</latent\_think>}
-~\texttt{<think>}~t_1,\ldots,t_n~\texttt{</think>}~a_1,\ldots,a_r~\texttt{<|im\_end|>}.
-$$
+\[
+\mathrm{LATENT}_{1:m}
+\;\rightarrow\;
+\mathrm{THINK}_{1:n}
+\;\rightarrow\;
+\mathrm{ANSWER}_{1:r}
+\;\rightarrow\;
+\mathrm{EOS}.
+\]
 
 Here $(l_1,\dots,l_m)$ are latent placeholder positions, $(t_1,\dots,t_n)$ are the distilled explicit CoT tokens, and $(a_1,\dots,a_r)$ are the final answer tokens. In the code implementation, latent placeholders can be filled with repeated `latent_pad_token` entries; however, during training these positions are not treated as ordinary language targets. In the model's forward pass, the input embeddings at placeholder positions are replaced by recurrent latent states produced by a latent projector. In other words, these positions have token boundaries and a defined length in the sequence, but they are semantically hidden computation slots.
 
@@ -321,15 +326,15 @@ In the code implementation, each sample generates multiple masks: `prompt_mask`,
 
 The CE label rule can be expressed in simplified form as:
 
-$$
+\[
 y_i =
 \begin{cases}
--100, & i \in \mathcal{S}_{prompt} \cup \mathcal{S}_{lat}^{int}, \\
+-100, & i \in \mathcal{S}_{\mathrm{prompt}} \cup \mathcal{S}_{\mathrm{latent\_inner}}, \\
 x_i, & \text{otherwise}.
 \end{cases}
-$$
+\]
 
-Here $\mathcal{S}_{prompt}$ denotes positions in the user prompt and the context preceding the assistant prefix, and $\mathcal{S}_{lat}^{int}$ denotes the interior placeholder positions between `<latent_think>` and `</latent_think>`. Tokens set to `-100` are not directly fitted by ordinary CE. This avoids an erroneous objective: requiring the model to predict a specific fixed text token at latent interior positions. For LaTER, the value of latent interior positions lies not in outputting `<|endoftext|>` tokens but in allowing the model to execute a number of hidden state updates.
+Here \(\mathcal{S}_{\mathrm{prompt}}\) denotes positions in the user prompt and the context preceding the assistant prefix, and \(\mathcal{S}_{\mathrm{latent\_inner}}\) denotes the interior placeholder positions between `<latent_think>` and `</latent_think>`. Tokens set to `-100` are not directly fitted by ordinary CE. This avoids an erroneous objective: requiring the model to predict a specific fixed text token at latent interior positions. For LaTER, the value of latent interior positions lies not in outputting `<|endoftext|>` tokens but in allowing the model to execute a number of hidden state updates.
 
 ![Figure 43-5: Supervision Mask Schematic](../../images/part12/ch43_supervision_mask.svg)
 

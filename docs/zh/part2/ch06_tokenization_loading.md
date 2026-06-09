@@ -118,7 +118,7 @@ def tokenize_document(doc: dict, max_length: int = 4096) -> dict | None:
 
 词表（Vocabulary）是分词器的核心产出，也是大模型整体架构中唯一在训练开始后几乎无法更改的组件。一旦词表确定，后续所有的数据处理、模型嵌入矩阵、输出 logit 层都与之强绑定——更换词表意味着重新分词所有训练数据、重新初始化嵌入矩阵（丢失预训练权重的嵌入部分），代价极高。因此，词表设计决策必须在整个工程启动之前完成，而不是在训练中途发现问题再回来修正。
 
-**词表大小的权衡**是首要决策。较大的词表（如 100K 量级）能够将更多高频词和领域专业术语保留为单个 token，减少序列长度，降低 Transformer 的计算量（因为 attention 复杂度是序列长度的平方）；但更大的嵌入矩阵会增加参数量，且稀有 token 在训练中见到的样本更少，嵌入质量较低。LLaMA-3 (Dubey et al. 2024) 将词表从 LLaMA-2 的 32K 大幅扩展至 128K，并在技术报告中把更大的词表列为改进多语言与代码能力的重要设计之一。嵌入层新增参数可按“新增 token 数 × hidden size”估算，显存开销还取决于参数精度、是否 tied embedding 以及优化器状态，不能脱离模型配置给出固定 GB 数。
+**词表大小的权衡**是首要决策。较大的词表（如 100K 量级）能够将更多高频词和领域专业术语保留为单个 token，减少序列长度，降低 Transformer 的计算量（因为 attention 复杂度是序列长度的平方）；但更大的嵌入矩阵会增加参数量，且稀有 token 在训练中见到的样本更少，嵌入质量较低。LLaMA-3 (Grattafiori et al. 2024) 将词表从 LLaMA-2 的 32K 大幅扩展至 128K，并在技术报告中把更大的词表列为改进多语言与代码能力的重要设计之一。嵌入层新增参数可按“新增 token 数 × hidden size”估算，显存开销还取决于参数精度、是否 tied embedding 以及优化器状态，不能脱离模型配置给出固定 GB 数。
 
 **领域词表扩充（Domain Vocabulary Extension）** 是垂直领域大模型的常见需求。当基础词表对特定领域的专业术语覆盖不足时（如医学术语的分子式、法律术语的专有名称、代码语言的关键字组合），这些词会被切分为多个子 token，导致：一是序列长度增长，模型上下文窗口中能容纳的领域信息减少；二是模型需要从碎片化的 token 中重建语义，学习成本更高。
 
@@ -248,7 +248,7 @@ $$p_i = \frac{n_i^{1/T}}{\sum_j n_j^{1/T}}$$
 
 课程学习（Curriculum Learning）是一种在训练过程中**动态调整数据配方**的策略：模型训练的早期阶段使用更"简单"（句子更短、语言更通顺、领域更通用）的数据，随着训练进行逐步引入更长、更复杂的样本，以模拟"先易后难"的渐进式学习路径 (Bengio et al. 2009)。
 
-在工程实现上，课程学习的难度度量可以来自多个维度：token 序列长度（短→长）、困惑度分数（低困惑度→高困惑度）、质量层级（High→Medium→Low）。LLaMA-3 (Dubey et al. 2024) 的技术报告明确提到，在预训练的 Cooldown 阶段大幅提升高质量精选数据（代码、数学推理、书籍）的权重，这本质上正是一种**数据质量课程**——先用海量通用数据建立广泛的世界知识，再用高质量精选数据在最后阶段强化特定能力。
+在工程实现上，课程学习的难度度量可以来自多个维度：token 序列长度（短→长）、困惑度分数（低困惑度→高困惑度）、质量层级（High→Medium→Low）。LLaMA-3 (Grattafiori et al. 2024) 的技术报告明确提到，在预训练的 Cooldown 阶段大幅提升高质量精选数据（代码、数学推理、书籍）的权重，这本质上正是一种**数据质量课程**——先用海量通用数据建立广泛的世界知识，再用高质量精选数据在最后阶段强化特定能力。
 
 ---
 
@@ -460,7 +460,7 @@ dataloader = DataLoader(
 
 Bengio Y, Louradour J, Collobert R, Weston J (2009) Curriculum Learning. In: Proceedings of the 26th Annual International Conference on Machine Learning, pp 41-48.
 
-Dubey A, Jauhri A, Pandey A, Khandelwal A, Al-Dahle A, Letman A, Mathur A, Schelten A, Yang A, Fan A, others (2024) The Llama 3 Herd of Models. arXiv preprint arXiv:2407.21783.
+Grattafiori A, Dubey A, Jauhri A, Pandey A, Kadian A, Al-Dahle A, Letman A, Mathur A, Schelten A, Vaughan A, others (2024) The Llama 3 Herd of Models. arXiv preprint arXiv:2407.21783.
 
 Kudo T, Richardson J (2018) SentencePiece: A simple and language independent subword tokenizer and detokenizer for Neural Text Processing. In: Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing: System Demonstrations, pp 66-71.
 

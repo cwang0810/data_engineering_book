@@ -350,7 +350,7 @@ Malkov Y A, Yashunin D A (2020) Efficient and Robust Approximate Nearest Neighbo
 
 Apache Software Foundation (2024) Apache Iceberg: Table Specification and Documentation. <https://iceberg.apache.org/spec/> (accessed 2024-11).
 
-Kuprieiev R, Pachhai S, Petrov D, Redzyński P, da Costa-Luis C, Rowlands P, Shcheklein I, others (2021) DVC: Data Version Control - Git for Data and Models. Zenodo. <https://doi.org/10.5281/zenodo.5561081>.
+DVC Contributors (2024) DVC: Data Version Control. Documentation and source repository. <https://dvc.org/doc>.
 
 Penedo G, Kydlíček H, Ben Allal L, Lozhkov A, Mitchell M, Raffel C, von Werra L, Wolf T (2024) The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale. arXiv preprint arXiv:2406.17557.
 

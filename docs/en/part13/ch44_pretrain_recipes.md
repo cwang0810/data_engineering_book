@@ -76,6 +76,7 @@ After filtering out promotional language in technical reports, the critical ques
 *(Note: Figures in the table follow the annotation convention: [D] = explicitly disclosed in the report; [I] = reasonable inference based on model behavior and known information; [E] = community or author estimate.)*
 
 **Table 44-2: Pretraining Data Composition Comparison for Leading Open-Source LLMs (6 rows × 8 columns)**
+
 | Data Category | Subcategory / Characteristics | Quality Requirements | DeepSeek-V3 (14.8T) | Qwen2.5 (18T) | Qwen3 (inferred) | Llama-3.1/3.3 (inferred) | OLMo-2 (inferred) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **General Web Text** | High-quality web pages | Very high; deduplicated, marketing content removed | ~50% [I] | ~55% [I] | ~50% [E] | ~50% [I], used in phased manner; high-frequency front-loaded | High proportion; strict deduplication, multi-tier filtering |

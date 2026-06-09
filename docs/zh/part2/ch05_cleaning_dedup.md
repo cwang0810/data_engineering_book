@@ -626,7 +626,7 @@ Broder A Z (1997) On the Resemblance and Containment of Documents. In: Proceedin
 
 Heafield K (2011) KenLM: Faster and Smaller Language Model Queries. In: Proceedings of the Sixth Workshop on Statistical Machine Translation, pp 187-197.
 
-Honnibal M, Montani I, Van Landeghem S, Boyd A (2020) spaCy: Industrial-strength Natural Language Processing in Python. Zenodo. <https://doi.org/10.5281/zenodo.1212303>.
+Honnibal M, Montani I, Van Landeghem S, Boyd A (2023) explosion/spaCy: v3.7.2: Fixes for APIs and requirements. Zenodo. <https://doi.org/10.5281/zenodo.1212303>.
 
 Indyk P, Motwani R (1998) Approximate Nearest Neighbors: Towards Removing the Curse of Dimensionality. In: Proceedings of the 30th Annual ACM Symposium on Theory of Computing, pp 604-613.
 

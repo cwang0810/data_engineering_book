@@ -301,7 +301,7 @@ Kimi k1.5 这类路线把推理数据工程从“题目-答案”扩展到“上
 
 ### OpenThoughts 与 Sky-T1：社区复现路径
 
-OpenThoughts-114K (Günther et al. 2025) 是开源社区中重要的推理数据集之一，Hugging Face 数据集卡显示其以 Apache-2.0 许可证发布，并提供 parquet 格式数据 [D]。它的价值在于提供了可下载、可检查、可用于训练的 Long-CoT 样本，使研究者能够复现实验并研究推理数据配方。
+OpenThoughts-114K (Guha et al. 2025) 是开源社区中重要的推理数据集之一，Hugging Face 数据集卡显示其以 Apache-2.0 许可证发布，并提供 parquet 格式数据 [D]。它的价值在于提供了可下载、可检查、可用于训练的 Long-CoT 样本，使研究者能够复现实验并研究推理数据配方。
 
 Sky-T1 (NovaSky-Berkeley 2025) 则展示了另一种低成本路线。公开介绍显示，Sky-T1-32B-Preview 基于 Qwen2.5-32B-Instruct，并使用较小规模的高质量推理数据进行训练，团队同时释放了模型、数据和训练代码 [D]。它说明，推理能力的改进并不一定只能依赖大规模 RL；在某些场景下，结构良好的 Long-CoT SFT 也能带来明显收益。
 
@@ -573,6 +573,12 @@ Touvron H, Martin L, Stone K, Albert P, Almahairi A, Babaei Y, Bashlykov N, Batr
 Cobbe K, Kosaraju V, Bavarian M, Chen M, Jun H, Kaiser L, Plappert M, Tworek J, Hilton J, Nakano R, others (2021) Training Verifiers to Solve Math Word Problems. arXiv preprint arXiv:2110.14168.
 
 Chen M, Tworek J, Jun H, Yuan Q, Pinto H P O, Kaplan J, Edwards H, Burda Y, Joseph N, Brockman G, others (2021) Evaluating Large Language Models Trained on Code. arXiv preprint arXiv:2107.03374.
+
+Hendrycks D, Burns C, Kadavath S, Arora A, Basart S, Tang E, Song D, Steinhardt J (2021) Measuring Mathematical Problem Solving With the MATH Dataset. arXiv preprint arXiv:2103.03874.
+
+Meurer A, Smith C P, Paprocki M, Čertík O, Kirpichev S B, Rocklin M, Kumar A, Ivanov S, Moore J K, Singh S, Rathnayake T, Vig S, Granger B E, Muller R P, Bonazzi F, Gupta H, Vats S, Johansson F, Pedregosa F, Curry M J, Terrel A R, Roučka Š, Saboo A, Fernando I, Kulal S, Cimrman R, Scopatz A (2017) SymPy: symbolic computing in Python. PeerJ Computer Science 3:e103. https://doi.org/10.7717/peerj-cs.103.
+
+Guha E, Marten R, Keh S, Raoof N, Smyrnis G, Bansal H, Nezhurina M, Mercat J, Vu T, Sprague Z, others (2025) OpenThoughts: Data Recipes for Reasoning Models. arXiv preprint arXiv:2506.04178.
 
 Zhou C, Liu P, Xu P, Iyer S, Sun J, Mao Y, Ma X, Efrat A, Yu P, Yu L, Zhang S, Ghosh G, Lewis M, Zettlemoyer L, Levy O (2023) LIMA: Less Is More for Alignment. Advances in Neural Information Processing Systems, 36, 55006-55021.
 

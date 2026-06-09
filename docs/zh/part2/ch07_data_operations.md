@@ -400,7 +400,7 @@ Hendrycks D, Burns C, Basart S, Zou A, Mazeika M, Song D, Steinhardt J (2021) Me
 
 Lees A, Tran V Q, Tay Y, Sorensen J, Gupta J, Metzler D, Vasserman L (2022) A New Generation of Perspective API. In: Proceedings of KDD 2022, pp 3197-3207.
 
-Kuprieiev R, Pachhai S, Petrov D, Redzyński P, da Costa-Luis C, Rowlands P, Shcheklein I, others (2021) DVC: Data Version Control - Git for Data and Models. Zenodo. <https://doi.org/10.5281/zenodo.5561081>.
+DVC Contributors (2024) DVC: Data Version Control. Documentation and source repository. <https://dvc.org/doc>.
 
 Polyzotis N, Roy S, Whang S E, Zinkevich M (2018) Data Lifecycle Challenges in Production Machine Learning: A Survey. ACM SIGMOD Record 47(2):17-28.
 

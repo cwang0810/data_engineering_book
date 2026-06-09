@@ -92,7 +92,7 @@ DeepMind 研究团队进行了严格控制变量的计算最优（Compute-Optima
 Chinchilla 法则指出：过去行业内的许多模型处于**训练不足（Under-trained）**状态。若想获取计算预算下的最大收益，模型参数量和训练数据所需的 Token 数，应当以大致相同的比例同步增加。一个常用经验口径是：
 > **在 Chinchilla 计算最优近似口径下，模型每增加 1 个参数，通常需要配套约 20 个高质量 Token 的训练数据。**
 
-这意味着，如果某团队计划研发 7B 级别的开源基座模型，按 20 tokens/parameter 的粗略计算最优口径，其高质量训练语料规模通常需要达到约 140B Tokens 以上。若追求更高小模型性能，例如 LLaMA 3 8B，其训练数据规模达到约 15T Tokens (Dubey et al. 2024)。需要注意的是，这远超按上述口径粗略推算的 Chinchilla 最优点（约 160B Tokens），属于 Meta 刻意采用的过训练（Over-training）策略：用更多数据换取更低的推理部署成本，使小模型在同等推理预算下获得更强能力。这种趋势推动团队把注意力从单纯寻找模型结构创新，转向如何持续供给高质量训练数据。
+这意味着，如果某团队计划研发 7B 级别的开源基座模型，按 20 tokens/parameter 的粗略计算最优口径，其高质量训练语料规模通常需要达到约 140B Tokens 以上。若追求更高小模型性能，例如 LLaMA 3 8B，其训练数据规模达到约 15T Tokens (Grattafiori et al. 2024)。需要注意的是，这远超按上述口径粗略推算的 Chinchilla 最优点（约 160B Tokens），属于 Meta 刻意采用的过训练（Over-training）策略：用更多数据换取更低的推理部署成本，使小模型在同等推理预算下获得更强能力。这种趋势推动团队把注意力从单纯寻找模型结构创新，转向如何持续供给高质量训练数据。
 
 ### 1.2.2 高质量数据与合成数据：Phi 系列的启示
 在规模扩张之外，微软研究院的 Phi 系列工作提供了另一条重要路径：通过高度筛选和合成的高质量数据，提升小参数模型在特定任务上的能力表现。
@@ -307,7 +307,7 @@ Rae J W, Borgeaud S, Cai T, Millican K, Hoffmann J, Song F, Aslanides J, Henders
 
 Brown T B, Mann B, Ryder N, Subbiah M, Kaplan J D, Dhariwal P, Neelakantan A, Shyam P, Sastry G, Askell A, Agarwal S, Herbert-Voss A, Krueger G, Henighan T, Child R, Ramesh A, Ziegler D, Wu J, Winter C, Hesse C, Chen M, Sigler E, Litwin M, Gray S, Chess B, Clark J, Berner C, McCandlish S, Radford A, Sutskever I, Amodei D (2020) Language Models are Few-Shot Learners. Advances in Neural Information Processing Systems 33:1877-1901.
 
-Dubey A, Jauhri A, Pandey A, Khandelwal A, Al-Dahle A, Letman A, Mathur A, Schelten A, Yang A, Fan A, others (2024) The Llama 3 Herd of Models. arXiv preprint arXiv:2407.21783.
+Grattafiori A, Dubey A, Jauhri A, Pandey A, Kadian A, Al-Dahle A, Letman A, Mathur A, Schelten A, Vaughan A, others (2024) The Llama 3 Herd of Models. arXiv preprint arXiv:2407.21783.
 
 Gunasekar S, Zhang Y, Aneja J, Mendes C C T, Del Giorno A, Gopi S, Javaheripi M, Kauffmann P, de Rosa G, Saarikivi O, Salim A, Shah S, Behl H S, Wang X, Bubeck S, Eldan R, Kalai A T, Lee Y T, Li Y (2023) Textbooks Are All You Need. arXiv preprint arXiv:2306.11644.
 
@@ -329,7 +329,7 @@ Broder A Z (1997) On the Resemblance and Containment of Documents. In: Proceedin
 
 Chen D, Huang Y, Ma Z, Chen H, Pan X, Ge C, Gao D, Xie Y, Liu Z, Gao J, Li Y, Ding B, Zhou J (2024) Data-Juicer: A One-Stop Data Processing System for Large Language Models. In: Proceedings of the ACM SIGMOD International Conference on Management of Data, Companion Volume, pp 120-134.
 
-Penedo G, Kydlíček H, Allal L B, Lozhkov A, McMillan-Major A, Raffel C, von Werra L, Wolf T (2024) datatrove: large scale data processing. Zenodo. <https://doi.org/10.5281/zenodo.10251922>.
+Hugging Face (2024) datatrove: large scale data processing. GitHub repository. <https://github.com/huggingface/datatrove>.
 
 Ouyang L, Wu J, Jiang X, Almeida D, Wainwright C, Mishkin P, Zhang C, Agarwal S, Slama K, Ray A, Schulman J, Hilton J, Kelton F, Miller L, Simens M, Askell A, Welinder P, Christiano P F, Leike J, Lowe R (2022) Training Language Models to Follow Instructions with Human Feedback. Advances in Neural Information Processing Systems 35:27730-27744.
 

@@ -70,10 +70,10 @@ plugins:
           build: true
           site_name: 大模型数据工程：架构、算法及项目实战
           nav:
-            - 缩写表: abbreviations.md
-            - 全书总目录: index.md
             - 序言: preface.md
             - 卷前导读：全书结构、阅读路径与版本说明: front_matter_guide.md
+            - 全书总目录: index.md
+            - 缩写表: abbreviations.md
             - 第一篇：总论与基础设施:
                 - 本篇目录: part1/index.md
                 - 第1章：大模型时代的数据变革: part1/ch01_data_change.md

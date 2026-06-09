@@ -127,6 +127,20 @@ mkdocs build
 
 生成的静态文件位于 `site/` 目录。
 
+### 导出 Springer 16K LaTeX 样稿
+
+导出脚本需要本机可用 `tectonic`；使用 `--split --compile` 合并分篇 PDF 时还需要 `pdfunite`。图片完整性校验依赖 Pillow。
+
+```bash
+# 生成完整中文书稿 LaTeX，不立即编译 PDF
+python scripts/export_zh_book_latex.py
+
+# 按篇编译并合并 16K 审校 PDF（推荐）
+python scripts/export_zh_book_latex.py --split --compile
+```
+
+输出文件位于 `output/pdf/`。若只需抽样验证，可使用 `--limit 3 --compile` 或 `--only part1/ --split --compile`。
+
 ### 验证发布与项目
 
 ```bash
