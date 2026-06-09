@@ -1,12 +1,12 @@
 # 全书引用完整性与真实性审计报告
 
-- 生成时间：2026-06-09T06:29:43.635535+00:00
+- 生成时间：2026-06-09T07:21:05.335210+00:00
 - 范围：当前 Springer 中文交付稿 `docs/zh` 中的正文章、项目章和附录。
 - 扫描文件：70
 - 参考文献条目：927
 - 正文 author-year 引用：1329
-- 正文引用未在同章参考文献解析到：22
-- 章末参考文献未被同章正文引用：185
+- 正文引用未在同章参考文献解析到：17
+- 章末参考文献未被同章正文引用：181
 - 同章疑似重复参考文献组：1
 
 ## 外部核验概览
@@ -29,23 +29,18 @@
 | `docs/zh/appendix_e_common_bug_debugging_manual.md` | 75 | `Pfitzmann et al. 2022` | 如果解析结果中出现大量“标题断裂”“表格合并”“列表顺序错乱”，不要急着改后处理，先看版面层是否已经把阅读顺序弄乱。很多时候，后处理只是给错误排序做修饰，真正的问题在更前面。DocLayNet 和 Nougat 等文档理解工作也说明，PDF/OCR 问题常常来自版面、阅读顺序、公式和表格结构，而不是单纯的文本清洗问题（Pfitzmann et al. 2022; Blecher et al. 2023）。 |
 | `docs/zh/appendix_e_common_bug_debugging_manual.md` | 150 | `Shetty et al. 2025` | 对 Agent 系统来说，很多 Bug 不是“不会做”，而是“做错了还继续做”。因此一定要把工具调用记录成结构化事件，并区分“计划”“执行”“重试”“回滚”四种状态。否则排查时只看见最终输出，看不见中间过程。AIOpsLab 等面向自治运维 Agent 的评测框架也把故障注入、遥测数据、交互接口和任务轨迹作为评估 Agent 排障能力的核心条件（Chen, Shetty et al. 2025）。 |
 | `docs/zh/appendix_e_common_bug_debugging_manual.md` | 228 | `Shetty et al. 2025` | 调试难，很多时候不是系统复杂，而是系统没有足够的观察点。对于本书涉及的数据工程链路，建议至少保留以下埋点；这些观察点也对应了现代数据处理系统和自治运维评测中对中间产物、遥测信号和回归样本的要求（Chen et al. 2024; Chen, Shetty et al. 2025）： |
-| `docs/zh/part1/ch01_data_change.md` | 193 | `Penedo et al. 2024)` | 4. **大语言模型生态嗅觉与工具链整合**：熟悉各类主流开源数据集（如 The Pile (Gao et al. 2020)、RefinedWeb (Penedo et al. 2023)、FineWeb-Edu (Lozhkov et al. 2024)、Dolma (Soldaini et al. 2024)、DCLM-Baseline (Li et al. 2024)），了解各数据集的内容偏向与局限；同时能熟练使用 Dat... |
 | `docs/zh/part1/ch02_quality_framework.md` | 51 | `Saada et al. 2025` | 在大多数一线大模型团队中，解决这一问题的有效方法是，在项目启动阶段强制召开一次**数据质量定义对齐 Workshop**（关于数据选择方法论的系统综述见 Albalak et al. 2024; Longpre et al. 2023; Nait Saada et al. 2025），输出一份团队内部的《数据质量术语与指标契约》文档。这份文档首先要完成的，是为本项目的"质量"定义完整的维度清单——准确性、多样性、重复率、时效性、安... |
-| `docs/zh/part1/ch03_data_stack.md` | 196 | `Kuprieiev et al. 2021)` | **模型 Checkpoint 与实验产物**是第三类，包括训练过程中保存的模型权重文件（动辄数百 GB）、TensorBoard 或 W&B 的训练日志、以及 Tokenizer 配置等。这类数据量大、访问频率不均匀（训练中频繁写入，训练后几乎只读），适合以对象存储为主存储，配合 DVC（Data Version Control）(Kuprieiev et al. 2021) 或 MLflow Artifacts 做版本追踪。 |
 | `docs/zh/part10/ch31_agent_architecture.md` | 84 | `Zhao et al. 2023` | **维度一：任务的可结构化程度。** Agent 擅长的不是"创造性工作"，而是"结构化推理"——将复杂任务分解为明确的步骤序列。如果一个任务的核心挑战在于"找到正确的步骤序列"，它适合 Agent 化；如果核心挑战在于"做出主观判断"（如判断一段文本的文学价值），Agent 化效果有限。ReAct、Tree of Thoughts、Graph of Thoughts、PAL、Self-Refine 与 Reflexion 等工作... |
 | `docs/zh/part10/ch31_agent_architecture.md` | 84 | `Yu et al. 2023` | **维度一：任务的可结构化程度。** Agent 擅长的不是"创造性工作"，而是"结构化推理"——将复杂任务分解为明确的步骤序列。如果一个任务的核心挑战在于"找到正确的步骤序列"，它适合 Agent 化；如果核心挑战在于"做出主观判断"（如判断一段文本的文学价值），Agent 化效果有限。ReAct、Tree of Thoughts、Graph of Thoughts、PAL、Self-Refine 与 Reflexion 等工作... |
 | `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 402 | `Suárez et al. 2020` | Agent 自动生成的清洗规则需要版本管理——当规则出现问题需要回滚时，不能"想回到哪个版本就回到哪个版本"，而必须是精确的、可追溯的版本切换。数据去重、低资源语料构建和大规模预训练语料的实践表明，清洗规则变更会改变样本分布，必须能够追踪版本、复现实验并解释过滤策略的影响（Lee et al. 2022; Ortiz Suárez et al. 2020; Laurençon et al. 2022）。 |
 | `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 297 | `Shin et al. 2024` | 当 Agent 同时参与数据生成和评测时，存在"自己评自己"的自嗨风险。一致性校准机制是防止这个问题的关键。G-Eval、MT-Bench/Chatbot Arena、JudgeLM、Prometheus 和 Prometheus 2 等工作说明，LLM-as-a-judge 需要与人工判断、评分细则和跨模型一致性持续校准，不能默认等价于人工评测（Liu et al. 2023; Zheng et al. 2023; Zhu et... |
 | `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 297 | `Suk et al. 2024` | 当 Agent 同时参与数据生成和评测时，存在"自己评自己"的自嗨风险。一致性校准机制是防止这个问题的关键。G-Eval、MT-Bench/Chatbot Arena、JudgeLM、Prometheus 和 Prometheus 2 等工作说明，LLM-as-a-judge 需要与人工判断、评分细则和跨模型一致性持续校准，不能默认等价于人工评测（Liu et al. 2023; Zheng et al. 2023; Zhu et... |
-| `docs/zh/part13/ch45_posttrain_recipes.md` | 98 | `Xu et al. 2024)` | * **Qwen2.5** 对中文、多语、多任务和合成数据路线有重要参考价值。这里需要谨慎区分：Qwen2.5 报告中的合成数据路线与 Magpie (Xu et al. 2024) 这类无种子合成方法可以并列讨论，但不应在缺少明确来源时写成“官方采用 Magpie”。 |
 | `docs/zh/part13/ch45_posttrain_recipes.md` | 173 | `Shao et al. 2024)` | GRPO (Shao et al. 2024) 常用于处理长推理任务，它不再依赖全局的绝对 Reward 基线，而是强调同一 prompt 下的组内相对质量。 |
 | `docs/zh/part13/ch45_posttrain_recipes.md` | 223 | `Zheng et al. 2023)` | **差异偏好的体现：** chosen 和 rejected 的设计不应随机选取。Tülu-3 在构建数据时，强调避免一种危险倾向：不要把“表面更礼貌但事实更差”的回答选为 chosen。如果数据管线使用未经校准的 LLM-as-a-Judge，模型容易受到此类偏好误导（Length Bias & Sycophancy (Zheng et al. 2023)）。因此，高质量的 DPO 对需要在“事实正确性”上具有明确差异。 |
 | `docs/zh/part13/ch46_rl_reasoning_data.md` | 284 | `Qwen Team 2025)` | QwQ-32B (Qwen Team 2025) 的公开卡片说明其训练包含预训练和后训练，后训练包含 SFT 与 RL [D]。相比 DeepSeek-R1，QwQ 的完整数据配方披露较少，因此本章不补猜具体数据比例。 |
 | `docs/zh/part2/ch04_data_sources.md` | 258 | `Joulin et al. 2017)` | "language":        "zh",                       // fastText 识别结果 (Joulin et al. 2017) |
 | `docs/zh/part2/ch05_cleaning_dedup.md` | 115 | `Saada et al. 2025` | **质量分类器（Quality Classifier）**是 RefinedWeb (Penedo et al. 2023)、Dolma (Soldaini et al. 2024) 等代表性数据集采用的进阶手段（注意：Nait Saada et al. 2025 的实证研究表明，分类器过滤实质上起到的是"领域选择"而非"绝对质量"筛选的作用，需配合人工抽检验证）：用一个经过人工标注的高质量文档 vs 低质量文档数据集，微调一个 ... |
-| `docs/zh/part2/ch05_cleaning_dedup.md` | 412 | `Honnibal et al. 2020)` | **命名实体识别（NER）模型**则覆盖规则难以枚举的 PII 类型，如真实人名、地址和机构名。推荐使用 spaCy (Honnibal et al. 2020) 的中文模型（`zh_core_web_trf`）或 HuggingFace 上开源的中文 NER 模型，对人名（PER）、地点（LOC）、机构（ORG）等命名实体进行识别，再根据上下文判断是否需要脱敏。 |
 | `docs/zh/part2/ch06_tokenization_loading.md` | 63 | `Brown et al. 2020)` | **BPE（Byte Pair Encoding）** (Sennrich et al. 2016) 是最广泛使用的算法，GPT 系列（包括 GPT-3 (Brown et al. 2020)、ChatGPT、GPT-4）均基于此。其核心思想是从字符（或字节）级别出发，反复合并出现频率最高的相邻 token 对。 |
-| `docs/zh/part2/ch07_data_operations.md` | 193 | `Kuprieiev et al. 2021)` | 与代码的 Git 托管类似，对于多达 TB 级别的数据湖我们必须引入 DVC (Kuprieiev et al. 2021)（Data Version Control）或者相似的基于 SHA 挂载的不可变对象管控策略。在大规模实验中，切不可原位覆盖并覆盖原始数据，任何处理节点的修改都应产生全新的增量版本或通过 Delta Lake 切割 Snapshot。 |
 | `docs/zh/part3/ch11_cross_modal_alignment.md` | 144 | `Rombach et al. 2022` | 2. **跨模态属性错位法（Cross-modal Attribute Swap）**：在图片级进行局部语义改写。通过基于潜在扩散模型的 Inpainting 方法（Rombach et al. 2022）将图片中的"红苹果"改写为"绿苹果"，同时保留原始正向文本。错位样本促使 Cross-attention 层学习视觉区域与文字描述的绑定关系。 |
 | `docs/zh/part7/ch21_rag_pipeline.md` | 381 | `Yepes et al. 2024` | 固定长度切分是最常见的初始方案。例如，每 500 tokens 或 1000 tokens 切成一个片段，并设置一定 overlap。这种方式实现简单、吞吐高，也便于工程并行处理。但它最大的缺陷是忽视语义边界。一个规则条款、一个表格说明、一个操作步骤或一个案例分析，可能被切断在两个 chunk 中。模型拿到其中任意一半，都无法理解完整含义。更合理的方式是基于语义结构进行切分。对于制度文件，可以按章节、条款和子条款切分；对于产品手册... |
 
@@ -60,13 +55,11 @@
 | `docs/zh/appendix_g_mindspore_note.md` | 55 | 3 | `mindspore:2026` | Automatic Differentiation, MindSpore Tutorials | MindSpore Contributors (2026c) Automatic Differentiation, MindSpore Tutorials. Available at: https://www.mindspore.cn/tutorials/en/r2.9.0/beginner/autograd.html. |
 | `docs/zh/part1/ch01_data_change.md` | 326 | 13 | `heafield:2011` | KenLM: Faster and Smaller Language Model Queries | Heafield K (2011) KenLM: Faster and Smaller Language Model Queries. In: Proceedings of the Sixth Workshop on Statistical Machine Translation, pp 187-197. |
 | `docs/zh/part1/ch01_data_change.md` | 328 | 14 | `broder:1997` | On the Resemblance and Containment of Documents | Broder A Z (1997) On the Resemblance and Containment of Documents. In: Proceedings of the Compression and Complexity of Sequences, pp 21-29. |
-| `docs/zh/part1/ch01_data_change.md` | 332 | 16 | `hugging:2024` | datatrove: large scale data processing | Hugging Face (2024) datatrove: large scale data processing. GitHub repository. <https://github.com/huggingface/datatrove>. |
 | `docs/zh/part1/ch01_data_change.md` | 352 | 26 | `bloom:1970` | Space/time Trade-offs in Hash Coding with Allowable Errors | Bloom B H (1970) Space/time Trade-offs in Hash Coding with Allowable Errors. Communications of the ACM 13(7):422-426. |
 | `docs/zh/part1/ch02_quality_framework.md` | 508 | 1 | `cohen:1960` | A Coefficient of Agreement for Nominal Scales | Cohen J (1960) A Coefficient of Agreement for Nominal Scales. Educational and Psychological Measurement 20(1):37-46. |
 | `docs/zh/part1/ch03_data_stack.md` | 343 | 3 | `broder:1997` | On the Resemblance and Containment of Documents | Broder A Z (1997) On the Resemblance and Containment of Documents. In: Proceedings of the Compression and Complexity of Sequences, pp 21-29. |
 | `docs/zh/part1/ch03_data_stack.md` | 345 | 4 | `heafield:2011` | KenLM: Faster and Smaller Language Model Queries | Heafield K (2011) KenLM: Faster and Smaller Language Model Queries. In: Proceedings of the Sixth Workshop on Statistical Machine Translation, pp 187-197. |
 | `docs/zh/part1/ch03_data_stack.md` | 351 | 7 | `apache:2024` | Apache Iceberg: Table Specification and Documentation | Apache Software Foundation (2024) Apache Iceberg: Table Specification and Documentation. <https://iceberg.apache.org/spec/> (accessed 2024-11). |
-| `docs/zh/part1/ch03_data_stack.md` | 353 | 8 | `dvc:2024` | DVC: Data Version Control | DVC Contributors (2024) DVC: Data Version Control. Documentation and source repository. <https://dvc.org/doc>. |
 | `docs/zh/part1/ch03_data_stack.md` | 357 | 10 | `together:2023` | RedPajama: An Open Dataset for Training Large Language Models | Together Computer (2023) RedPajama: An Open Dataset for Training Large Language Models. GitHub repository. <https://github.com/togethercomputer/RedPajama-Data>. |
 | `docs/zh/part10/ch31_agent_architecture.md` | 609 | 16 | `yao:2023` | ReAct: Synergizing Reasoning and Acting in Language Models | Yao S, Zhao J, Yu D, Du N, Shafran I, Narasimhan K, Cao Y (2023) ReAct: Synergizing Reasoning and Acting in Language Models. In: International Conference on Learning Representations. |
 | `docs/zh/part10/ch31_agent_architecture.md` | 611 | 17 | `yao:2023` | Tree of Thoughts: Deliberate Problem Solving with Large Language Models | Yao S, Yu D, Zhao J, Shafran I, Griffiths T L, Cao Y, Narasimhan K (2023) Tree of Thoughts: Deliberate Problem Solving with Large Language Models. In: Advances in Neural Information Processing Systems 36. |
@@ -173,8 +166,10 @@
 | `docs/zh/part14/p08_dataops.md` | 1134 | 4 | `mlflow:2026` | MLflow Documentation | 4. MLflow Authors. (2026). MLflow Documentation. https://mlflow.org/docs/latest/ |
 | `docs/zh/part14/p08_dataops.md` | 1135 | 5 | `great:2026` | Great Expectations Documentation | 5. Great Expectations Contributors. (2026). Great Expectations Documentation. https://docs.greatexpectations.io/ |
 | `docs/zh/part14/p09_privacy_pipeline.md` | 1127 | 1 | `european:2016` | Regulation (EU) 2016/679: General Data Protection Regulation | 1. European Union. (2016). Regulation (EU) 2016/679: General Data Protection Regulation. |
+| `docs/zh/part14/p09_privacy_pipeline.md` | 1131 | 5 | `owasp:2025` | OWASP Top 10 for Large Language Model Applications | 5. OWASP Foundation. (2025). OWASP Top 10 for Large Language Model Applications. |
+| `docs/zh/part14/p10_flywheel.md` | 1075 | 2 | `hugging:2026` | Datasets Documentation | 2. Hugging Face. (2026). Datasets Documentation. https://huggingface.co/docs/datasets/ |
 
-> 其余 65 条见 JSON 明细。
+> 其余 61 条见 JSON 明细。
 
 ## 外部核验问题条目
 
@@ -190,4 +185,4 @@
 | `missing-terminal-period` | 48 |
 | `missing-year` | 9 |
 | `title-not-parsed` | 6 |
-| `url-trailing-punctuation` | 9 |
+| `url-trailing-punctuation` | 10 |

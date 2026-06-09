@@ -329,7 +329,7 @@ Broder A Z (1997) On the Resemblance and Containment of Documents. In: Proceedin
 
 Chen D, Huang Y, Ma Z, Chen H, Pan X, Ge C, Gao D, Xie Y, Liu Z, Gao J, Li Y, Ding B, Zhou J (2024) Data-Juicer: A One-Stop Data Processing System for Large Language Models. In: Proceedings of the ACM SIGMOD International Conference on Management of Data, Companion Volume, pp 120-134.
 
-Hugging Face (2024) datatrove: large scale data processing. GitHub repository. <https://github.com/huggingface/datatrove>.
+Penedo G, Kydlíček H, Cappelli A, Wolf T, Sasko M (2024) DataTrove: large scale data processing. Software repository. <https://github.com/huggingface/datatrove>.
 
 Ouyang L, Wu J, Jiang X, Almeida D, Wainwright C, Mishkin P, Zhang C, Agarwal S, Slama K, Ray A, Schulman J, Hilton J, Kelton F, Miller L, Simens M, Askell A, Welinder P, Christiano P F, Leike J, Lowe R (2022) Training Language Models to Follow Instructions with Human Feedback. Advances in Neural Information Processing Systems 35:27730-27744.
 

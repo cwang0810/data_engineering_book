@@ -190,7 +190,7 @@ def calculate_ttr(texts, tokenizer=None):
 
 ### 7.3.1 DVC视角下的数据集版本化与 A/B 对比
 
-与代码的 Git 托管类似，对于多达 TB 级别的数据湖我们必须引入 DVC (Kuprieiev et al. 2021)（Data Version Control）或者相似的基于 SHA 挂载的不可变对象管控策略。在大规模实验中，切不可原位覆盖并覆盖原始数据，任何处理节点的修改都应产生全新的增量版本或通过 Delta Lake 切割 Snapshot。
+与代码的 Git 托管类似，对于多达 TB 级别的数据湖我们必须引入 DVC (DVC 2024)（Data Version Control）或者相似的基于 SHA 挂载的不可变对象管控策略。在大规模实验中，切不可原位覆盖并覆盖原始数据，任何处理节点的修改都应产生全新的增量版本或通过 Delta Lake 切割 Snapshot。
 
 **A/B 测试原则**：每次调整新管线（例如：新加入一批由 Reddit 高质量节点解析的数据，并增强针对该网站特定评论树的过滤逻辑），在全面上线前，应抽取等价算力启动小规模平行对照训练。对照实验规模要由模型大小、训练预算和目标评测灵敏度决定。只有在两只实验对照组模型完成核心评测集后，证实目标能力达到预设上线门槛且未损害通用世界常识指标时，此套策略方可全量铺设进入生产版本（例如 v2.1 升级至 v2.2）。
 
@@ -400,7 +400,7 @@ Hendrycks D, Burns C, Basart S, Zou A, Mazeika M, Song D, Steinhardt J (2021) Me
 
 Lees A, Tran V Q, Tay Y, Sorensen J, Gupta J, Metzler D, Vasserman L (2022) A New Generation of Perspective API. In: Proceedings of KDD 2022, pp 3197-3207.
 
-DVC Contributors (2024) DVC: Data Version Control. Documentation and source repository. <https://dvc.org/doc>.
+DVC Team and Contributors (2024) DVC: Data Version Control - Git for Data & Models. Documentation: <https://dvc.org/doc>. Source repository: <https://github.com/iterative/dvc>.
 
 Polyzotis N, Roy S, Whang S E, Zinkevich M (2018) Data Lifecycle Challenges in Production Machine Learning: A Survey. ACM SIGMOD Record 47(2):17-28.
 

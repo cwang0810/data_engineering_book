@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-06-09T06:29:43.646060+00:00",
+  "generated_at_utc": "2026-06-09T07:21:05.226540+00:00",
   "scanned_files": 70,
   "style_hits": [
     {
@@ -14355,7 +14355,7 @@
     {
       "file": "docs/zh/part1/ch01_data_change.md",
       "entry_no": 16,
-      "entry": "Hugging Face (2024) datatrove: large scale data processing. GitHub repository. <https://github.com/huggingface/datatrove>.",
+      "entry": "Penedo G, Kydlíček H, Cappelli A, Wolf T, Sasko M (2024) DataTrove: large scale data processing. Software repository. <https://github.com/huggingface/datatrove>.",
       "year": "2024",
       "doi": "",
       "url": "https://github.com/huggingface/datatrove>.",
@@ -14751,7 +14751,7 @@
     {
       "file": "docs/zh/part1/ch03_data_stack.md",
       "entry_no": 8,
-      "entry": "DVC Contributors (2024) DVC: Data Version Control. Documentation and source repository. <https://dvc.org/doc>.",
+      "entry": "DVC Team and Contributors (2024) DVC: Data Version Control - Git for Data & Models. Documentation: <https://dvc.org/doc>. Source repository: <https://github.com/iterative/dvc>.",
       "year": "2024",
       "doi": "",
       "url": "https://dvc.org/doc>.",
@@ -17273,10 +17273,10 @@
     {
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
       "entry_no": 1,
-      "entry": "Wang Y, Kordi Y, Mishra S, Liu A, Smith N A, Khashabi D, Hajishirzi H (2022) Self-Instruct: Aligning Language Models with Self-Generated Instructions. arXiv preprint arXiv:2212.10560.",
-      "year": "2022",
-      "doi": "",
-      "url": "",
+      "entry": "Wang Y, Kordi Y, Mishra S, Liu A, Smith N A, Khashabi D, Hajishirzi H (2023) Self-Instruct: Aligning Language Models with Self-Generated Instructions. In: Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics, pp 13484-13508. https://doi.org/10.18653/v1/2023.acl-long.754.",
+      "year": "2023",
+      "doi": "10.18653/v1/2023.acl-long.754.",
+      "url": "https://doi.org/10.18653/v1/2023.acl-long.754.",
       "issues": [
         "needs-authenticity-review"
       ]
@@ -17378,8 +17378,8 @@
     {
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
       "entry_no": 10,
-      "entry": "Xu C, Sun Q, Zheng K, Geng X, Zhao P, Feng J, Tao C, Lin Q, Jiang D (2023) WizardLM: Empowering Large Pre-Trained Language Models to Follow Complex Instructions. arXiv preprint arXiv:2304.12244.",
-      "year": "2023",
+      "entry": "Xu C, Sun Q, Zheng K, Geng X, Zhao P, Feng J, Tao C, Lin Q, Jiang D (2024) WizardLM: Empowering Large Pre-Trained Language Models to Follow Complex Instructions. In: International Conference on Learning Representations. arXiv:2304.12244.",
+      "year": "2024",
       "doi": "",
       "url": "",
       "issues": [
@@ -19353,7 +19353,7 @@
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
       "entry_no": 7,
-      "entry": "DVC Contributors (2024) DVC: Data Version Control. Documentation and source repository. <https://dvc.org/doc>.",
+      "entry": "DVC Team and Contributors (2024) DVC: Data Version Control - Git for Data & Models. Documentation: <https://dvc.org/doc>. Source repository: <https://github.com/iterative/dvc>.",
       "year": "2024",
       "doi": "",
       "url": "https://dvc.org/doc>.",

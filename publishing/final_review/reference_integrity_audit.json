@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-06-09T06:29:43.553105+00:00",
+  "generated_at_utc": "2026-06-09T07:21:05.278165+00:00",
   "scope_roots": [
     "docs/zh"
   ],
@@ -7,8 +7,8 @@
     "files": 70,
     "references": 927,
     "body_author_year_citations": 1329,
-    "missing_same_chapter_references": 22,
-    "uncited_references": 185,
+    "missing_same_chapter_references": 17,
+    "uncited_references": 181,
     "duplicate_reference_groups": 1,
     "external_status_counts": {
       "not-checked": 927
@@ -18,7 +18,7 @@
       "missing-year": 9,
       "missing-terminal-period": 48,
       "missing-first-author": 5,
-      "url-trailing-punctuation": 9,
+      "url-trailing-punctuation": 10,
       "title-not-parsed": 6
     }
   },
@@ -819,14 +819,14 @@
       "file": "docs/zh/part1/ch01_data_change.md",
       "line": 332,
       "entry_no": 16,
-      "entry": "Hugging Face (2024) datatrove: large scale data processing. GitHub repository. <https://github.com/huggingface/datatrove>.",
-      "first_author": "Hugging",
+      "entry": "Penedo G, Kydlíček H, Cappelli A, Wolf T, Sasko M (2024) DataTrove: large scale data processing. Software repository. <https://github.com/huggingface/datatrove>.",
+      "first_author": "Penedo",
       "year": "2024",
-      "title": "datatrove: large scale data processing",
+      "title": "DataTrove: large scale data processing",
       "doi": "",
       "arxiv": "",
       "url": "https://github.com/huggingface/datatrove",
-      "key": "hugging:2024",
+      "key": "penedo:2024",
       "fingerprint": "datatrove large scale data processing",
       "format_issues": []
     },
@@ -1373,15 +1373,15 @@
       "file": "docs/zh/part1/ch03_data_stack.md",
       "line": 353,
       "entry_no": 8,
-      "entry": "DVC Contributors (2024) DVC: Data Version Control. Documentation and source repository. <https://dvc.org/doc>.",
+      "entry": "DVC Team and Contributors (2024) DVC: Data Version Control - Git for Data & Models. Documentation: <https://dvc.org/doc>. Source repository: <https://github.com/iterative/dvc>.",
       "first_author": "DVC",
       "year": "2024",
-      "title": "DVC: Data Version Control",
+      "title": "DVC: Data Version Control - Git for Data & Models",
       "doi": "",
       "arxiv": "",
       "url": "https://dvc.org/doc",
       "key": "dvc:2024",
-      "fingerprint": "dvc data version control",
+      "fingerprint": "dvc data version control git for data models",
       "format_issues": []
     },
     {
@@ -4917,16 +4917,18 @@
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
       "line": 373,
       "entry_no": 1,
-      "entry": "Wang Y, Kordi Y, Mishra S, Liu A, Smith N A, Khashabi D, Hajishirzi H (2022) Self-Instruct: Aligning Language Models with Self-Generated Instructions. arXiv preprint arXiv:2212.10560.",
+      "entry": "Wang Y, Kordi Y, Mishra S, Liu A, Smith N A, Khashabi D, Hajishirzi H (2023) Self-Instruct: Aligning Language Models with Self-Generated Instructions. In: Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics, pp 13484-13508. https://doi.org/10.18653/v1/2023.acl-long.754.",
       "first_author": "Wang",
-      "year": "2022",
+      "year": "2023",
       "title": "Self-Instruct: Aligning Language Models with Self-Generated Instructions",
-      "doi": "",
-      "arxiv": "2212.10560",
-      "url": "",
-      "key": "wang:2022",
+      "doi": "10.18653/v1/2023.acl-long.754",
+      "arxiv": "",
+      "url": "https://doi.org/10.18653/v1/2023.acl-long.754",
+      "key": "wang:2023",
       "fingerprint": "self instruct aligning language models with self generated instructions",
-      "format_issues": []
+      "format_issues": [
+        "url-trailing-punctuation"
+      ]
     },
     {
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
@@ -5064,14 +5066,14 @@
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
       "line": 391,
       "entry_no": 10,
-      "entry": "Xu C, Sun Q, Zheng K, Geng X, Zhao P, Feng J, Tao C, Lin Q, Jiang D (2023) WizardLM: Empowering Large Pre-Trained Language Models to Follow Complex Instructions. arXiv preprint arXiv:2304.12244.",
+      "entry": "Xu C, Sun Q, Zheng K, Geng X, Zhao P, Feng J, Tao C, Lin Q, Jiang D (2024) WizardLM: Empowering Large Pre-Trained Language Models to Follow Complex Instructions. In: International Conference on Learning Representations. arXiv:2304.12244.",
       "first_author": "Xu",
-      "year": "2023",
+      "year": "2024",
       "title": "WizardLM: Empowering Large Pre-Trained Language Models to Follow Complex Instructions",
       "doi": "",
       "arxiv": "2304.12244",
       "url": "",
-      "key": "xu:2023",
+      "key": "xu:2024",
       "fingerprint": "wizardlm empowering large pre trained language models to follow complex instructions",
       "format_issues": []
     },
@@ -7826,15 +7828,15 @@
       "file": "docs/zh/part2/ch07_data_operations.md",
       "line": 403,
       "entry_no": 7,
-      "entry": "DVC Contributors (2024) DVC: Data Version Control. Documentation and source repository. <https://dvc.org/doc>.",
+      "entry": "DVC Team and Contributors (2024) DVC: Data Version Control - Git for Data & Models. Documentation: <https://dvc.org/doc>. Source repository: <https://github.com/iterative/dvc>.",
       "first_author": "DVC",
       "year": "2024",
-      "title": "DVC: Data Version Control",
+      "title": "DVC: Data Version Control - Git for Data & Models",
       "doi": "",
       "arxiv": "",
       "url": "https://dvc.org/doc",
       "key": "dvc:2024",
-      "fingerprint": "dvc data version control",
+      "fingerprint": "dvc data version control git for data models",
       "format_issues": []
     },
     {
@@ -16019,11 +16021,11 @@
     {
       "file": "docs/zh/part1/ch03_data_stack.md",
       "line": 196,
-      "author": "Kuprieiev",
-      "year": "2021",
-      "text": "Kuprieiev et al. 2021)",
-      "key": "kuprieiev:2021",
-      "context": "**模型 Checkpoint 与实验产物**是第三类，包括训练过程中保存的模型权重文件（动辄数百 GB）、TensorBoard 或 W&B 的训练日志、以及 Tokenizer 配置等。这类数据量大、访问频率不均匀（训练中频繁写入，训练后几乎只读），适合以对象存储为主存储，配合 DVC（Data Version Control）(Kuprieiev et al. 2021) 或 MLflow Artifacts 做版本追踪。"
+      "author": "DVC",
+      "year": "2024",
+      "text": "DVC 2024)",
+      "key": "dvc:2024",
+      "context": "**模型 Checkpoint 与实验产物**是第三类，包括训练过程中保存的模型权重文件（动辄数百 GB）、TensorBoard 或 W&B 的训练日志、以及 Tokenizer 配置等。这类数据量大、访问频率不均匀（训练中频繁写入，训练后几乎只读），适合以对象存储为主存储，配合 DVC（Data Version Control）(DVC 2024) 或 MLflow Artifacts 做版本追踪。"
     },
     {
       "file": "docs/zh/part1/ch03_data_stack.md",
@@ -18018,19 +18020,19 @@
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
       "line": 112,
       "author": "Wang",
-      "year": "2022",
-      "text": "Wang et al. 2022)",
-      "key": "wang:2022",
-      "context": "Self-Instruct (Wang et al. 2022) 是指令合成的代表性方法之一。它依赖少量人工编写的种子任务（Seed Tasks）作为启动点，通常是数百个样例。流程中，强模型会参考这些种子，泛化生成新的 instruction、input 和 output，也就是指令、输入上下文和预期输出。"
+      "year": "2023",
+      "text": "Wang et al. 2023)",
+      "key": "wang:2023",
+      "context": "Self-Instruct (Wang et al. 2023) 是指令合成的代表性方法之一。它依赖少量人工编写的种子任务（Seed Tasks）作为启动点，通常是数百个样例。流程中，强模型会参考这些种子，泛化生成新的 instruction、input 和 output，也就是指令、输入上下文和预期输出。"
     },
     {
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
       "line": 119,
       "author": "Xu",
-      "year": "2023",
-      "text": "Xu et al. 2023)",
-      "key": "xu:2023",
-      "context": "为了解决 Self-Instruct 难度不足的问题，WizardLM (Xu et al. 2023) 提出了 Evol-Instruct 路线。该路线的核心是将简单的指令通过特定的“进化规则”强制变难。常见的进化操作包括：加约束条件、增加推理深度、引入多条件分支、要求多步骤解答等。"
+      "year": "2024",
+      "text": "Xu et al. 2024)",
+      "key": "xu:2024",
+      "context": "为了解决 Self-Instruct 难度不足的问题，WizardLM (Xu et al. 2024) 提出了 Evol-Instruct 路线。该路线的核心是将简单的指令通过特定的“进化规则”强制变难。常见的进化操作包括：加约束条件、增加推理深度、引入多条件分支、要求多步骤解答等。"
     },
     {
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
@@ -19062,10 +19064,10 @@
       "file": "docs/zh/part2/ch05_cleaning_dedup.md",
       "line": 412,
       "author": "Honnibal",
-      "year": "2020",
-      "text": "Honnibal et al. 2020)",
-      "key": "honnibal:2020",
-      "context": "**命名实体识别（NER）模型**则覆盖规则难以枚举的 PII 类型，如真实人名、地址和机构名。推荐使用 spaCy (Honnibal et al. 2020) 的中文模型（`zh_core_web_trf`）或 HuggingFace 上开源的中文 NER 模型，对人名（PER）、地点（LOC）、机构（ORG）等命名实体进行识别，再根据上下文判断是否需要脱敏。"
+      "year": "2023",
+      "text": "Honnibal et al. 2023)",
+      "key": "honnibal:2023",
+      "context": "**命名实体识别（NER）模型**则覆盖规则难以枚举的 PII 类型，如真实人名、地址和机构名。推荐使用 spaCy (Honnibal et al. 2023) 的中文模型（`zh_core_web_trf`）或 HuggingFace 上开源的中文 NER 模型，对人名（PER）、地点（LOC）、机构（ORG）等命名实体进行识别，再根据上下文判断是否需要脱敏。"
     },
     {
       "file": "docs/zh/part2/ch05_cleaning_dedup.md",
@@ -19250,11 +19252,11 @@
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
       "line": 193,
-      "author": "Kuprieiev",
-      "year": "2021",
-      "text": "Kuprieiev et al. 2021)",
-      "key": "kuprieiev:2021",
-      "context": "与代码的 Git 托管类似，对于多达 TB 级别的数据湖我们必须引入 DVC (Kuprieiev et al. 2021)（Data Version Control）或者相似的基于 SHA 挂载的不可变对象管控策略。在大规模实验中，切不可原位覆盖并覆盖原始数据，任何处理节点的修改都应产生全新的增量版本或通过 Delta Lake 切割 Snapshot。"
+      "author": "DVC",
+      "year": "2024",
+      "text": "DVC 2024)",
+      "key": "dvc:2024",
+      "context": "与代码的 Git 托管类似，对于多达 TB 级别的数据湖我们必须引入 DVC (DVC 2024)（Data Version Control）或者相似的基于 SHA 挂载的不可变对象管控策略。在大规模实验中，切不可原位覆盖并覆盖原始数据，任何处理节点的修改都应产生全新的增量版本或通过 Delta Lake 切割 Snapshot。"
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
@@ -27251,15 +27253,6 @@
       "context": "调试难，很多时候不是系统复杂，而是系统没有足够的观察点。对于本书涉及的数据工程链路，建议至少保留以下埋点；这些观察点也对应了现代数据处理系统和自治运维评测中对中间产物、遥测信号和回归样本的要求（Chen et al. 2024; Chen, Shetty et al. 2025）："
     },
     {
-      "file": "docs/zh/part1/ch01_data_change.md",
-      "line": 193,
-      "author": "Penedo",
-      "year": "2024",
-      "text": "Penedo et al. 2024)",
-      "key": "penedo:2024",
-      "context": "4. **大语言模型生态嗅觉与工具链整合**：熟悉各类主流开源数据集（如 The Pile (Gao et al. 2020)、RefinedWeb (Penedo et al. 2023)、FineWeb-Edu (Lozhkov et al. 2024)、Dolma (Soldaini et al. 2024)、DCLM-Baseline (Li et al. 2024)），了解各数据集的内容偏向与局限；同时能熟练使用 Dat..."
-    },
-    {
       "file": "docs/zh/part1/ch02_quality_framework.md",
       "line": 51,
       "author": "Saada",
@@ -27267,15 +27260,6 @@
       "text": "Saada et al. 2025",
       "key": "saada:2025",
       "context": "在大多数一线大模型团队中，解决这一问题的有效方法是，在项目启动阶段强制召开一次**数据质量定义对齐 Workshop**（关于数据选择方法论的系统综述见 Albalak et al. 2024; Longpre et al. 2023; Nait Saada et al. 2025），输出一份团队内部的《数据质量术语与指标契约》文档。这份文档首先要完成的，是为本项目的\"质量\"定义完整的维度清单——准确性、多样性、重复率、时效性、安..."
-    },
-    {
-      "file": "docs/zh/part1/ch03_data_stack.md",
-      "line": 196,
-      "author": "Kuprieiev",
-      "year": "2021",
-      "text": "Kuprieiev et al. 2021)",
-      "key": "kuprieiev:2021",
-      "context": "**模型 Checkpoint 与实验产物**是第三类，包括训练过程中保存的模型权重文件（动辄数百 GB）、TensorBoard 或 W&B 的训练日志、以及 Tokenizer 配置等。这类数据量大、访问频率不均匀（训练中频繁写入，训练后几乎只读），适合以对象存储为主存储，配合 DVC（Data Version Control）(Kuprieiev et al. 2021) 或 MLflow Artifacts 做版本追踪。"
     },
     {
       "file": "docs/zh/part10/ch31_agent_architecture.md",
@@ -27324,15 +27308,6 @@
     },
     {
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
-      "line": 98,
-      "author": "Xu",
-      "year": "2024",
-      "text": "Xu et al. 2024)",
-      "key": "xu:2024",
-      "context": "* **Qwen2.5** 对中文、多语、多任务和合成数据路线有重要参考价值。这里需要谨慎区分：Qwen2.5 报告中的合成数据路线与 Magpie (Xu et al. 2024) 这类无种子合成方法可以并列讨论，但不应在缺少明确来源时写成“官方采用 Magpie”。"
-    },
-    {
-      "file": "docs/zh/part13/ch45_posttrain_recipes.md",
       "line": 173,
       "author": "Shao",
       "year": "2024",
@@ -27377,15 +27352,6 @@
       "context": "**质量分类器（Quality Classifier）**是 RefinedWeb (Penedo et al. 2023)、Dolma (Soldaini et al. 2024) 等代表性数据集采用的进阶手段（注意：Nait Saada et al. 2025 的实证研究表明，分类器过滤实质上起到的是\"领域选择\"而非\"绝对质量\"筛选的作用，需配合人工抽检验证）：用一个经过人工标注的高质量文档 vs 低质量文档数据集，微调一个 ..."
     },
     {
-      "file": "docs/zh/part2/ch05_cleaning_dedup.md",
-      "line": 412,
-      "author": "Honnibal",
-      "year": "2020",
-      "text": "Honnibal et al. 2020)",
-      "key": "honnibal:2020",
-      "context": "**命名实体识别（NER）模型**则覆盖规则难以枚举的 PII 类型，如真实人名、地址和机构名。推荐使用 spaCy (Honnibal et al. 2020) 的中文模型（`zh_core_web_trf`）或 HuggingFace 上开源的中文 NER 模型，对人名（PER）、地点（LOC）、机构（ORG）等命名实体进行识别，再根据上下文判断是否需要脱敏。"
-    },
-    {
       "file": "docs/zh/part2/ch06_tokenization_loading.md",
       "line": 63,
       "author": "Brown",
@@ -27393,15 +27359,6 @@
       "text": "Brown et al. 2020)",
       "key": "brown:2020",
       "context": "**BPE（Byte Pair Encoding）** (Sennrich et al. 2016) 是最广泛使用的算法，GPT 系列（包括 GPT-3 (Brown et al. 2020)、ChatGPT、GPT-4）均基于此。其核心思想是从字符（或字节）级别出发，反复合并出现频率最高的相邻 token 对。"
-    },
-    {
-      "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 193,
-      "author": "Kuprieiev",
-      "year": "2021",
-      "text": "Kuprieiev et al. 2021)",
-      "key": "kuprieiev:2021",
-      "context": "与代码的 Git 托管类似，对于多达 TB 级别的数据湖我们必须引入 DVC (Kuprieiev et al. 2021)（Data Version Control）或者相似的基于 SHA 挂载的不可变对象管控策略。在大规模实验中，切不可原位覆盖并覆盖原始数据，任何处理节点的修改都应产生全新的增量版本或通过 Delta Lake 切割 Snapshot。"
     },
     {
       "file": "docs/zh/part3/ch11_cross_modal_alignment.md",
@@ -27542,21 +27499,6 @@
     },
     {
       "file": "docs/zh/part1/ch01_data_change.md",
-      "line": 332,
-      "entry_no": 16,
-      "entry": "Hugging Face (2024) datatrove: large scale data processing. GitHub repository. <https://github.com/huggingface/datatrove>.",
-      "first_author": "Hugging",
-      "year": "2024",
-      "title": "datatrove: large scale data processing",
-      "doi": "",
-      "arxiv": "",
-      "url": "https://github.com/huggingface/datatrove",
-      "key": "hugging:2024",
-      "fingerprint": "datatrove large scale data processing",
-      "format_issues": []
-    },
-    {
-      "file": "docs/zh/part1/ch01_data_change.md",
       "line": 352,
       "entry_no": 26,
       "entry": "Bloom B H (1970) Space/time Trade-offs in Hash Coding with Allowable Errors. Communications of the ACM 13(7):422-426.",
@@ -27636,21 +27578,6 @@
       "url": "https://iceberg.apache.org/spec/",
       "key": "apache:2024",
       "fingerprint": "apache iceberg table specification and documentation",
-      "format_issues": []
-    },
-    {
-      "file": "docs/zh/part1/ch03_data_stack.md",
-      "line": 353,
-      "entry_no": 8,
-      "entry": "DVC Contributors (2024) DVC: Data Version Control. Documentation and source repository. <https://dvc.org/doc>.",
-      "first_author": "DVC",
-      "year": "2024",
-      "title": "DVC: Data Version Control",
-      "doi": "",
-      "arxiv": "",
-      "url": "https://dvc.org/doc",
-      "key": "dvc:2024",
-      "fingerprint": "dvc data version control",
       "format_issues": []
     },
     {
@@ -29643,21 +29570,6 @@
       ]
     },
     {
-      "file": "docs/zh/part2/ch05_cleaning_dedup.md",
-      "line": 629,
-      "entry_no": 3,
-      "entry": "Honnibal M, Montani I, Van Landeghem S, Boyd A (2023) explosion/spaCy: v3.7.2: Fixes for APIs and requirements. Zenodo. <https://doi.org/10.5281/zenodo.1212303>.",
-      "first_author": "Honnibal",
-      "year": "2023",
-      "title": "explosion/spaCy: v3.7.2: Fixes for APIs and requirements",
-      "doi": "10.5281/zenodo.1212303",
-      "arxiv": "",
-      "url": "https://doi.org/10.5281/zenodo.1212303",
-      "key": "honnibal:2023",
-      "fingerprint": "explosion spacy v3 7 2 fixes for apis and requirements",
-      "format_issues": []
-    },
-    {
       "file": "docs/zh/part2/ch06_tokenization_loading.md",
       "line": 467,
       "entry_no": 4,
@@ -29703,21 +29615,6 @@
       "format_issues": [
         "missing-doi-arxiv-url"
       ]
-    },
-    {
-      "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 403,
-      "entry_no": 7,
-      "entry": "DVC Contributors (2024) DVC: Data Version Control. Documentation and source repository. <https://dvc.org/doc>.",
-      "first_author": "DVC",
-      "year": "2024",
-      "title": "DVC: Data Version Control",
-      "doi": "",
-      "arxiv": "",
-      "url": "https://dvc.org/doc",
-      "key": "dvc:2024",
-      "fingerprint": "dvc data version control",
-      "format_issues": []
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
@@ -31275,8 +31172,8 @@
       "file": "docs/zh/part1/ch01_data_change.md",
       "line": 332,
       "entry_no": 16,
-      "key": "hugging:2024",
-      "title": "datatrove: large scale data processing",
+      "key": "penedo:2024",
+      "title": "DataTrove: large scale data processing",
       "status": "not-checked",
       "source": "",
       "matched_title": "",
@@ -31786,7 +31683,7 @@
       "line": 353,
       "entry_no": 8,
       "key": "dvc:2024",
-      "title": "DVC: Data Version Control",
+      "title": "DVC: Data Version Control - Git for Data & Models",
       "status": "not-checked",
       "source": "",
       "matched_title": "",
@@ -35010,7 +34907,7 @@
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
       "line": 373,
       "entry_no": 1,
-      "key": "wang:2022",
+      "key": "wang:2023",
       "title": "Self-Instruct: Aligning Language Models with Self-Generated Instructions",
       "status": "not-checked",
       "source": "",
@@ -35145,7 +35042,7 @@
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
       "line": 391,
       "entry_no": 10,
-      "key": "xu:2023",
+      "key": "xu:2024",
       "title": "WizardLM: Empowering Large Pre-Trained Language Models to Follow Complex Instructions",
       "status": "not-checked",
       "source": "",
@@ -37696,7 +37593,7 @@
       "line": 403,
       "entry_no": 7,
       "key": "dvc:2024",
-      "title": "DVC: Data Version Control",
+      "title": "DVC: Data Version Control - Git for Data & Models",
       "status": "not-checked",
       "source": "",
       "matched_title": "",
