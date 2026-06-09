@@ -299,7 +299,7 @@ Such tasks can adopt layered evaluation. The first layer checks format, e.g., wh
 
 ### OpenThoughts and Sky-T1: Community Reproduction Paths
 
-OpenThoughts-114K (Günther et al. 2025) is one of the significant reasoning datasets in the open-source community. The Hugging Face dataset card indicates it is released under the Apache-2.0 license and provides data in Parquet format [D]. Its value lies in providing downloadable, inspectable, and training-ready Long-CoT samples, enabling researchers to reproduce experiments and study reasoning data recipes.
+OpenThoughts-114K (Guha et al. 2025) is one of the significant reasoning datasets in the open-source community. The Hugging Face dataset card indicates it is released under the Apache-2.0 license and provides data in Parquet format [D]. Its value lies in providing downloadable, inspectable, and training-ready Long-CoT samples, enabling researchers to reproduce experiments and study reasoning data recipes.
 
 Sky-T1 (NovaSky-Berkeley 2025) demonstrates another low-cost path. Public documentation shows that Sky-T1-32B-Preview is based on Qwen2.5-32B-Instruct and was trained using a small-scale, high-quality reasoning dataset; the team simultaneously released the model, data, and training code [D]. This demonstrates that improvements in reasoning capability do not necessarily require large-scale RL; in some scenarios, well-structured Long-CoT SFT can also yield meaningful gains.
 
@@ -560,6 +560,8 @@ Touvron H, Martin L, Stone K, Albert P, Almahairi A, Babaei Y, Bashlykov N, Batr
 Cobbe K, Kosaraju V, Bavarian M, Chen M, Jun H, Kaiser L, Plappert M, Tworek J, Hilton J, Nakano R, others (2021) Training Verifiers to Solve Math Word Problems. arXiv preprint arXiv:2110.14168.
 
 Chen M, Tworek J, Jun H, Yuan Q, Pinto H P O, Kaplan J, Edwards H, Burda Y, Joseph N, Brockman G, others (2021) Evaluating Large Language Models Trained on Code. arXiv preprint arXiv:2107.03374.
+
+Guha E, Marten R, Keh S, Raoof N, Smyrnis G, Bansal H, Nezhurina M, Mercat J, Vu T, Sprague Z, others (2025) OpenThoughts: Data Recipes for Reasoning Models. arXiv preprint arXiv:2506.04178.
 
 Zhou C, Liu P, Xu P, Iyer S, Sun J, Mao Y, Ma X, Efrat A, Yu P, Yu L, Zhang S, Ghosh G, Lewis M, Zettlemoyer L, Levy O (2023) LIMA: Less Is More for Alignment. Advances in Neural Information Processing Systems, 36, 55006–55021.
 
