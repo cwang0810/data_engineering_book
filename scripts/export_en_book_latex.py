@@ -167,7 +167,14 @@ def prepare_latex_items(items: list[NavItem]) -> list[NavItem]:
 
     excluded = {"index.md", "translation-status.md"}
     filtered = [item for item in items if item.path not in excluded]
-    front_order = {"preface.md": 0, "front_matter_guide.md": 1, "abbreviations.md": 2}
+    front_order = {
+        "title_page.md": 0,
+        "preface.md": 1,
+        "acknowledgments.md": 2,
+        "front_matter_guide.md": 3,
+        "contributors.md": 4,
+        "abbreviations.md": 5,
+    }
     front = [
         item
         for item in filtered
@@ -398,6 +405,12 @@ def render_image(match: re.Match[str], source_file: Path, assets: AssetManager, 
 
 def preprocess_markdown(text: str) -> str:
     text = text.replace("\ufeff", "")
+    text = re.sub(
+        r'<div\s+class=["\']chapter-authors["\']>\s*(.*?)\s*</div>',
+        lambda m: f"**Author:** {html.unescape(m.group(1)).strip()}",
+        text,
+        flags=re.I | re.S,
+    )
     text = re.sub(
         r'<div\s+align=["\']center["\']>\s*<b>(.*?)</b>\s*</div>',
         lambda m: f"**{html.unescape(m.group(1)).strip()}**",

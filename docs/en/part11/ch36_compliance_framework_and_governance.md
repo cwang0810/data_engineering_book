@@ -1,5 +1,7 @@
 # Chapter 36: Data Compliance Frameworks and Governance
 
+<div class="chapter-authors">ZhiLi Wang; Xin Xu</div>
+
 ## Chapter Guide
 
 - **Core goal:** answer three practical questions: can this data be used, how may it be used, and can the use be controlled after it begins?

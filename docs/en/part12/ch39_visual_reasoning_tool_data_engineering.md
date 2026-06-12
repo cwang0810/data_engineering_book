@@ -1,5 +1,7 @@
 # Chapter 39: Visual Reasoning and Tool-Calling Data Engineering
 
+<div class="chapter-authors">Lin Xu; Xinyu Chen</div>
+
 ## Abstract
 
 This chapter discusses how visual data moves from object recognition toward evidence organization and executable reasoning through two specialized cases: multi-chart infographic reasoning and medical image tool-calling. Multi-chart infographic reasoning emphasizes cross-chart evidence aggregation, numerical relations, and multi-step reasoning chains; MedImage-ToolVQA emphasizes ROI, masks, bounding boxes, and tool-call trajectories. Both cases require datasets to record visual evidence, question structure, reasoning processes, and human-review boundaries together.
