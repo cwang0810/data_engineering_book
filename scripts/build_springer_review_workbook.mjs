@@ -186,7 +186,7 @@ const missingRegisterFiles = [...figureByFile.entries()]
   .map(([f]) => fileMeta.get(f)?.unit || f)
   .join("; ");
 
-const chapterScope = "Ch01-Ch51; P01-P15; 附录A-G; 序言/目录/缩写表/后记";
+const chapterScope = "Ch01-Ch51; P01-P15; 附录A-H; 序言/目录/缩写表/后记";
 const officialSubmit = "Springer 提交页：目录/篇章/标题编号正确；每章源文件含参考文献、图注、表格；原始图文件单独提交；正文和图件完整终稿；第三方权限齐备";
 const officialPolicy = "Springer 图书政策：第三方内容权限、AI 使用披露、AI 不列作者、利益冲突披露、引用可靠性与可核验性";
 const officialSubmitUrl = "https://www.springernature.com/gp/authors/publish-a-book/submitting-your-manuscript";
@@ -221,12 +221,12 @@ const unifiedRows = [
   ["U-014", "P2", "未完成", "统稿风格", "全书非正式表达精修", chapterScope, `final_publication_audit: style_hits=${finalAudit.summary.style_hits}`, officialSubmit, "减少非正式、课程讲义式和网页教程式表达；统一为正式技术书语体。", "责任编辑/章节作者", "chapter_style_checklist 逐章签核。", "style_report"],
   ["U-015", "P1", "未完成", "人工签核", "逐章统稿签核", chapterScope, "chapter_style_checklist 当前均为待人工签核", officialSubmit, "逐章确认摘要、关键词、术语、图表引用、参考文献和 Springer 体例", "主编/章节作者", "所有行状态从待人工签核改为已签核", "chapter_style_checklist"],
   ["U-016", "P1", "未完成", "人工签核", "高风险章节与抽检章节签核", "Ch12, Ch16, Ch21, Ch24, Ch29, Ch40, P11, P12, P13, P15; Part10/12/14", "manual_review_checklist 当前均为待人工签核", officialSubmit, "重点复核安全/合规边界、图表权属、参考文献真实性和案例复现边界。", "主编/章节作者/法务合规", "manual_review_checklist 全部完成。", "manual_review_checklist"],
-  ["U-017", "P1", "需持续验证", "结构/元数据", "统一交付口径：附录数量与结构冻结说明", "README; publishing 控制台; 目录; 台账", "当前中文主线口径为 14 篇、51 章、15 项目、7 附录 A-G", officialSubmit, "统一为当前中文主线口径：14 篇、51 章、15 项目、7 附录 A-G；后续 PR 合并后同步 README、MkDocs、index 与台账", "主编/项目管理", "所有控制台、台账、README、交付清单口径一致", "README; publishing"],
+  ["U-017", "P1", "需持续验证", "结构/元数据", "统一交付口径：附录数量与结构冻结说明", "README; publishing 控制台; 目录; 台账", "当前中文主线口径为 14 篇、51 章、15 项目、8 附录 A-H", officialSubmit, "统一为当前中文主线口径：14 篇、51 章、15 项目、8 附录 A-H；后续 PR 合并后同步 README、MkDocs、index 与台账", "主编/项目管理", "所有控制台、台账、README、交付清单口径一致", "README; publishing"],
   ["U-018", "P1", "未完成", "交付包", "整理 Springer 可生产源文件包", "全书", "当前主要是 Markdown、预览 PDF/HTML；未见正式 Word/LaTeX 分章源文件交付包", officialSubmit, "按 Springer 要求导出每章源文件，包含参考文献、图注、表格；命名规则固定", "制稿负责人", "源文件包、图源包、PDF 样稿、清单齐备", "本地文件扫描"],
   ["U-019", "P1", "未完成", "交付包", "生成最终中文合并 PDF 并做版面 QA", "全书中文主线", "当前可见分篇预览与内部工作 PDF，未确认最终中文合并交付 PDF", officialSubmit, "生成最终合并 PDF；检查字体嵌入、目录、页码、图表跨页、图中文字字号", "制稿负责人", "最终中文 PDF 可交付且与源文件一致", "output/publishing 扫描"],
   ["U-020", "P1", "未完成", "合规声明", "补齐 AI 使用、第三方权限、利益冲突、作者信息声明", "卷前/卷末/交付包", "当前未见完整出版声明包；图表台账仍要求 AI/权限终审", officialPolicy, "在前言/致谢/声明文件中披露 AI 工具使用、人类责任、第三方内容、利益冲突、ORCID/单位", "主编/法务合规", "声明文件齐备并与台账一致", "Springer policies; local audit"],
   ["U-021", "P2", "未完成", "结构/元数据", "补齐作者、单位、ORCID、简介、通讯作者元数据", "卷前材料; README", "README 仅有团队级作者信息，未形成 Springer 元数据清单", officialSubmit, "准备作者名单、单位、ORCID、邮箱、简介、贡献说明、通讯作者", "主编/项目管理", "作者元数据表可直接提交出版社", "README; checklist"],
-  ["U-022", "P2", "未完成", "结构/元数据", "确认附录是否需要摘要/关键词", "附录A-G", "正文和项目章均有摘要/关键词；附录A-G 当前缺摘要/关键词", officialSubmit, "若附录作为独立章节进入 SpringerLink，补摘要与关键词；若作为 back matter，需在交付说明中声明", "主编/责任编辑", "附录处理口径明确且全书一致", "Markdown 结构扫描"],
+  ["U-022", "P2", "未完成", "结构/元数据", "确认附录是否需要摘要/关键词", "附录A-H", "正文和项目章均有摘要/关键词；附录A-H 当前缺摘要/关键词", officialSubmit, "若附录作为独立章节进入 SpringerLink，补摘要与关键词；若作为 back matter，需在交付说明中声明", "主编/责任编辑", "附录处理口径明确且全书一致", "Markdown 结构扫描"],
   ["U-023", "P2", "未完成", "交付包", "配套代码与复现资源说明终审", "P01-P15; 附录C; README", "项目章需要配套资源或复现说明；P15 当前无独立代码目录", officialSubmit, "补项目-代码-数据-环境映射；说明不可复现或需模拟数据的边界", "项目作者/技术编辑", "每个项目均有资源说明和边界声明", "checklist; repo scan"],
   ["U-024", "P2", "未完成", "图表/权限", "alt text 与无障碍描述复核", "全书图表", "台账已含 alt text 字段，但仍需终稿复核", officialPolicy, "复核 alt text 是否描述信息而非重复图名；复杂图补长说明或正文解释", "图表编辑/责任编辑", "alt text 台账全部签核", "12_figures_tables_register"],
   ["U-025", "P2", "未完成", "结构/元数据", "统一书名、术语、英文缩写首次出现规则", "全书", "局部存在“算法及/算法与”、中英文术语和缩写口径差异风险", officialSubmit, "以术语表和封面/合同书名为准全书替换；首次出现补中英文全称", "责任编辑", "术语表、目录、正文、README 一致", "README; abbreviations"],
@@ -314,7 +314,7 @@ for (const file of zhFiles) {
       "确认并补齐附录摘要/关键词口径",
       `hasAbstract=${meta.hasAbstract}; hasKeywords=${meta.hasKeywords}; hasReferences=${meta.hasReferences}`,
       "若附录按独立章节进入交付，补摘要与3-6个关键词；若按 back matter 处理，交付说明中统一声明。",
-      "附录 A-G 口径一致，目录和交付清单同步。",
+      "附录 A-H 口径一致，目录和交付清单同步。",
       "P2",
     );
   }

@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-06-13T09:34:58.212596+00:00",
-  "scanned_files": 70,
+  "generated_at_utc": "2026-06-13T10:48:24.938782+00:00",
+  "scanned_files": 71,
   "style_hits": [
     {
       "file": "docs/zh/appendix_a_tools_and_frameworks_quick_reference.md",
@@ -850,98 +850,126 @@
       "context": "尤其在隐私、合规和发布边界上，术语很容易从工程描述滑向法律判断。写作时要明确区分“系统做了什么”和“法律上是否满足要求”。"
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_g_datagallery_note.md",
+      "line": 9,
+      "kind": "rhetorical-not-but",
+      "phrase": "不是“如何调用一个模型生成 SQL”，而是",
+      "context": "在本书语境中，DataGallery 更适合被理解为围绕 Data + AI 实践组织的一组开源工程入口，而不是单一工具名称。项目十五使用 DataAgent 构建企业级语义问数助手，其核心问题并不是“如何调用一个模型生成 SQL”，..."
+    },
+    {
+      "file": "docs/zh/appendix_g_datagallery_note.md",
+      "line": 25,
+      "kind": "weak-booster",
+      "phrase": "真正",
+      "context": "DataGallery 也提醒读者，开源数据智能体项目的核心资产不只是模型调用代码。对 DataAgent 这类系统而言，真正需要长期维护的是语义层 schema、工具配置、数据库连接、执行权限、workspace 目录、运行轨迹、测..."
+    },
+    {
+      "file": "docs/zh/appendix_g_datagallery_note.md",
+      "line": 43,
+      "kind": "rhetorical-not-but",
+      "phrase": "不是在项目十五之外另起一个工具介绍，而是",
+      "context": "因此，本附录不是在项目十五之外另起一个工具介绍，而是为项目十五补充开源生态背景。读者如果只想跑通案例，应先读项目十五；如果需要把案例迁移到团队项目、课程实验、开源复现或企业内部验证，则应继续阅读本附录，确认版本、权限、资产、评估和维护边界。"
+    },
+    {
+      "file": "docs/zh/appendix_g_datagallery_note.md",
+      "line": 47,
+      "kind": "rhetorical-not-but",
+      "phrase": "不是直接猜 SQL，而是",
+      "context": "第一类误用，是把 DataAgent 当作“自动 SQL 生成器”。项目十五已经强调，企业问数的重点不是直接猜 SQL，而是通过语义层、子 Agent、校验、执行和产物落盘构建可审计链路。DataGallery 提供开源入口，并不改变..."
+    },
+    {
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 11,
       "kind": "rhetorical-not-but",
       "phrase": "不是比较不同框架的优劣，而是",
       "context": "第十二篇及其他涉及配套实现、课程实验、训练入口或复现实验的章节，会把 MindSpore 放在具体实践链路中使用。相关讨论的重点不是比较不同框架的优劣，而是说明数据工程如何进入可执行、可验证、可复现的训练与部署环境。"
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 13,
       "kind": "weak-booster",
       "phrase": "真正",
-      "context": "这种定位也决定了附录 G 的写法：它不展开算子实现、网络定义或完整训练代码，而是沿着数据工程项目的生命周期说明 MindSpore 的位置。对于一个实际项目来说，框架选择会影响数据准备阶段的输出格式，会影响训练阶段的吞吐与并行组织，会..."
+      "context": "这种定位也决定了附录 H 的写法：它不展开算子实现、网络定义或完整训练代码，而是沿着数据工程项目的生命周期说明 MindSpore 的位置。对于一个实际项目来说，框架选择会影响数据准备阶段的输出格式，会影响训练阶段的吞吐与并行组织，会..."
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 21,
       "kind": "blog-transition",
       "phrase": "换句话说",
       "context": "这种定位对数据工程实践尤其重要。一个数据集能否顺利进入模型训练，不只取决于样本是否清洗干净、标注是否准确，也取决于框架是否能够稳定消费这些数据，训练脚本是否能够和数据管线配合，运行时是否能够支撑目标规模下的吞吐、内存和并行需求。换句话..."
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 21,
       "kind": "rhetorical-not-but",
       "phrase": "不是“得到一批文件”，而是",
       "context": "这种定位对数据工程实践尤其重要。一个数据集能否顺利进入模型训练，不只取决于样本是否清洗干净、标注是否准确，也取决于框架是否能够稳定消费这些数据，训练脚本是否能够和数据管线配合，运行时是否能够支撑目标规模下的吞吐、内存和并行需求。换句话..."
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 39,
       "kind": "rhetorical-not-but",
       "phrase": "不是把样本准备好再交给训练脚本就结束，而是",
       "context": "首先，MindSpore 提供了从数据处理、网络构建、训练管理到推理部署的相对完整接口。其中，MindData 负责数据加载、增强和传输等数据管线能力；MindInsight 支持训练过程可视化、性能分析、调试与溯源；MindArmo..."
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 49,
       "kind": "weak-booster",
       "phrase": "很容易",
       "context": "第二是训练入口契约。训练脚本需要知道数据目录、索引文件、batch 组织方式、随机种子、采样策略、增强策略、混合精度设置、并行策略和检查点保存方式。若这些信息散落在不同脚本、环境变量或临时命令中，项目很容易出现“能跑一次，但难以复现”..."
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 59,
       "kind": "weak-booster",
       "phrase": "真正",
       "context": "第七是团队协作契约。MindSpore 项目往往涉及数据工程、算法、平台、运维和业务团队。数据工程需要向算法团队提供稳定、可解释、可追溯的数据输入；算法团队需要向数据工程反馈失败模式、损失异常、评测波动和样本需求；平台团队需要提供资源..."
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 63,
       "kind": "rhetorical-not-but",
       "phrase": "不是“使用了哪个组件”这一层名称，而是",
       "context": "MindSpore 的工程价值往往体现在组件协同中。单独看训练脚本，它只是模型迭代的入口；放到完整项目里，它会连接数据加载、训练执行、性能诊断、实验记录、安全评估、模型导出和部署验证。数据工程需要关注的不是“使用了哪个组件”这一层名称..."
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 65,
       "kind": "rhetorical-not-but",
       "phrase": "不是“能否读到数据”，而是",
       "context": "MindData 是最直接连接数据工程和训练系统的部分。它负责把磁盘、对象存储、索引文件或内存中的样本组织成训练可消费的数据流，并承接 map、shuffle、batch、repeat、cache、prefetch、图像增强、文本处理..."
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 89,
       "kind": "weak-booster",
       "phrase": "真正",
       "context": "在工程落地中，MindFace 这类套件提供的是模型库能力，而一个可持续运行的项目还需要把它进一步组织成数据工程资产。模型库通常会提供网络结构、训练脚本、推理示例、预训练权重和评测入口；数据工程资产则需要进一步补齐数据来源说明、标注规..."
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 105,
       "kind": "rhetorical-not-but",
       "phrase": "不是单一类别标签，而是",
       "context": "进一步看，MindFace 所代表的人脸任务还展示了视觉数据工程中的几个典型难点。第一，图像样本天然具有强上下文性。同一张图片可能同时包含主体人脸、背景、遮挡物、光照条件、拍摄设备和压缩痕迹；这些因素既影响模型效果，也影响样本是否适合..."
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 117,
       "kind": "rhetorical-not-but",
       "phrase": "不是模型结构，而是",
       "context": "围绕 MindSpore 或 MindFace 的公开样例通常更强调“如何跑通”，而工程项目更强调“如何稳定运行、如何复查、如何迁移、如何持续迭代”。从样例走向项目时，最容易被低估的不是模型结构，而是数据和环境之间的隐性假设。一个样例..."
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 129,
       "kind": "rhetorical-not-but",
       "phrase": "不是一次性测试集，而是",
       "context": "第六步是建立回归评测集。回归评测集不是一次性测试集，而是长期维护的稳定样本集合。它应覆盖常规样本、边界样本、历史失败样本和关键业务场景。每次数据清洗、模型调整、框架升级或部署环境变化后，都应在回归评测集上重新验证。对于 MindFac..."
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 161,
       "kind": "rhetorical-not-but",
       "phrase": "不是附加宣传内容，而是",
@@ -13114,7 +13142,7 @@
       "src": "../../images/part3/multimodal_data_panorama.svg",
       "resolved": "docs/images/part3/multimodal_data_panorama.svg",
       "exists": true,
-      "size_kb": 223.720703125,
+      "size_kb": 227.9267578125,
       "dimensions": "unknown",
       "registry_status": "内部自绘/改绘资源；终稿复核高清源与 AI 使用声明",
       "high_res_status": "是",
@@ -13130,7 +13158,7 @@
       "src": "../../images/part3/image_semantic_alignment_flow.svg",
       "resolved": "docs/images/part3/image_semantic_alignment_flow.svg",
       "exists": true,
-      "size_kb": 310.634765625,
+      "size_kb": 316.23828125,
       "dimensions": "unknown",
       "registry_status": "内部自绘/改绘资源；终稿复核高清源与 AI 使用声明",
       "high_res_status": "是",
@@ -13146,7 +13174,7 @@
       "src": "../../images/part3/anyres_dynamic_patching.svg",
       "resolved": "docs/images/part3/anyres_dynamic_patching.svg",
       "exists": true,
-      "size_kb": 1378.2998046875,
+      "size_kb": 1385.001953125,
       "dimensions": "unknown",
       "registry_status": "内部自绘/改绘资源；终稿复核高清源与 AI 使用声明",
       "high_res_status": "是",
@@ -13162,7 +13190,7 @@
       "src": "../../images/part3/recaptioning_ocr_pipeline.svg",
       "resolved": "docs/images/part3/recaptioning_ocr_pipeline.svg",
       "exists": true,
-      "size_kb": 213.345703125,
+      "size_kb": 216.443359375,
       "dimensions": "unknown",
       "registry_status": "内部自绘/改绘资源；终稿复核高清源与 AI 使用声明",
       "high_res_status": "是",
@@ -13178,7 +13206,7 @@
       "src": "../../images/part3/document_structure_sample.svg",
       "resolved": "docs/images/part3/document_structure_sample.svg",
       "exists": true,
-      "size_kb": 621.5224609375,
+      "size_kb": 623.75,
       "dimensions": "unknown",
       "registry_status": "内部自绘/改绘资源；终稿复核高清源与 AI 使用声明",
       "high_res_status": "是",
@@ -13194,7 +13222,7 @@
       "src": "../../images/part3/av_sample_pipeline.svg",
       "resolved": "docs/images/part3/av_sample_pipeline.svg",
       "exists": true,
-      "size_kb": 118.830078125,
+      "size_kb": 120.828125,
       "dimensions": "unknown",
       "registry_status": "内部自绘/改绘资源；终稿复核高清源与 AI 使用声明",
       "high_res_status": "是",
@@ -13210,7 +13238,7 @@
       "src": "../../images/part3/av_shot_boundary_hsv.svg",
       "resolved": "docs/images/part3/av_shot_boundary_hsv.svg",
       "exists": true,
-      "size_kb": 199.515625,
+      "size_kb": 202.796875,
       "dimensions": "unknown",
       "registry_status": "内部自绘/改绘资源；终稿复核高清源与 AI 使用声明",
       "high_res_status": "是",
@@ -13226,7 +13254,7 @@
       "src": "../../images/part3/asr_whisperx_comparison.svg",
       "resolved": "docs/images/part3/asr_whisperx_comparison.svg",
       "exists": true,
-      "size_kb": 117.3935546875,
+      "size_kb": 119.3330078125,
       "dimensions": "unknown",
       "registry_status": "内部自绘/改绘资源；终稿复核高清源与 AI 使用声明",
       "high_res_status": "是",
@@ -13258,7 +13286,7 @@
       "src": "../../images/part3/cross_modal_alignment_hierarchy.svg",
       "resolved": "docs/images/part3/cross_modal_alignment_hierarchy.svg",
       "exists": true,
-      "size_kb": 145.3330078125,
+      "size_kb": 147.6435546875,
       "dimensions": "unknown",
       "registry_status": "内部自绘/改绘资源；终稿复核高清源与 AI 使用声明",
       "high_res_status": "是",
@@ -13274,7 +13302,7 @@
       "src": "../../images/part3/fusion_training_sample_design.svg",
       "resolved": "docs/images/part3/fusion_training_sample_design.svg",
       "exists": true,
-      "size_kb": 144.955078125,
+      "size_kb": 146.8984375,
       "dimensions": "unknown",
       "registry_status": "内部自绘/改绘资源；终稿复核高清源与 AI 使用声明",
       "high_res_status": "是",
@@ -14524,7 +14552,7 @@
       ]
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "entry_no": 1,
       "entry": "MindFace Contributors (2026) MindFace source repository. Available at: https://github.com/mindspore-lab/mindface.",
       "year": "2026",
@@ -14535,7 +14563,7 @@
       ]
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "entry_no": 2,
       "entry": "MindSpore Contributors (2026a) MindSpore Documentation. Available at: https://www.mindspore.cn/view/en.",
       "year": "",
@@ -14547,7 +14575,7 @@
       ]
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "entry_no": 3,
       "entry": "MindSpore Contributors (2026b) MindSpore source repository. Available at: https://github.com/mindspore-ai/mindspore.",
       "year": "",
@@ -14559,7 +14587,7 @@
       ]
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "entry_no": 4,
       "entry": "MindSpore Contributors (2026c) Automatic Differentiation, MindSpore Tutorials. Available at: https://www.mindspore.cn/tutorials/en/r2.9.0/beginner/autograd.html.",
       "year": "",
@@ -19743,6 +19771,28 @@
       "year": "2026",
       "doi": "",
       "url": "https://docs.getdbt.com/.",
+      "issues": [
+        "needs-authenticity-review"
+      ]
+    },
+    {
+      "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
+      "entry_no": 6,
+      "entry": "6. DataGallery Contributors. (2026). DataGallery organization page. https://gitcode.com/datagallery.",
+      "year": "2026",
+      "doi": "",
+      "url": "https://gitcode.com/datagallery.",
+      "issues": [
+        "needs-authenticity-review"
+      ]
+    },
+    {
+      "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
+      "entry_no": 7,
+      "entry": "7. DataGallery Contributors. (2026). DataAgent source repository. https://gitcode.com/datagallery/DataAgent.",
+      "year": "2026",
+      "doi": "",
+      "url": "https://gitcode.com/datagallery/DataAgent.",
       "issues": [
         "needs-authenticity-review"
       ]
@@ -25452,14 +25502,16 @@
       ]
     }
   ],
-  "missing_reference_files": [],
+  "missing_reference_files": [
+    "docs/zh/appendix_g_datagallery_note.md"
+  ],
   "summary": {
-    "style_hits": 1369,
+    "style_hits": 1373,
     "figures": 286,
     "figures_needing_review": 286,
     "broken_figures": 0,
-    "references": 968,
+    "references": 970,
     "reference_issue_rows": 630,
-    "missing_reference_files": 0
+    "missing_reference_files": 1
   }
 }

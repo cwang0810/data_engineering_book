@@ -1,13 +1,13 @@
 # 全书量化数据真实性 Review 报告
 
-生成时间：2026-06-12T15:57:02.089330+00:00
+生成时间：2026-06-13T10:48:24.946547+00:00
 
 ## 一、结论摘要
 
-- 量化表述候选：1540 条。
+- 量化表述候选：1534 条。
 - 高风险：0 条，主要是本项目/本实现结果、数据集规模、性能百分比或资源成本但缺少可复现实验日志或内联来源。
-- 中风险：655 条，主要是章节参考文献可支撑但未内联到具体数值，或属于教学示例/建议阈值。
-- 弱来源信号：1229 条，出版前需要人工确认是否为外部事实。
+- 中风险：650 条，主要是章节参考文献可支撑但未内联到具体数值，或属于教学示例/建议阈值。
+- 弱来源信号：1223 条，出版前需要人工确认是否为外部事实。
 
 ## 二、处理口径
 
@@ -20,23 +20,23 @@
 
 ### 按风险级别
 
-- low: 885
-- medium: 655
+- low: 884
+- medium: 650
 
 ### 按类型
 
-- dataset-size-or-composition: 531
-- performance-or-percentage: 454
-- cost-resource-or-scale: 261
-- other-quantitative: 189
+- dataset-size-or-composition: 528
+- performance-or-percentage: 452
+- cost-resource-or-scale: 259
+- other-quantitative: 190
 - model-or-token-scale: 89
 - internal-target-or-threshold: 16
 
 ### 按来源信号
 
-- chapter-reference-section-only: 1229
-- nearby-source-signal: 162
-- inline-source-signal: 149
+- chapter-reference-section-only: 1223
+- nearby-source-signal: 160
+- inline-source-signal: 151
 
 ## 四、高风险与中风险明细
 
@@ -50,8 +50,8 @@
 | medium | `docs/zh/appendix_e_common_bug_debugging_manual.md` | 89 | dataset-size-or-composition | chapter-reference-section-only | 2023 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | 更进一步，要区分“字面重复”和“语义重复”。字面重复适合规则去重，语义重复则需要看任务目标。对于训练集，适度重复未必是坏事；对于评测集，重复常常意味着污染。两者不能用同一把尺子。机器学习复现危机中的数据泄漏案例提醒我们，切分、近重复样本和评测污染会让指标看起来更好，却削弱真实泛化能力（Kapoor and Narayanan 2023）。 |
 | medium | `docs/zh/appendix_e_common_bug_debugging_manual.md` | 230 | dataset-size-or-composition | chapter-reference-section-only | 2024, 2025 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | 调试难，很多时候不是系统复杂，而是系统没有足够的观察点。对于本书涉及的数据工程链路，建议至少保留以下埋点；这些观察点也对应了现代数据处理系统和自治运维评测中对中间产物、遥测信号和回归样本的要求（Chen et al. 2024; Chen, Shetty et al. 2025）： |
 | medium | `docs/zh/appendix_f_terminology_and_chinese_english_mapping.md` | 57 | performance-or-percentage | chapter-reference-section-only | 2022 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | 脱敏是降低识别风险的一组工程处理，匿名化则更强调不可逆识别。二者在实践中都很常见，但不能互相替代。对于本书内容，建议优先用“脱敏”描述工程处理，用“匿名化”描述更强的身份不可识别目标，并在必要时说明所依据的法域与业务要求。涉及个人信息或跨域共享时，术语应服务于风险评估和控制说明，而不能替代具体合规判断；语言模型风险分类研究也把隐私泄露、滥用和信息安全风险区分为不同风险族，不能混作一个词处理（Weidinger et al. 2022）。 |
-| medium | `docs/zh/appendix_g_mindspore_note.md` | 7 | other-quantitative | chapter-reference-section-only | 2026, 2026 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 本附录用于说明 MindSpore（昇思）在本书部分实践内容中的背景位置。它不是框架教程，也不替代 MindSpore 官方文档、课程实验说明或随书代码仓库中的具体安装与运行指南。如需查阅 API、版本兼容性、硬件适配、算子支持、分布式训练配置或部署细节，应以官方文档和项目仓库中的说明为准（MindSpore Contributors 2026a; MindSpore Contributors 2026b）。 |
-| medium | `docs/zh/appendix_g_mindspore_note.md` | 83 | dataset-size-or-composition | chapter-reference-section-only | 2026 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | MindFace 是基于 MindSpore 的开源人脸识别与检测工具套件，面向人脸检测、人脸识别等常见计算机视觉任务，提供相对统一的应用接口，并支持多种 backbone、数据集和损失函数扩展（MindFace Contributors 2026）。从数据工程视角看，MindFace 的意义不只在于“提供了若干模型实现”，而在于它展示了一个专用任务套件如何把框架能力、模型结构、数据准备和评测协议连接起来。 |
+| medium | `docs/zh/appendix_h_mindspore_note.md` | 7 | other-quantitative | chapter-reference-section-only | 2026, 2026 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 本附录用于说明 MindSpore（昇思）在本书部分实践内容中的背景位置。它不是框架教程，也不替代 MindSpore 官方文档、课程实验说明或随书代码仓库中的具体安装与运行指南。如需查阅 API、版本兼容性、硬件适配、算子支持、分布式训练配置或部署细节，应以官方文档和项目仓库中的说明为准（MindSpore Contributors 2026a; MindSpore Contributors 2026b）。 |
+| medium | `docs/zh/appendix_h_mindspore_note.md` | 83 | dataset-size-or-composition | chapter-reference-section-only | 2026 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | MindFace 是基于 MindSpore 的开源人脸识别与检测工具套件，面向人脸检测、人脸识别等常见计算机视觉任务，提供相对统一的应用接口，并支持多种 backbone、数据集和损失函数扩展（MindFace Contributors 2026）。从数据工程视角看，MindFace 的意义不只在于“提供了若干模型实现”，而在于它展示了一个专用任务套件如何把框架能力、模型结构、数据准备和评测协议连接起来。 |
 | medium | `docs/zh/part1/ch01_data_change.md` | 25 | cost-resource-or-scale | chapter-reference-section-only | 50T, 1T, 500GB, 70B, 3 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | 以下为匿名化复合场景，用于说明数据质量问题的工程排查路径；其中参数规模、算力配置和故障现象综合了一线项目中常见模式，不对应任何具体公开事件。某 AI 创业公司数据团队在完成融资后，花费三个月时间，利用数百台服务器组成的分布式爬虫集群，从公网爬取并集成了近 50TB 的中文网页语料、1TB 的 GitHub 开源代码以及 500GB 的 Reddit 讨论数据。团队随后启动千卡 A100 集群，利用 Megatron-LM 框架预训练一个约 70B 参数量级的基座模型。整个算法和工程团队在基础设施搭建（如 RDMA ... |
 | medium | `docs/zh/part1/ch01_data_change.md` | 31 | dataset-size-or-composition | chapter-reference-section-only | 3 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 3. **强背诵弱推理**：给模型输入一道简单的鸡兔同笼变形题，它居然一字不差地默写出了某年 GMAT 考试的长篇阅读原题以及尾部的版权声明，而面对简单的 3 位数加法却一错再错。 |
 | medium | `docs/zh/part1/ch01_data_change.md` | 35 | cost-resource-or-scale | chapter-reference-section-only | 2023 年 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 这类问题并非单一团队的偶发事故。在 2023 年以来的大模型训练实践中，语料重复、网页噪声、评测集污染和数据血缘缺失，都被反复证明会显著影响模型能力和训练成本。 |
@@ -69,17 +69,16 @@
 | medium | `docs/zh/part1/ch01_data_change.md` | 269 | dataset-size-or-composition | chapter-reference-section-only | 3, 4, 5 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | \| 第十二篇 专项数据集实践 \| 3 \| 4 \| 5 \| |
 | medium | `docs/zh/part1/ch01_data_change.md` | 270 | dataset-size-or-composition | chapter-reference-section-only | 3, 4, 5 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | \| 第十三篇 开源数据配方 \| 3 \| 4 \| 5 \| |
 | medium | `docs/zh/part1/ch01_data_change.md` | 271 | dataset-size-or-composition | chapter-reference-section-only | 4, 4, 5 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | \| 第十四篇 项目实战 \| 4 \| 4 \| 5 \| |
-| medium | `docs/zh/part1/ch02_quality_framework.md` | 40 | dataset-size-or-composition | chapter-reference-section-only | 2011 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 问题根因：困惑度（PPL）衡量的是"语言分布合理性"——一个语言流畅但事实全错的段落，PPL 可以非常低（看起来很"好"）。预训练语料过滤中常用的 KenLM 等 n-gram 语言模型正是以此类 PPL 打分作为筛选依据（Heafield 2011）。标注专家需要的"事实准确性"是 PPL 过滤完全覆盖不到的维度。 |
 | medium | `docs/zh/part1/ch02_quality_framework.md` | 53 | model-or-token-scale | chapter-reference-section-only | 2024, 2023, 2025 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | 在大多数一线大模型团队中，解决这一问题的有效方法是，在项目启动阶段强制召开一次**数据质量定义对齐 Workshop**（关于数据选择方法论的系统综述见 Albalak et al. 2024; Longpre et al. 2023; Nait Saada et al. 2025），输出一份团队内部的《数据质量术语与指标契约》文档。这份文档首先要完成的，是为本项目的"质量"定义完整的维度清单——准确性、多样性、重复率、时效性、安全性——并为每个维度给定可量化的计算方式，而非停留在定性描述层面。 |
 | medium | `docs/zh/part1/ch02_quality_framework.md` | 124 | performance-or-percentage | chapter-reference-section-only | 1B | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | 在工业界实践中，这条指标链被描述为一个**三角映射结构**。第一个顶角是**离线数据质量指标**，即在数据存储和处理阶段就能计算出的静态分数，包括去重率、PPL 分布均值、基准污染率等；这些指标不需要运行模型就能高效计算，适合在 CI/CD 流水线中自动触发检查。第二个顶角是**代理模型评测质量**，即将处理后的数据注入一个小规模代理模型（通常是 1B 级别）进行快速训练并测试，以基准测试得分衡量数据的实际训练价值——这一步是离线数据指标与最终模型效果之间不可缺少的"桥梁验证"。第三个顶角是**真实业务在线系统质量... |
-| medium | `docs/zh/part1/ch02_quality_framework.md` | 403 | internal-target-or-threshold | chapter-reference-section-only | 2.4 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | ### 2.4.2 质量阈值、阻断闸门设计与回退 (Rollback) |
-| medium | `docs/zh/part1/ch02_quality_framework.md` | 420 | performance-or-percentage | chapter-reference-section-only | 2023年 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 2023年某开源模型发布后，发现随着步数增长，生成代码的能力不仅没有提升，反而开始退化甚至带入罕见的奇怪空白符。 |
-| medium | `docs/zh/part1/ch02_quality_framework.md` | 421 | model-or-token-scale | chapter-reference-section-only | 1T, 4倍 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | **溯源分析**：团队追溯上一批数据接入，发现在进行语言识别清洗时，某些 HTML 格式过滤器的包被升级了，原本正常跳过的 `<pre>` 代码标签引发了解析失效，导致大量带特殊空格缩进的网页源码在最后 1T 数据中占比突然升高了 4倍（这是质量指标中“一致性”未设置基线检查导致的失重）。模型在长期训练中无声无息地发生了“分布漂移”。 |
-| medium | `docs/zh/part1/ch02_quality_framework.md` | 434 | model-or-token-scale | chapter-reference-section-only | 1 天 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | - **T+1 天**：算法团队推测是温度参数（Temperature）问题，调整后无效 |
-| medium | `docs/zh/part1/ch02_quality_framework.md` | 436 | model-or-token-scale | chapter-reference-section-only | 3 天, 6, 约 1.2T | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | - **T+3 天**：发现第 6 批次（约 1.2T Tokens）接入时，HTML 过滤器依赖包从 v2.3.1 升级至 v2.4.0，新版本改变了`<pre>` 标签的处理逻辑，原本应保留的代码缩进被误转换为非标准空格 |
-| medium | `docs/zh/part1/ch02_quality_framework.md` | 478 | dataset-size-or-composition | chapter-reference-section-only | 2 天 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | - **T+2 天**：数据团队抽检含财务表格样本，发现多列 PDF 表格存在行列错位。根因是弱模型解析表格时，列与列之间数字发生错误行对齐。 |
-| medium | `docs/zh/part1/ch02_quality_framework.md` | 480 | model-or-token-scale | chapter-reference-section-only | 5 天 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | - **T+5 天**：应急处理：停止弱模型自动生成财务类 QA，改为人工标注；对含财务数字的 RAG Chunk 增加人工复核标记 |
-| medium | `docs/zh/part1/ch02_quality_framework.md` | 483 | cost-resource-or-scale | chapter-reference-section-only | 1, 2, 3 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | **核心教训**：**自引用评估（Self-referential Evaluation）** 是 RAG 与合成数据场景中的高风险问题。独立金标准评估集应满足三项要求：(1) 人类专家独立编写；(2) 与训练数据管线物理隔离；(3) 每次数据集迭代发布后，金标准集结果必须列入评分卡，作为上线否决指标。 |
+| medium | `docs/zh/part1/ch02_quality_framework.md` | 401 | internal-target-or-threshold | chapter-reference-section-only | 2.4 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | ### 2.4.2 质量阈值、阻断闸门设计与回退 (Rollback) |
+| medium | `docs/zh/part1/ch02_quality_framework.md` | 417 | performance-or-percentage | chapter-reference-section-only | 2023年 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 2023年某开源模型发布后，发现随着步数增长，生成代码的能力不仅没有提升，反而开始退化甚至带入罕见的奇怪空白符。 |
+| medium | `docs/zh/part1/ch02_quality_framework.md` | 418 | model-or-token-scale | chapter-reference-section-only | 1T, 4倍 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | **溯源分析**：团队追溯上一批数据接入，发现在进行语言识别清洗时，某些 HTML 格式过滤器的包被升级了，原本正常跳过的 `<pre>` 代码标签引发了解析失效，导致大量带特殊空格缩进的网页源码在最后 1T 数据中占比突然升高了 4倍（这是质量指标中“一致性”未设置基线检查导致的失重）。模型在长期训练中无声无息地发生了“分布漂移”。 |
+| medium | `docs/zh/part1/ch02_quality_framework.md` | 431 | model-or-token-scale | chapter-reference-section-only | 1 天 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | - **T+1 天**：算法团队推测是温度参数（Temperature）问题，调整后无效 |
+| medium | `docs/zh/part1/ch02_quality_framework.md` | 433 | model-or-token-scale | chapter-reference-section-only | 3 天, 6, 约 1.2T | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | - **T+3 天**：发现第 6 批次（约 1.2T Tokens）接入时，HTML 过滤器依赖包从 v2.3.1 升级至 v2.4.0，新版本改变了`<pre>` 标签的处理逻辑，原本应保留的代码缩进被误转换为非标准空格 |
+| medium | `docs/zh/part1/ch02_quality_framework.md` | 475 | dataset-size-or-composition | chapter-reference-section-only | 2 天 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | - **T+2 天**：数据团队抽检含财务表格样本，发现多列 PDF 表格存在行列错位。根因是弱模型解析表格时，列与列之间数字发生错误行对齐。 |
+| medium | `docs/zh/part1/ch02_quality_framework.md` | 477 | model-or-token-scale | chapter-reference-section-only | 5 天 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | - **T+5 天**：应急处理：停止弱模型自动生成财务类 QA，改为人工标注；对含财务数字的 RAG Chunk 增加人工复核标记 |
+| medium | `docs/zh/part1/ch02_quality_framework.md` | 480 | cost-resource-or-scale | chapter-reference-section-only | 1, 2, 3 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | **核心教训**：**自引用评估（Self-referential Evaluation）** 是 RAG 与合成数据场景中的高风险问题。独立金标准评估集应满足三项要求：(1) 人类专家独立编写；(2) 与训练数据管线物理隔离；(3) 每次数据集迭代发布后，金标准集结果必须列入评分卡，作为上线否决指标。 |
 | medium | `docs/zh/part1/ch03_data_stack.md` | 22 | cost-resource-or-scale | chapter-reference-section-only | 50, 500GB | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 你刚以数据负责人的身份加入一家完成 B 轮融资的大模型创业公司。接手后的第一周，你做了一次数据基础设施的全面摸底，发现语料数据零散地分布在 50 多台工程师的本地硬盘上，格式包括 `.txt`、`.json`、`.csv`、`.parquet`，缺少统一规范；每次处理新数据，都由工程师手工编写 Python 脚本在单机上运行，一份 500GB 文件跑三天是常态；三个月前还曾因为文件路径错误覆盖了关键 SFT 数据集，而这份数据没有备份和版本记录。CEO 问你：一个月后公司计划开始第一轮数十B参数量级的基座模型预训练... |
 | medium | `docs/zh/part1/ch03_data_stack.md` | 50 | cost-resource-or-scale | chapter-reference-section-only | 100 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | **与 GPU 训练的 I/O 对齐**是另一个关键约束。模型训练期间，DataLoader 需要以很高频率（每 step）向 GPU 提供数据，任何 I/O 等待都会导致 GPU 空转并增加算力成本。因此存储层必须具备能够匹配 GPU 训练带宽需求的读取速度，这对对象存储的访问模式（顺序大文件 vs 随机小文件）和网络带宽（InfiniBand / 100GbE 以太网）都有严格要求。 |
 | medium | `docs/zh/part1/ch03_data_stack.md` | 54 | cost-resource-or-scale | chapter-reference-section-only | 3.1 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | ### 3.1.3 成本约束的多维交织 |
@@ -109,7 +108,7 @@
 | medium | `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 259 | performance-or-percentage | chapter-reference-section-only | 100%, 80%, -99%, < 80% | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | \| 格式正确性 \| 正则/约束 100% 匹配 \| 匹配率 80%-99% \| 匹配率 < 80% \| |
 | medium | `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 300 | cost-resource-or-scale | chapter-reference-section-only | 1 小时 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | \| P0 \| 影响下游关键流水线（如模型训练数据出口） \| 1 小时内 \| 升级通知 + 暂停相关流水线 \| |
 | medium | `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 313 | performance-or-percentage | chapter-reference-section-only | 30, 96%, 20 倍 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | **第二阶段：解析修复 Agent 引入。** 为 PDF 解析配置了三层 Parser 降级链路（PyMuPDF → pdfplumber → OCR），并为 30 种法院排版训练了版面识别模型。解析准确率提升至 96%，但引入了新问题——OCR 降级链路的处理时间是正常解析的 20 倍，导致部分批次处理超时。 |
-| medium | `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 386 | performance-or-percentage | chapter-reference-section-only | 10 倍, 10 倍, 2021, 2023, 2021 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | Agent 驱动的自动化采集带来了传统手动采集没有的伦理和合规挑战——当采集速率提升 10 倍、覆盖数据源扩大 10 倍时，原本"微不足道"的问题可能被放大。训练语料文档化、许可审计和隐私泄露研究都提醒我们，数据采集不是单纯的技术吞吐问题，还涉及来源说明、授权边界和可被模型记忆的敏感内容（Dodge et al. 2021; Longpre et al. 2023; Carlini et al. 2021）。 |
+| medium | `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 386 | performance-or-percentage | chapter-reference-section-only | 10 倍, 10 倍, 2021, 2024, 2021 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | Agent 驱动的自动化采集带来了传统手动采集没有的伦理和合规挑战——当采集速率提升 10 倍、覆盖数据源扩大 10 倍时，原本"微不足道"的问题可能被放大。训练语料文档化、许可审计和隐私泄露研究都提醒我们，数据采集不是单纯的技术吞吐问题，还涉及来源说明、授权边界和可被模型记忆的敏感内容（Dodge et al. 2021; Longpre et al. 2024; Carlini et al. 2021）。 |
 | medium | `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 404 | dataset-size-or-composition | chapter-reference-section-only | 2022, 2020, 2022 | 判断是否为项目实测值；若是，补充日志/产物证据，否则改写为示例或建议口径。 | Agent 自动生成的清洗规则需要版本管理——当规则出现问题需要回滚时，不能"想回到哪个版本就回到哪个版本"，而必须是精确的、可追溯的版本切换。数据去重、低资源语料构建和大规模预训练语料的实践表明，清洗规则变更会改变样本分布，必须能够追踪版本、复现实验并解释过滤策略的影响（Lee et al. 2022; Ortiz Suárez et al. 2020; Laurençon et al. 2022）。 |
 | medium | `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 32 | dataset-size-or-composition | chapter-reference-section-only | 5000 条, 2000, 15, 10, 3, 2 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 某对话模型团队每周需要标注 5000 条新样本，同时维护一个 2000 题的评测集。团队规模 15 人，其中 10 名标注员、3 名评测设计员、2 名数据工程师。三件事情同时出现了问题： |
 | medium | `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 34 | dataset-size-or-composition | chapter-reference-section-only | 5000 条, 12000 条, 0.88, 0.72 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | **标注雪崩**：模型版本从 v2.1 迭代到 v2.3，新增了代码生成和长文本摘要两个能力维度。标注需求从每周 5000 条暴涨至 12000 条。标注团队加班加点，但标注质量开始下滑——标注员疲劳导致灰区 case 的随意判定增多，标注员一致性（Inter-Annotator Agreement，IAA）从 0.88 降至 0.72。 |
@@ -241,7 +240,6 @@
 | medium | `docs/zh/part13/ch44_pretrain_recipes.md` | 157 | performance-or-percentage | chapter-reference-section-only | ~2T, ~60%, ~40% | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | \| **OLMo-2** \| ~2T Tokens [E] \| ~60% [E] \| ~40% [E] \| 强支持，项目级解析 [D] \| 保留缩进、目录结构和 Notebook 内容 [D] \| |
 | medium | `docs/zh/part13/ch44_pretrain_recipes.md` | 253 | model-or-token-scale | chapter-reference-section-only | 1B | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 因此，在 1B tokens 或更小预算下复现大模型时，不能简单按比例缩放大模型数据。更合理的做法是把 token 预算拆成阶段：前段使用干净通用文本，中段逐步提高代码、数学、百科和书籍比例，后段集中使用高质量数据进行退火或能力压实；如果需要长上下文能力，则单独安排窗口扩展阶段，并用短上下文评测和长文检索评测共同监控退化。训练 schedule 的本质，是让模型在合适的时间遇到合适难度的数据。只有这样，有限 token 才能转化为稳定能力，而不是被平均采样稀释掉。 |
 | medium | `docs/zh/part13/ch44_pretrain_recipes.md` | 280 | performance-or-percentage | chapter-reference-section-only | 1B | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 本章从开篇的 1B tokens 复现失败场景出发，论证了预训练数据配方的本质不是静态比例表，而是一条阶段化的数据流水线。通过透明度光谱区分白盒、灰盒与黑盒披露后，本章横向对照了 DeepSeek-V3、Qwen2.5、Llama-3.1 与 OLMo-2 的数据组成，归纳出三条主线：代码与数学数据占比上升以支撑通用推理能力，泛网络文本的有效配比逐代下降，合成数据在预训练中后期承接高质量样本枯竭的缺口。 |
-| medium | `docs/zh/part13/ch45_posttrain_recipes.md` | 21 | dataset-size-or-composition | chapter-reference-section-only | 45.0 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | ## 45.0 开篇问题场景：为什么 Alpaca 训不出 GPT-4 风格 |
 | medium | `docs/zh/part13/ch45_posttrain_recipes.md` | 23 | dataset-size-or-composition | chapter-reference-section-only | 2023 年, 2024 年, 200K | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | 2023 年至 2024 年初，开源社区集中探索了指令微调（Instruction Tuning）路线。设想这样一个常见团队案例：某大模型应用团队为了打造自己的垂直领域助手，使用开源基座模型，并收集了约 200K 条 Alpaca、Dolly 以及 Self-Instruct 风格的指令数据，对其进行监督微调（Supervised Fine-Tuning, SFT）。 |
 | medium | `docs/zh/part13/ch45_posttrain_recipes.md` | 27 | performance-or-percentage | chapter-reference-section-only | 100 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | 1. **复杂指令遵循能力不足：** 当 prompt 包含三个以上的约束条件，例如“用 json 格式输出”“字数不超过 100 字”“包含三个段落”，模型大概率会遗漏条件。 |
 | medium | `docs/zh/part13/ch45_posttrain_recipes.md` | 32 | model-or-token-scale | chapter-reference-section-only | 200K | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 无论该团队如何清洗这 200K 数据，最终的模型在体验上依然显著弱于 Llama-3.3-Instruct 或 Qwen2.5-Instruct。 |
@@ -285,7 +283,7 @@
 | medium | `docs/zh/part13/ch47_vlm_data_recipes.md` | 303 | internal-target-or-threshold | chapter-reference-section-only | 约 24 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | - **冷启动快速验证**：若处于产品 POC 阶段，建议先用 LLaVA-Recap-558K + LLaVA-Instruct-150K 快速建立基线（约 24h），验证产品逻辑可行性后，再投入资源做定制化数据工程。 |
 | medium | `docs/zh/part13/ch48_t2i_t2v.md` | 7 | dataset-size-or-composition | chapter-reference-section-only | 3, 3 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | 文本到图像（Text-to-Image，T2I）与文本到视频（Text-to-Video，T2V）生成模型的提示词跟随（Prompt Following）能力，在很大程度上由训练数据中的监督语言决定，而非仅由生成骨架架构决定。本章以"配方"视角，拆解生成模型如何把原始图像与视频素材转化为可训练、可控制、可审计的数据。内容首先提炼生成数据工程的三大主线：从标签到可执行描述的稠密重描述（Dense Caption）、作为训练集路由器的美学与质量打分，以及版权、安全与隐私的硬约束治理；继而以 DALL·E 3、Stabl... |
 | medium | `docs/zh/part13/ch48_t2i_t2v.md` | 86 | performance-or-percentage | chapter-reference-section-only | 2.0 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | Open-Sora 和 Open-Sora-Plan 则展示了社区开源路线。Open-Sora 2.0 更重视大规模视频候选池上的分层过滤。它会先处理 bpp、fps、时长、比例等基础条件，再用 aesthetic、motion、blur、OCR、jitter 等信号进行筛选；caption 方面，低分辨率阶段使用成本较低的视频描述模型，高分辨率阶段换用更强的语言视觉模型，并把 motion score 追加到 caption 中。这种做法很有工程感：训练初期需要规模和覆盖，高质量阶段需要更干净、更准确的监督文本。... |
-| medium | `docs/zh/part13/ch48_t2i_t2v.md` | 92 | dataset-size-or-composition | chapter-reference-section-only | 3 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 把这些模型放在一起比较，可以看到三条比较清晰的路线。第一条是 DALL·E 3、SD3 代表的图像 recaption 路线，重点是让训练文本变得更细、更接近用户 prompt。第二条是 HunyuanVideo、Open-Sora 代表的视频工程路线，重点是把运动、镜头、质量、OCR、水印和结构化 caption 统一进流水线。第三条是 FLUX、Wan2.2 代表的产业模型路线，公开效果强，但数据链细节与证据层级并不相同，不能把所有项目都当成同一透明度的公开材料来读。对于本章而言，表51-1 只是把这些差异收束... |
+| medium | `docs/zh/part13/ch48_t2i_t2v.md` | 92 | dataset-size-or-composition | chapter-reference-section-only | 3 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 把这些模型放在一起比较，可以看到三条比较清晰的路线。第一条是 DALL·E 3、SD3 代表的图像 recaption 路线，重点是让训练文本变得更细、更接近用户 prompt。第二条是 HunyuanVideo、Open-Sora 代表的视频工程路线，重点是把运动、镜头、质量、OCR、水印和结构化 caption 统一进流水线。第三条是 FLUX、Wan2.2 代表的产业模型路线，公开效果强，但数据链细节与证据层级并不相同，不能把所有项目都当成同一透明度的公开材料来读。对于本章而言，表48-1 只是把这些差异收束... |
 | medium | `docs/zh/part13/ch48_t2i_t2v.md` | 153 | dataset-size-or-composition | chapter-reference-section-only | 1, 1, 3, 4, 4, 3, 9, 16, 16, 9, 512, 768 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | 图像生成模型通常需要按分辨率、长宽比和质量层级分桶。分桶不是简单的工程加速技巧，它会影响模型学到的构图分布。常见桶包括 1:1、3:4、4:3、9:16、16:9 等比例，以及 512、768、1024 等分辨率层级。 |
 | medium | `docs/zh/part13/ch48_t2i_t2v.md` | 168 | dataset-size-or-composition | chapter-reference-section-only | 2026 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 这一节遵循一条清晰的主线展开：**视频源 → 镜头切分（PySceneDetect）→ 运动检测 → 多帧采样 caption → 时空对齐 → 镜头语言标注**。其中，镜头切分、关键帧与统一时间轴的底层原理，在第十章已经讨论过；本节不再重复这些通用处理细节，而是强调生成模型如何接管这些中间结果，并把它们组织成可训练的 T2V 数据。PySceneDetect 的接口、检测器和参数说明应以官方文档为准（PySceneDetect Contributors 2026）。 |
 | medium | `docs/zh/part13/ch48_t2i_t2v.md` | 244 | dataset-size-or-composition | chapter-reference-section-only | 48.4 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | ### 48.4.6 镜头语言标注：把“怎么拍”写进训练数据 |
@@ -438,9 +436,11 @@
 | medium | `docs/zh/part2/ch06_tokenization_loading.md` | 131 | dataset-size-or-composition | chapter-reference-section-only | 3, 0.9999 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | 解决方案是在训练分词器时对不同语言的语料进行**上采样均衡**：将每种目标语言的训练文本采样到大致相同的 token 数量（或使用温度参数 T=3-5），确保每种语言都获得足够的词表"席位"；同时通过 SentencePiece 的 `character_coverage=0.9999` 参数，确保每种语言的基本字符集（哪怕频率很低）都被纳入词表。这是 mT5、BLOOM 等多语言模型词表设计中的常见工程实践。 |
 | medium | `docs/zh/part2/ch06_tokenization_loading.md` | 347 | cost-resource-or-scale | chapter-reference-section-only | 8, 8, = 64 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 当训练规模扩展到多机多卡（如 8 台服务器 × 8 GPU = 64 GPU）时，数据加载面临单机场景不会遇到的新挑战：**如何让所有节点高效、无冲突地读取同一个数据集，同时保证全局数据分布的正确性（不重复、不遗漏、shuffle 随机性全局一致）？** |
 | medium | `docs/zh/part2/ch07_data_operations.md` | 23 | dataset-size-or-composition | chapter-reference-section-only | 2026, 7B | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | 以下为匿名化复合案例，指标、时间和数据规模用于说明复盘方法。截至 2026-06，类似项目中的评测波动会受到模型规模、语料配比、训练步数和基准选择影响。某个 7B 语言模型研发项目中，数据团队经过两个月的努力，将预训练语料库清洗到非常严格的程度。他们使用启发式规则排除了大量短文本，用困惑度评分去除了“非标准语言”，并用较低的 MinHash 阈值进行查重。团队认为这是一版更干净、更可控的数据。 |
-| medium | `docs/zh/part2/ch07_data_operations.md` | 43 | model-or-token-scale | chapter-reference-section-only | 0 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 然而在大语言模型（LLM）的预训练中，数据（Data）与模型（Model）的边界变得模糊。模型的不同成长阶段需要截然不同的数据配方。比如：在冷启动初期（0-100B Token），模型需要大规模广度信息来学习通用语法和基础世界知识；而在收敛后期或退火阶段（Cooldown），模型则需要高度稠密的高质量知识材料（数理化推理、代码结构）来提高能力上限。**一套从头用到尾的静态数据，很难支撑高水平模型训练。** |
-| medium | `docs/zh/part2/ch07_data_operations.md` | 87 | model-or-token-scale | chapter-reference-section-only | 1B | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | - **验证手段**：使用一个成熟但体积较小的参照模型（Reference Model，例如使用 LLaMA-7B 基础版本，或在早期通过干净数据训练的 1B 验证版）对抽取出来的批次做无梯度的前向计算。 |
-| medium | `docs/zh/part2/ch07_data_operations.md` | 123 | model-or-token-scale | chapter-reference-section-only | 2 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | #### 2. 多样性稀疏度（Type-Token Ratio, TTR & 词汇覆盖率） |
-| medium | `docs/zh/part2/ch07_data_operations.md` | 158 | model-or-token-scale | chapter-reference-section-only | 13, 0 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | - 此外，还需要对包含类似于 `sk-****` (API Token)、`13[0-9]*` (手机号码特征) 的文本触发率进行正则监控，确认 PII 屏蔽层没有在更新时意外抛错。 |
+| medium | `docs/zh/part2/ch07_data_operations.md` | 42 | model-or-token-scale | chapter-reference-section-only | 0 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 然而在大语言模型（LLM）的预训练中，数据（Data）与模型（Model）的边界变得模糊。模型的不同成长阶段需要截然不同的数据配方。比如：在冷启动初期（0-100B Token），模型需要大规模广度信息来学习通用语法和基础世界知识；而在收敛后期或退火阶段（Cooldown），模型则需要高度稠密的高质量知识材料（数理化推理、代码结构）来提高能力上限。**一套从头用到尾的静态数据，很难支撑高水平模型训练。** |
+| medium | `docs/zh/part2/ch07_data_operations.md` | 86 | model-or-token-scale | chapter-reference-section-only | 1B | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | - **验证手段**：使用一个成熟但体积较小的参照模型（Reference Model，例如使用 LLaMA-7B 基础版本，或在早期通过干净数据训练的 1B 验证版）对抽取出来的批次做无梯度的前向计算。 |
+| medium | `docs/zh/part2/ch07_data_operations.md` | 122 | model-or-token-scale | chapter-reference-section-only | 2 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | #### 2. 多样性稀疏度（Type-Token Ratio, TTR & 词汇覆盖率） |
+| medium | `docs/zh/part2/ch07_data_operations.md` | 157 | model-or-token-scale | chapter-reference-section-only | 13, 0 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | - 此外，还需要对包含类似于 `sk-****` (API Token)、`13[0-9]*` (手机号码特征) 的文本触发率进行正则监控，确认 PII 屏蔽层没有在更新时意外抛错。 |
+| medium | `docs/zh/part2/ch07_data_operations.md` | 231 | performance-or-percentage | chapter-reference-section-only | 870 亿, 1.8, 15 个, 14.5, 100 步 | 已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。 | 以下为匿名化复合案例，Token 数、Loss 数值、数据规模和成本为示例性参数。某大规模训练任务在第 870 亿个 Token 附近触发监控警报：原本平滑下降至 1.8 左右的训练 Loss，在 15 个 Step 内上升至 14.5，且该节点的 Gradient Norm 变为 NaN。模型工程师暂停训练并回滚到 100 步前的 Checkpoint，随后排查任务转交给数据资产运营团队。 |
+| medium | `docs/zh/part2/ch07_data_operations.md` | 236 | cost-resource-or-scale | chapter-reference-section-only | 86,995 个 | 核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。 | 由于训练集被打散（Shuffle）过，直接在原文件中定位问题样本效率很低。团队从日志系统调出了出事前最晚加载到 GPU 的 Token IDs 序列，即第 86,995 个 Batch。 |
 
-> 其余 255 条见 `quantitative_data_audit.json`。
+> 其余 250 条见 `quantitative_data_audit.json`。

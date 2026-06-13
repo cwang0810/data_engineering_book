@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-06-12T15:57:02.089330+00:00",
-  "scanned_files": 70,
+  "generated_at_utc": "2026-06-13T10:48:24.946547+00:00",
+  "scanned_files": 71,
   "claims": [
     {
       "file": "docs/zh/appendix_a_tools_and_frameworks_quick_reference.md",
@@ -115,13 +115,13 @@
       "line": 60,
       "section": "D.4.2 数据与输入模板",
       "numbers": [
-        "2023"
+        "2024"
       ],
       "category": "dataset-size-or-composition",
       "source_status": "inline-source-signal",
       "risk": "low",
       "action": "保留；出版终稿阶段核对引用条目格式和 DOI/URL。",
-      "context": "对于依赖外部语料、公开网页或第三方数据的论文复现，数据与输入模板还应显式记录来源许可、归属信息和可追溯凭证；大规模数据溯源审计已经表明，缺少这些字段会让后续复用、发布和合规判断变得非常脆弱（Longpre et al. 2023）。"
+      "context": "对于依赖外部语料、公开网页或第三方数据的论文复现，数据与输入模板还应显式记录来源许可、归属信息和可追溯凭证；大规模数据溯源审计已经表明，缺少这些字段会让后续复用、发布和合规判断变得非常脆弱（Longpre et al. 2024）。"
     },
     {
       "file": "docs/zh/appendix_d_paper_to_implementation_guide.md",
@@ -130,13 +130,13 @@
       "numbers": [
         "2023",
         "2023",
-        "2023"
+        "2024"
       ],
       "category": "performance-or-percentage",
       "source_status": "inline-source-signal",
       "risk": "low",
       "action": "保留；出版终稿阶段核对引用条目格式和 DOI/URL。",
-      "context": "如果 ROI 只在论文分数上成立，但在工程成本上不成立，那么它更适合停留在研究原型层，而不是硬推到产品层。数据中心 AI 的近年基准和综述也提醒团队，很多收益并不来自“换一个更大的模型”，而来自更可控的数据选择、质量改进、溯源和持续维护（Mazumder et al. 2023; Zha et al. 2023; Longpre et al. 2023）。"
+      "context": "如果 ROI 只在论文分数上成立，但在工程成本上不成立，那么它更适合停留在研究原型层，而不是硬推到产品层。数据中心 AI 的近年基准和综述也提醒团队，很多收益并不来自“换一个更大的模型”，而来自更可控的数据选择、质量改进、溯源和持续维护（Mazumder et al. 2023; Zha et al. 2023; Longpre et al. 2024）。"
     },
     {
       "file": "docs/zh/appendix_e_common_bug_debugging_manual.md",
@@ -220,9 +220,23 @@
       "context": "脱敏是降低识别风险的一组工程处理，匿名化则更强调不可逆识别。二者在实践中都很常见，但不能互相替代。对于本书内容，建议优先用“脱敏”描述工程处理，用“匿名化”描述更强的身份不可识别目标，并在必要时说明所依据的法域与业务要求。涉及个人信息或跨域共享时，术语应服务于风险评估和控制说明，而不能替代具体合规判断；语言模型风险分类研究也把隐私泄露、滥用和信息安全风险区分为不同风险族，不能混作一个词处理（Weidinger et al. 2022）。"
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_g_datagallery_note.md",
       "line": 7,
       "section": "G.1 附录定位",
+      "numbers": [
+        "2026",
+        "2026"
+      ],
+      "category": "other-quantitative",
+      "source_status": "inline-source-signal",
+      "risk": "low",
+      "action": "保留；出版终稿阶段核对引用条目格式和 DOI/URL。",
+      "context": "本附录用于说明 DataGallery 在本书项目十五及相关 Agent 数据工程实践中的位置。DataGallery 的公开开源入口位于 GitCode：[https://gitcode.com/datagallery](https://gitcode.com/datagallery)。本附录不是 DataGallery 或 DataAgent 的安装手册，也不替代对应仓库中的 README、示例配置、依赖说明和发布记录；读者在复现实验或接入工程系统时，应以公开仓库、具体 tag、commit 和项目文档为准（D..."
+    },
+    {
+      "file": "docs/zh/appendix_h_mindspore_note.md",
+      "line": 7,
+      "section": "H.1 附录定位",
       "numbers": [
         "2026",
         "2026"
@@ -234,9 +248,9 @@
       "context": "本附录用于说明 MindSpore（昇思）在本书部分实践内容中的背景位置。它不是框架教程，也不替代 MindSpore 官方文档、课程实验说明或随书代码仓库中的具体安装与运行指南。如需查阅 API、版本兼容性、硬件适配、算子支持、分布式训练配置或部署细节，应以官方文档和项目仓库中的说明为准（MindSpore Contributors 2026a; MindSpore Contributors 2026b）。"
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 25,
-      "section": "G.2 MindSpore 的工程位置",
+      "section": "H.2 MindSpore 的工程位置",
       "numbers": [
         "2026"
       ],
@@ -247,9 +261,9 @@
       "context": "从编程范式看，MindSpore 的一个核心特点是尝试兼顾动态图的灵活性与静态图的执行效率。它通过基于源代码变换的自动微分机制，将开发者编写的函数、控制流和网络结构转换为中间表示，再构造成可执行计算图；相关自动微分机制的使用方式可参见 MindSpore Tutorials 中的说明（MindSpore Contributors 2026c）。这样做的意义在于：开发阶段可以保留较自然的 Python 编程方式，正式训练和部署阶段又可以借助图级优化提升执行效率。对于需要反复调试数据处理、训练入口和评测流程的项目来说，..."
     },
     {
-      "file": "docs/zh/appendix_g_mindspore_note.md",
+      "file": "docs/zh/appendix_h_mindspore_note.md",
       "line": 83,
-      "section": "G.5 示例扩展：MindFace 与人脸数据工程",
+      "section": "H.5 示例扩展：MindFace 与人脸数据工程",
       "numbers": [
         "2026"
       ],
@@ -383,7 +397,7 @@
       "source_status": "inline-source-signal",
       "risk": "low",
       "action": "保留；出版终稿阶段核对引用条目格式和 DOI/URL。",
-      "context": "DeepMind 研究团队进行了严格控制变量的计算最优（Compute-Optimal）实验。结果显示：参数量为 70B（700 亿）的 Chinchilla 模型，在使用约 1.4T（1.4 万亿）Tokens 训练数据后，多项评测结果超过了此前参数量更大的 280B Gopher 模型 (Rae et al. 2021)。两类模型在参数量与训练数据资源上的对比如表 1-1 所示。"
+      "context": "DeepMind 研究团队进行了严格控制变量的计算最优（Compute-Optimal）实验。结果显示：参数量为 70B（700 亿）的 Chinchilla 模型，在使用约 1.4T（1.4 万亿）Tokens 训练数据后，多项评测结果超过了此前参数量更大的 280B Gopher 模型 (Rae et al. 2021)。"
     },
     {
       "file": "docs/zh/part1/ch01_data_change.md",
@@ -751,19 +765,6 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 40,
-      "section": "2.1.1 团队对\"高质量数据\"的误解来源",
-      "numbers": [
-        "2011"
-      ],
-      "category": "dataset-size-or-composition",
-      "source_status": "chapter-reference-section-only",
-      "risk": "medium",
-      "action": "核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。",
-      "context": "问题根因：困惑度（PPL）衡量的是\"语言分布合理性\"——一个语言流畅但事实全错的段落，PPL 可以非常低（看起来很\"好\"）。预训练语料过滤中常用的 KenLM 等 n-gram 语言模型正是以此类 PPL 打分作为筛选依据（Heafield 2011）。标注专家需要的\"事实准确性\"是 PPL 过滤完全覆盖不到的维度。"
-    },
-    {
-      "file": "docs/zh/part1/ch02_quality_framework.md",
       "line": 53,
       "section": "2.1.1 团队对\"高质量数据\"的误解来源",
       "numbers": [
@@ -857,7 +858,7 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 403,
+      "line": 401,
       "section": "2.4.2 质量阈值、阻断闸门设计与回退 (Rollback)",
       "numbers": [
         "2.4"
@@ -870,7 +871,7 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 419,
+      "line": 416,
       "section": "2.5.1 案例回放一：预训练语料的“隐性语法漂移”",
       "numbers": [
         "2.5"
@@ -883,7 +884,7 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 420,
+      "line": 417,
       "section": "2.5.1 案例回放一：预训练语料的“隐性语法漂移”",
       "numbers": [
         "2023年"
@@ -896,7 +897,7 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 421,
+      "line": 418,
       "section": "2.5.1 案例回放一：预训练语料的“隐性语法漂移”",
       "numbers": [
         "1T",
@@ -910,7 +911,7 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 434,
+      "line": 431,
       "section": "2.5.2 案例回放二：RAG 场景下的“离线高分，线上失效”",
       "numbers": [
         "1 天"
@@ -923,7 +924,7 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 436,
+      "line": 433,
       "section": "2.5.2 案例回放二：RAG 场景下的“离线高分，线上失效”",
       "numbers": [
         "3 天",
@@ -938,7 +939,7 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 437,
+      "line": 434,
       "section": "2.5.2 案例回放二：RAG 场景下的“离线高分，线上失效”",
       "numbers": [
         "3 天"
@@ -951,7 +952,7 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 441,
+      "line": 438,
       "section": "2.5.2 案例回放二：RAG 场景下的“离线高分，线上失效”",
       "numbers": [
         "0"
@@ -964,7 +965,7 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 477,
+      "line": 474,
       "section": "2.5.2 案例回放二：RAG 场景下的“离线高分，线上失效”",
       "numbers": [
         "1 天"
@@ -977,7 +978,7 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 478,
+      "line": 475,
       "section": "2.5.2 案例回放二：RAG 场景下的“离线高分，线上失效”",
       "numbers": [
         "2 天"
@@ -990,7 +991,7 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 480,
+      "line": 477,
       "section": "2.5.2 案例回放二：RAG 场景下的“离线高分，线上失效”",
       "numbers": [
         "5 天"
@@ -1003,7 +1004,7 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 481,
+      "line": 478,
       "section": "2.5.2 案例回放二：RAG 场景下的“离线高分，线上失效”",
       "numbers": [
         "14 天"
@@ -1016,7 +1017,7 @@
     },
     {
       "file": "docs/zh/part1/ch02_quality_framework.md",
-      "line": 483,
+      "line": 480,
       "section": "2.5.2 案例回放二：RAG 场景下的“离线高分，线上失效”",
       "numbers": [
         "1",
@@ -1089,7 +1090,7 @@
       "numbers": [
         "2.0",
         "2025",
-        "200"
+        "100"
       ],
       "category": "performance-or-percentage",
       "source_status": "inline-source-signal",
@@ -2152,14 +2153,14 @@
         "10 倍",
         "10 倍",
         "2021",
-        "2023",
+        "2024",
         "2021"
       ],
       "category": "performance-or-percentage",
       "source_status": "chapter-reference-section-only",
       "risk": "medium",
       "action": "核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。",
-      "context": "Agent 驱动的自动化采集带来了传统手动采集没有的伦理和合规挑战——当采集速率提升 10 倍、覆盖数据源扩大 10 倍时，原本\"微不足道\"的问题可能被放大。训练语料文档化、许可审计和隐私泄露研究都提醒我们，数据采集不是单纯的技术吞吐问题，还涉及来源说明、授权边界和可被模型记忆的敏感内容（Dodge et al. 2021; Longpre et al. 2023; Carlini et al. 2021）。"
+      "context": "Agent 驱动的自动化采集带来了传统手动采集没有的伦理和合规挑战——当采集速率提升 10 倍、覆盖数据源扩大 10 倍时，原本\"微不足道\"的问题可能被放大。训练语料文档化、许可审计和隐私泄露研究都提醒我们，数据采集不是单纯的技术吞吐问题，还涉及来源说明、授权边界和可被模型记忆的敏感内容（Dodge et al. 2021; Longpre et al. 2024; Carlini et al. 2021）。"
     },
     {
       "file": "docs/zh/part10/ch32_auto_collection_parsing_cleaning.md",
@@ -6897,21 +6898,8 @@
     },
     {
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
-      "line": 21,
-      "section": "45.0 开篇问题场景：为什么 Alpaca 训不出 GPT-4 风格",
-      "numbers": [
-        "45.0"
-      ],
-      "category": "dataset-size-or-composition",
-      "source_status": "chapter-reference-section-only",
-      "risk": "medium",
-      "action": "核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。",
-      "context": "## 45.0 开篇问题场景：为什么 Alpaca 训不出 GPT-4 风格"
-    },
-    {
-      "file": "docs/zh/part13/ch45_posttrain_recipes.md",
       "line": 23,
-      "section": "45.0 开篇问题场景：为什么 Alpaca 训不出 GPT-4 风格",
+      "section": "开篇问题场景：为什么 Alpaca 训不出 GPT-4 风格",
       "numbers": [
         "2023 年",
         "2024 年",
@@ -6926,7 +6914,7 @@
     {
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
       "line": 27,
-      "section": "45.0 开篇问题场景：为什么 Alpaca 训不出 GPT-4 风格",
+      "section": "开篇问题场景：为什么 Alpaca 训不出 GPT-4 风格",
       "numbers": [
         "100"
       ],
@@ -6939,7 +6927,7 @@
     {
       "file": "docs/zh/part13/ch45_posttrain_recipes.md",
       "line": 32,
-      "section": "45.0 开篇问题场景：为什么 Alpaca 训不出 GPT-4 风格",
+      "section": "开篇问题场景：为什么 Alpaca 训不出 GPT-4 风格",
       "numbers": [
         "200K"
       ],
@@ -7546,7 +7534,7 @@
       "source_status": "nearby-source-signal",
       "risk": "low",
       "action": "保留；出版终稿阶段核对引用条目格式和 DOI/URL。",
-      "context": "![图47-2：VLM 数据三阶段流水线 (3-Stage VLM Data Engineering Pipeline)](../../images/part11/32_1_vlm_three_stages_en.png)"
+      "context": "![图47-2：VLM 数据三阶段流水线 (3-Stage VLM Data Engineering Pipeline)](../../images/part13/ch47_02_vlm_three_stages_en.png)"
     },
     {
       "file": "docs/zh/part13/ch47_vlm_data_recipes.md",
@@ -8380,7 +8368,7 @@
       "source_status": "chapter-reference-section-only",
       "risk": "medium",
       "action": "核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。",
-      "context": "把这些模型放在一起比较，可以看到三条比较清晰的路线。第一条是 DALL·E 3、SD3 代表的图像 recaption 路线，重点是让训练文本变得更细、更接近用户 prompt。第二条是 HunyuanVideo、Open-Sora 代表的视频工程路线，重点是把运动、镜头、质量、OCR、水印和结构化 caption 统一进流水线。第三条是 FLUX、Wan2.2 代表的产业模型路线，公开效果强，但数据链细节与证据层级并不相同，不能把所有项目都当成同一透明度的公开材料来读。对于本章而言，表51-1 只是把这些差异收束..."
+      "context": "把这些模型放在一起比较，可以看到三条比较清晰的路线。第一条是 DALL·E 3、SD3 代表的图像 recaption 路线，重点是让训练文本变得更细、更接近用户 prompt。第二条是 HunyuanVideo、Open-Sora 代表的视频工程路线，重点是把运动、镜头、质量、OCR、水印和结构化 caption 统一进流水线。第三条是 FLUX、Wan2.2 代表的产业模型路线，公开效果强，但数据链细节与证据层级并不相同，不能把所有项目都当成同一透明度的公开材料来读。对于本章而言，表48-1 只是把这些差异收束..."
     },
     {
       "file": "docs/zh/part13/ch48_t2i_t2v.md",
@@ -8393,7 +8381,7 @@
       "source_status": "inline-source-signal",
       "risk": "low",
       "action": "保留；出版终稿阶段核对引用条目格式和 DOI/URL。",
-      "context": "\\| Stable Diffusion 3 \\| T2I \\| 大规模图文数据，来源未逐项展开 \\| 论文重点在模型训练与 caption 消融，过滤链披露较少 \\| CogVLM 合成 caption；原始 caption 与合成 caption 混合训练 \\| 提供了 recaption 提升生成跟随能力的定量证据 \\|"
+      "context": "\\| Stable Diffusion 3 (Esser et al. 2024) \\| T2I \\| 大规模图文数据，来源未逐项展开 \\| 论文重点在模型训练与 caption 消融，过滤链披露较少 \\| CogVLM 合成 caption；原始 caption 与合成 caption 混合训练 \\| 提供了 recaption 提升生成跟随能力的定量证据 \\|"
     },
     {
       "file": "docs/zh/part13/ch48_t2i_t2v.md",
@@ -8407,7 +8395,7 @@
       "source_status": "inline-source-signal",
       "risk": "low",
       "action": "保留；出版终稿阶段核对引用条目格式和 DOI/URL。",
-      "context": "\\| Open-Sora 2.0 \\| T2V / I2V \\| 大规模视频候选池，项目文档与论文披露较多 \\| bpp、fps、时长、比例预筛；aesthetic、motion、blur、OCR、jitter 多级过滤 \\| 低分辨率阶段用 LLaVA-Video，高分辨率阶段用 Qwen 2.5 Max；motion score 进入 caption \\| 展示了开源 T2V 分层过滤和分阶段 caption 的实用范式 \\|"
+      "context": "\\| Open-Sora 2.0 (Peng et al. 2025) \\| T2V / I2V \\| 大规模视频候选池，项目文档与论文披露较多 \\| bpp、fps、时长、比例预筛；aesthetic、motion、blur、OCR、jitter 多级过滤 \\| 低分辨率阶段用 LLaVA-Video，高分辨率阶段用 Qwen 2.5 Max；motion score 进入 caption \\| 展示了开源 T2V 分层过滤和分阶段 caption 的实用范式 \\|"
     },
     {
       "file": "docs/zh/part13/ch48_t2i_t2v.md",
@@ -8430,10 +8418,10 @@
         "3"
       ],
       "category": "performance-or-percentage",
-      "source_status": "nearby-source-signal",
+      "source_status": "inline-source-signal",
       "risk": "low",
       "action": "保留；出版终稿阶段核对引用条目格式和 DOI/URL。",
-      "context": "\\| DALL·E 3 \\| 专门训练的高描述性 captioner \\| 公开资料未完整披露 \\| 高密度自然语言 caption \\| 是，使用 GPT-4 扩写用户 prompt \\| prompt following 提升明显，短 prompt 也能转成可执行描述 \\| 系统封闭，captioner 训练细节和数据阈值不可复现 \\|"
+      "context": "\\| DALL·E 3 (Betker et al. 2023) \\| 专门训练的高描述性 captioner \\| 公开资料未完整披露 \\| 高密度自然语言 caption \\| 是，使用 GPT-4 扩写用户 prompt \\| prompt following 提升明显，短 prompt 也能转成可执行描述 \\| 系统封闭，captioner 训练细节和数据阈值不可复现 \\|"
     },
     {
       "file": "docs/zh/part13/ch48_t2i_t2v.md",
@@ -8448,7 +8436,7 @@
       "source_status": "inline-source-signal",
       "risk": "low",
       "action": "保留；出版终稿阶段核对引用条目格式和 DOI/URL。",
-      "context": "\\| Stable Diffusion 3 \\| CogVLM 生成合成 caption \\| 明确采用 50% 原始 caption + 50% 合成 caption \\| 原始 caption 与合成 caption 混合训练 \\| 论文未把推理侧重写作为主线 \\| 公开了清晰的消融收益，复现价值高 \\| 合成 caption 受 VLM 偏差影响，可能引入幻觉 \\|"
+      "context": "\\| Stable Diffusion 3 (Esser et al. 2024) \\| CogVLM 生成合成 caption \\| 明确采用 50% 原始 caption + 50% 合成 caption \\| 原始 caption 与合成 caption 混合训练 \\| 论文未把推理侧重写作为主线 \\| 公开了清晰的消融收益，复现价值高 \\| 合成 caption 受 VLM 偏差影响，可能引入幻觉 \\|"
     },
     {
       "file": "docs/zh/part13/ch48_t2i_t2v.md",
@@ -10515,7 +10503,7 @@
       "source_status": "chapter-reference-section-only",
       "risk": "low",
       "action": "人工抽检即可。",
-      "context": "![图 P05-7](../../images/part10/10_5_fig07_eval_framework.png)"
+      "context": "![图 P05-7](../../images/part14/p05_07_eval_framework.png)"
     },
     {
       "file": "docs/zh/part14/p05_mm_rag.md",
@@ -11330,7 +11318,7 @@
       "source_status": "chapter-reference-section-only",
       "risk": "low",
       "action": "人工抽检即可。",
-      "context": "![图 P07-11](../../images/part10/10_7_fig11_unsafe_block.png)"
+      "context": "![图 P07-11](../../images/part14/p07_11_unsafe_block.png)"
     },
     {
       "file": "docs/zh/part14/p07_agent_tooluse.md",
@@ -11882,7 +11870,7 @@
       "source_status": "chapter-reference-section-only",
       "risk": "low",
       "action": "人工抽检即可。",
-      "context": "![图 P09-11](../../images/part10/10_9_fig11_incident_postmortem.png)"
+      "context": "![图 P09-11](../../images/part14/p09_11_incident_postmortem.png)"
     },
     {
       "file": "docs/zh/part14/p09_privacy_pipeline.md",
@@ -13636,7 +13624,7 @@
     {
       "file": "docs/zh/part2/ch04_data_sources.md",
       "line": 116,
-      "section": "4.2.3 配比策略：从业务目标反推数据组合",
+      "section": "4.2.3 配比策略：从业务目标反推数据配比方案",
       "numbers": [
         "3",
         "15T"
@@ -14433,7 +14421,7 @@
         "5",
         "2021",
         "2.0",
-        "200"
+        "100"
       ],
       "category": "cost-resource-or-scale",
       "source_status": "inline-source-signal",
@@ -14457,7 +14445,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 43,
+      "line": 42,
       "section": "7.1.1 打破“一次性交付”的工程幻觉",
       "numbers": [
         "0"
@@ -14470,7 +14458,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 87,
+      "line": 86,
       "section": "1. 语言学属性与困惑度（Perplexity, PPL）",
       "numbers": [
         "1B"
@@ -14483,7 +14471,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 123,
+      "line": 122,
       "section": "2. 多样性稀疏度（Type-Token Ratio, TTR & 词汇覆盖率）",
       "numbers": [
         "2"
@@ -14496,7 +14484,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 158,
+      "line": 157,
       "section": "3. 有毒性与负向泄露率（Toxicity & PII Density）",
       "numbers": [
         "13",
@@ -14510,7 +14498,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 162,
+      "line": 161,
       "section": "4. 领域分类与掺杂重叠（Subpopulation Overlap）",
       "numbers": [
         "13",
@@ -14524,7 +14512,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 193,
+      "line": 192,
       "section": "7.3.1 DVC视角下的数据集版本化与 A/B 对比",
       "numbers": [
         "7.3"
@@ -14537,7 +14525,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 199,
+      "line": 198,
       "section": "7.3.2 建立“问题样本库”与追溯回环",
       "numbers": [
         "7.3"
@@ -14550,7 +14538,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 216,
+      "line": 215,
       "section": "7.3.3 从失败实验中沉淀 5 Whys 根因复盘框架",
       "numbers": [
         "100 篇"
@@ -14563,7 +14551,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 218,
+      "line": 217,
       "section": "7.3.3 从失败实验中沉淀 5 Whys 根因复盘框架",
       "numbers": [
         "2",
@@ -14577,7 +14565,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 224,
+      "line": 223,
       "section": "7.3.3 从失败实验中沉淀 5 Whys 根因复盘框架",
       "numbers": [
         "4"
@@ -14590,7 +14578,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 232,
+      "line": 231,
       "section": "7.3.4 案例复盘：一次训练损失异常峰值的根因定位",
       "numbers": [
         "870 亿",
@@ -14607,7 +14595,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 237,
+      "line": 236,
       "section": "7.3.4 案例复盘：一次训练损失异常峰值的根因定位",
       "numbers": [
         "86,995 个"
@@ -14620,7 +14608,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 240,
+      "line": 239,
       "section": "7.3.4 案例复盘：一次训练损失异常峰值的根因定位",
       "numbers": [
         "4096 个"
@@ -14633,7 +14621,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 246,
+      "line": 245,
       "section": "7.3.4 案例复盘：一次训练损失异常峰值的根因定位",
       "numbers": [
         "0.92"
@@ -14646,7 +14634,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 251,
+      "line": 249,
       "section": "7.3.4 案例复盘：一次训练损失异常峰值的根因定位",
       "numbers": [
         "1.4 T",
@@ -14660,7 +14648,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 263,
+      "line": 261,
       "section": "7.3.4 案例复盘：一次训练损失异常峰值的根因定位",
       "numbers": [
         "2026"
@@ -14673,7 +14661,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 264,
+      "line": 262,
       "section": "7.3.4 案例复盘：一次训练损失异常峰值的根因定位",
       "numbers": [
         "1",
@@ -14688,7 +14676,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 283,
+      "line": 280,
       "section": "7.4.1 数据质量看板的核心模块",
       "numbers": [
         "1",
@@ -14703,7 +14691,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 326,
+      "line": 322,
       "section": "7.5.2 周二与周三：异常追溯与小规模验证 (Root Cause Analysis)",
       "numbers": [
         "7.5"
@@ -14716,7 +14704,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 331,
+      "line": 326,
       "section": "7.5.2 周二与周三：异常追溯与小规模验证 (Root Cause Analysis)",
       "numbers": [
         "200 条"
@@ -14729,7 +14717,7 @@
     },
     {
       "file": "docs/zh/part2/ch07_data_operations.md",
-      "line": 350,
+      "line": 344,
       "section": "7.5.4 周五：全量产线构建与封版交付 (Production Release)",
       "numbers": [
         "7B"
@@ -14916,7 +14904,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 150,
+      "line": 149,
       "section": "8.3.2 分辨率与宽高比控制（Aspect Ratio Filtering）",
       "numbers": [
         "500",
@@ -14930,7 +14918,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 156,
+      "line": 154,
       "section": "8.3.3 NSFW、面部隐私与水印靶向拦截",
       "numbers": [
         "0.4"
@@ -14943,7 +14931,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 171,
+      "line": 169,
       "section": "8.4 清洗、过滤与语义对齐技术 (下篇：深度语义过滤)",
       "numbers": [
         "8.4"
@@ -14956,7 +14944,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 179,
+      "line": 177,
       "section": "8.4.1 CLIP Score 及其进阶者 SigLIP 的量化方法",
       "numbers": [
         "1"
@@ -14969,7 +14957,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 222,
+      "line": 220,
       "section": "8.4.2 保留优质图像：多粒度合成重标注 (Synthetic Re-captioning)",
       "numbers": [
         "8.4"
@@ -14982,7 +14970,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 229,
+      "line": 227,
       "section": "8.4.2 保留优质图像：多粒度合成重标注 (Synthetic Re-captioning)",
       "numbers": [
         "不超过 15 个"
@@ -14995,7 +14983,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 234,
+      "line": 232,
       "section": "8.4.2 保留优质图像：多粒度合成重标注 (Synthetic Re-captioning)",
       "numbers": [
         "150"
@@ -15008,7 +14996,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 239,
+      "line": 237,
       "section": "8.4.2 保留优质图像：多粒度合成重标注 (Synthetic Re-captioning)",
       "numbers": [
         "5"
@@ -15021,7 +15009,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 251,
+      "line": 249,
       "section": "8.5.1 图像 Token 占用与 AnyRes 动态切分",
       "numbers": [
         "8.5"
@@ -15034,7 +15022,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 253,
+      "line": 251,
       "section": "8.5.1 图像 Token 占用与 AnyRes 动态切分",
       "numbers": [
         "1000 个",
@@ -15051,7 +15039,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 255,
+      "line": 253,
       "section": "8.5.1 图像 Token 占用与 AnyRes 动态切分",
       "numbers": [
         "224",
@@ -15065,7 +15053,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 259,
+      "line": 257,
       "section": "8.5.1 图像 Token 占用与 AnyRes 动态切分",
       "numbers": [
         "1",
@@ -15079,7 +15067,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 264,
+      "line": 261,
       "section": "8.5.1 图像 Token 占用与 AnyRes 动态切分",
       "numbers": [
         "336",
@@ -15102,7 +15090,7 @@
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
-      "line": 267,
+      "line": 264,
       "section": "8.5.1 图像 Token 占用与 AnyRes 动态切分",
       "numbers": [
         "4096"
@@ -15181,7 +15169,7 @@
     },
     {
       "file": "docs/zh/part3/ch09_recaptioning_ocr.md",
-      "line": 113,
+      "line": 112,
       "section": "9.2.2 从粗粒度图像描述到细粒度空间对齐：BBox 双向注入",
       "numbers": [
         "9.2"
@@ -15194,7 +15182,7 @@
     },
     {
       "file": "docs/zh/part3/ch09_recaptioning_ocr.md",
-      "line": 117,
+      "line": 116,
       "section": "9.2.2 从粗粒度图像描述到细粒度空间对齐：BBox 双向注入",
       "numbers": [
         "320",
@@ -15210,7 +15198,7 @@
     },
     {
       "file": "docs/zh/part3/ch09_recaptioning_ocr.md",
-      "line": 169,
+      "line": 168,
       "section": "9.3 OCR 增强与长文档理解",
       "numbers": [
         "4K"
@@ -15223,7 +15211,7 @@
     },
     {
       "file": "docs/zh/part3/ch09_recaptioning_ocr.md",
-      "line": 171,
+      "line": 170,
       "section": "9.3 OCR 增强与长文档理解",
       "numbers": [
         "16"
@@ -15236,7 +15224,7 @@
     },
     {
       "file": "docs/zh/part3/ch09_recaptioning_ocr.md",
-      "line": 175,
+      "line": 174,
       "section": "9.3.1 文档图像的结构化解析工序 (Layout Parsing)",
       "numbers": [
         "9.3"
@@ -15249,7 +15237,7 @@
     },
     {
       "file": "docs/zh/part3/ch09_recaptioning_ocr.md",
-      "line": 187,
+      "line": 185,
       "section": "9.3.1 文档图像的结构化解析工序 (Layout Parsing)",
       "numbers": [
         "0",
@@ -15263,7 +15251,7 @@
     },
     {
       "file": "docs/zh/part3/ch09_recaptioning_ocr.md",
-      "line": 214,
+      "line": 212,
       "section": "9.4.1 机器评分与启发式验证（Heuristic & Model Scaling Validation）",
       "numbers": [
         "500",
@@ -15278,7 +15266,7 @@
     },
     {
       "file": "docs/zh/part3/ch09_recaptioning_ocr.md",
-      "line": 223,
+      "line": 221,
       "section": "9.4.2 Human-in-the-Loop 人工盲抽与多层归因框架",
       "numbers": [
         "20,000 张"
@@ -15291,7 +15279,7 @@
     },
     {
       "file": "docs/zh/part3/ch09_recaptioning_ocr.md",
-      "line": 253,
+      "line": 251,
       "section": "9.5.2 从静态文档走向长时序数据",
       "numbers": [
         "30"
@@ -15483,7 +15471,7 @@
     },
     {
       "file": "docs/zh/part3/ch10_video_audio.md",
-      "line": 164,
+      "line": 163,
       "section": "10.4.3 工业级处理成本模型分解表",
       "numbers": [
         "10.4"
@@ -15496,7 +15484,7 @@
     },
     {
       "file": "docs/zh/part3/ch10_video_audio.md",
-      "line": 175,
+      "line": 174,
       "section": "10.4.3 工业级处理成本模型分解表",
       "numbers": [
         "2"
@@ -15509,7 +15497,7 @@
     },
     {
       "file": "docs/zh/part3/ch10_video_audio.md",
-      "line": 176,
+      "line": 175,
       "section": "10.4.3 工业级处理成本模型分解表",
       "numbers": [
         "3"
@@ -15522,7 +15510,7 @@
     },
     {
       "file": "docs/zh/part3/ch10_video_audio.md",
-      "line": 177,
+      "line": 176,
       "section": "10.4.3 工业级处理成本模型分解表",
       "numbers": [
         "4"
@@ -15535,7 +15523,7 @@
     },
     {
       "file": "docs/zh/part3/ch10_video_audio.md",
-      "line": 183,
+      "line": 182,
       "section": "10.5.1 大规模视频数据管线失败案例复盘（匿名化复合案例）",
       "numbers": [
         "10.5"
@@ -15548,7 +15536,7 @@
     },
     {
       "file": "docs/zh/part3/ch10_video_audio.md",
-      "line": 195,
+      "line": 194,
       "section": "10.5.2 与下一章的衔接",
       "numbers": [
         "9"
@@ -15561,7 +15549,7 @@
     },
     {
       "file": "docs/zh/part3/ch10_video_audio.md",
-      "line": 232,
+      "line": 231,
       "section": "10.6.2 NVDEC OOM：GPU 硬件解码器显存溢出 [TMP_ERR_CODE_2001]",
       "numbers": [
         "10.6"
@@ -15574,7 +15562,7 @@
     },
     {
       "file": "docs/zh/part3/ch10_video_audio.md",
-      "line": 234,
+      "line": 233,
       "section": "10.6.2 NVDEC OOM：GPU 硬件解码器显存溢出 [TMP_ERR_CODE_2001]",
       "numbers": [
         "4K"
@@ -15587,7 +15575,7 @@
     },
     {
       "file": "docs/zh/part3/ch10_video_audio.md",
-      "line": 250,
+      "line": 249,
       "section": "10.6.2 NVDEC OOM：GPU 硬件解码器显存溢出 [TMP_ERR_CODE_2001]",
       "numbers": [
         "4K"
@@ -15600,7 +15588,7 @@
     },
     {
       "file": "docs/zh/part3/ch10_video_audio.md",
-      "line": 251,
+      "line": 250,
       "section": "10.6.2 NVDEC OOM：GPU 硬件解码器显存溢出 [TMP_ERR_CODE_2001]",
       "numbers": [
         "1080",
@@ -15617,7 +15605,7 @@
     },
     {
       "file": "docs/zh/part3/ch10_video_audio.md",
-      "line": 277,
+      "line": 276,
       "section": "10.6.4 Diarization 崩溃：说话人分离模型内存泄漏导致进程 OOM [TMP_ERR_CODE_4001]",
       "numbers": [
         "10.6"
@@ -15630,7 +15618,7 @@
     },
     {
       "file": "docs/zh/part3/ch10_video_audio.md",
-      "line": 329,
+      "line": 328,
       "section": "10.6.6 高频错误速查表",
       "numbers": [
         "4K",
@@ -15641,19 +15629,6 @@
       "risk": "low",
       "action": "人工抽检即可。",
       "context": "\\| TMP_ERR_CODE_2XXX \\| NVDEC OOM \\| 4K 视频无限制并发解码 \\| 降采样至 1080p + 限并发路数 \\|"
-    },
-    {
-      "file": "docs/zh/part3/ch10_video_audio.md",
-      "line": 341,
-      "section": "本章小结",
-      "numbers": [
-        "30ms"
-      ],
-      "category": "cost-resource-or-scale",
-      "source_status": "chapter-reference-section-only",
-      "risk": "low",
-      "action": "人工抽检即可。",
-      "context": "在此基础上本章补充了密集事件标注、音画错配检测，以及围绕解码硬件（NVDEC/DALI）、画质声学评分和分阶段成本占比的工程治理，并以 30ms 读取偏置累积导致音画系统性错位的复盘，说明时序对齐缺位对训练信号的破坏。本章的三轨样本解决了长时序信号的切分与同步问题，但图像、文本、音频、视频如何在同一语义空间形成稳定对应，仍需专门的对齐与融合设计，这是下一章的内容。"
     },
     {
       "file": "docs/zh/part3/ch11_cross_modal_alignment.md",
@@ -15763,32 +15738,6 @@
       "risk": "low",
       "action": "人工抽检即可。",
       "context": "### 11.3.3 难负样本（Hard Negatives）挖掘与质控策略"
-    },
-    {
-      "file": "docs/zh/part3/ch11_cross_modal_alignment.md",
-      "line": 141,
-      "section": "11.3.3 难负样本（Hard Negatives）挖掘与质控策略",
-      "numbers": [
-        "2025"
-      ],
-      "category": "performance-or-percentage",
-      "source_status": "chapter-reference-section-only",
-      "risk": "medium",
-      "action": "已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。",
-      "context": "在对比学习对齐（Contrastive Alignment）中（Dufumier et al. 2025（ICLR）指出，有效的多模态对比学习应同时对齐共享特征、各模态独特特征及协同特征，而非仅优化共享信息），如果模型总是区分简单样本对（例如“猫”和“狗”），能力提升会很快进入边际递减阶段。难负样本的作用，是为模型提供语义接近但关键属性不同的样本对，使其学习更细粒度的视觉、文本和时序差异。"
-    },
-    {
-      "file": "docs/zh/part3/ch11_cross_modal_alignment.md",
-      "line": 146,
-      "section": "11.3.3 难负样本（Hard Negatives）挖掘与质控策略",
-      "numbers": [
-        "2022"
-      ],
-      "category": "cost-resource-or-scale",
-      "source_status": "nearby-source-signal",
-      "risk": "low",
-      "action": "保留；出版终稿阶段核对引用条目格式和 DOI/URL。",
-      "context": "2. **跨模态属性错位法（Cross-modal Attribute Swap）**：在图片级进行局部语义改写。通过基于潜在扩散模型的 Inpainting 方法（Rombach et al. 2022）将图片中的\"红苹果\"改写为\"绿苹果\"，同时保留原始正向文本。错位样本促使 Cross-attention 层学习视觉区域与文字描述的绑定关系。"
     },
     {
       "file": "docs/zh/part3/ch11_cross_modal_alignment.md",
@@ -15955,34 +15904,6 @@
       "risk": "medium",
       "action": "核对本节数值是否能对应到参考文献；必要时补内联来源或脚注。",
       "context": "**[故障现象]**：在引入 Hard Negative Mining 后，Recall@5 不升反降，训练损失的方差异常增大，模型对近义词和语义相近句子的区分能力完全丧失。"
-    },
-    {
-      "file": "docs/zh/part3/ch11_cross_modal_alignment.md",
-      "line": 287,
-      "section": "11.6.3 难负样本挖掘误杀真正正样本导致对比损失崩溃 [ERR_CROSS_MDL_HARD_NEG_003]",
-      "numbers": [
-        "0.92"
-      ],
-      "category": "dataset-size-or-composition",
-      "source_status": "chapter-reference-section-only",
-      "risk": "medium",
-      "action": "已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。",
-      "context": "- **根因**：Hard Negative 挖掘的相似度阈值（0.92）过高，大量真正的正样本对被错误分类为难负样本，产生\"假负例污染（False Negative Contamination）\"。"
-    },
-    {
-      "file": "docs/zh/part3/ch11_cross_modal_alignment.md",
-      "line": 288,
-      "section": "11.6.3 难负样本挖掘误杀真正正样本导致对比损失崩溃 [ERR_CROSS_MDL_HARD_NEG_003]",
-      "numbers": [
-        "0.92",
-        "0.75",
-        "2 倍"
-      ],
-      "category": "performance-or-percentage",
-      "source_status": "chapter-reference-section-only",
-      "risk": "medium",
-      "action": "已按示例/匿名化案例口径处理；出版前确认不会被误读为真实统计。",
-      "context": "- **修复**：①将阈值从 0.92 降至 0.75，并引入两阶段判断：先用 CLIP 做粗过滤，再用人工规则（如图文是否有词汇级别共现）做精筛；②限制每批次 Hard Negative 占比不超过正样本数的 2 倍；③部署独立的 False Negative 检测器，定期抽样人工审核。"
     },
     {
       "file": "docs/zh/part3/ch11_cross_modal_alignment.md",
@@ -21281,23 +21202,23 @@
     }
   ],
   "summary": {
-    "claims": 1540,
+    "claims": 1534,
     "by_risk": {
-      "low": 885,
-      "medium": 655
+      "low": 884,
+      "medium": 650
     },
     "by_category": {
-      "dataset-size-or-composition": 531,
-      "performance-or-percentage": 454,
-      "cost-resource-or-scale": 261,
-      "other-quantitative": 189,
+      "dataset-size-or-composition": 528,
+      "performance-or-percentage": 452,
+      "cost-resource-or-scale": 259,
+      "other-quantitative": 190,
       "model-or-token-scale": 89,
       "internal-target-or-threshold": 16
     },
     "by_source_status": {
-      "chapter-reference-section-only": 1229,
-      "nearby-source-signal": 162,
-      "inline-source-signal": 149
+      "chapter-reference-section-only": 1223,
+      "nearby-source-signal": 160,
+      "inline-source-signal": 151
     }
   }
 }

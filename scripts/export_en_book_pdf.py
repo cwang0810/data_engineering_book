@@ -98,7 +98,8 @@ SECTION_AUTHORS = {
     "appendix_d_": "ZhiLi Wang",
     "appendix_e_": "ZhiLi Wang",
     "appendix_f_": "ZhiLi Wang",
-    "appendix_g_": "Xin Xu",
+    "appendix_g_": "Xuhong Cao",
+    "appendix_h_": "Xin Xu",
 }
 
 

@@ -1,8 +1,8 @@
-# Appendix G: MindSpore Overview and Acknowledgments
+# Appendix H: MindSpore Overview and Acknowledgments
 
 <div class="chapter-authors">Xin Xu</div>
 
-## G.1 Purpose of This Appendix
+## H.1 Purpose of This Appendix
 
 This appendix explains the role of MindSpore in selected practical parts of this book. It is not a framework tutorial, nor does it replace the official MindSpore documentation, course lab instructions, or the concrete installation and execution guides in the companion code repositories. Readers who need API details, version compatibility, hardware adaptation, operator support, distributed training configuration, or deployment details should use the official documentation and project repositories as the primary references (MindSpore Contributors 2026a; MindSpore Contributors 2026b).
 
@@ -10,11 +10,11 @@ In the context of this book, MindSpore is best understood as an engineering impl
 
 Part 12 and other chapters that involve companion implementations, course labs, training entry points, or reproducible experiments place MindSpore in concrete practice chains. The point is not to compare frameworks abstractly, but to explain how data engineering enters executable, verifiable, and reproducible training and deployment environments.
 
-This positioning also determines how Appendix G is written. It does not expand into operator implementation, network definitions, or complete training code. Instead, it follows the lifecycle of a data engineering project and explains where MindSpore sits. In a real project, framework choice affects the output format of data preparation, the throughput and parallel organization of training, the metric records and failure-sample localization of evaluation, and the model export, environment configuration, and service validation of deployment. For data engineering to land in training and application systems, these framework-related constraints must be included in design early.
+This positioning also determines how Appendix H is written. It does not expand into operator implementation, network definitions, or complete training code. Instead, it follows the lifecycle of a data engineering project and explains where MindSpore sits. In a real project, framework choice affects the output format of data preparation, the throughput and parallel organization of training, the metric records and failure-sample localization of evaluation, and the model export, environment configuration, and service validation of deployment. For data engineering to land in training and application systems, these framework-related constraints must be included in design early.
 
 MindSpore is therefore both a deep learning framework and a lens for observing implementation problems in data engineering. It makes the question "is the data usable?" more concrete: can the data be loaded stably, can sample fields be consumed correctly by the training entry point, can preprocessing remain consistent between training and inference, can logs and checkpoints support reproducible experiments, and can evaluation results flow back into cleaning and relabeling? These questions form the engineering background for this appendix.
 
-## G.2 MindSpore's Engineering Position
+## H.2 MindSpore's Engineering Position
 
 MindSpore is a deep learning framework for cloud, edge, and device scenarios. Its design goals are usually summarized as easy development, efficient execution, and all-scenario adaptation. In the Ascend AI full-stack solution, Ascend processors, Atlas training and inference hardware, the CANN chip enablement layer, the MindSpore framework, MindX application development components, the ModelArts cloud development platform, and the MindStudio development toolchain form a continuous technical chain from underlying compute to upper-layer applications. Within that chain, MindSpore mainly provides model expression, training execution, automatic differentiation, data processing, compiler optimization, distributed training, and inference-deployment interfaces.
 
@@ -32,7 +32,7 @@ This means that a MindSpore-oriented project should not merely provide a "readab
 
 From the compiler and runtime angle, graph mode, dynamic mode, JIT compilation, graph optimization, and runtime scheduling also affect debugging. Dynamic mode is better for quick checks of sample fields, shapes, value ranges, and intermediate outputs. Graph mode is better for formal training and performance optimization, but requires more stable input structures. If a data pipeline produces dynamic fields, variable-length samples, or abnormal types during execution, problems may surface during graph compilation, batch assembly, or operator execution. Data engineering projects should therefore establish small-sample smoke tests, shape checks, field-schema checks, and extreme-sample tests early, rather than waiting for a full training job to fail.
 
-## G.3 Relationship to Data Engineering Practice
+## H.3 Relationship to Data Engineering Practice
 
 In the data engineering context of large models and intelligent systems, MindSpore's importance lies less in its complete framework architecture and more in its relationship to the data engineering loop.
 
@@ -58,7 +58,7 @@ The sixth is the model export and deployment contract. Training completion does 
 
 The seventh is the team-collaboration contract. MindSpore projects often involve data engineering, algorithm, platform, operations, and business teams. Data engineering must provide stable, interpretable, traceable input to algorithm teams. Algorithm teams must feed failure modes, loss anomalies, evaluation fluctuations, and sample needs back to data engineering. Platform teams provide resources, environments, logs, and permission boundaries. Business teams confirm task goals, risk boundaries, and acceptance metrics. The framework is one link in the technical chain; whether the project can run over time depends on whether these contracts are continuously maintained.
 
-## G.4 Typical Components and Data Engineering Concerns
+## H.4 Typical Components and Data Engineering Concerns
 
 MindSpore's engineering value often appears in component collaboration. A training script alone is only an entry point for model iteration. In a full project, it connects data loading, training execution, performance diagnosis, experiment records, security evaluation, model export, and deployment validation. Data engineering should focus not on the name of the component being used, but on the responsibility each component carries in the data lifecycle, the constraints it exposes, and the evidence it produces.
 
@@ -74,11 +74,11 @@ MindArmour represents engineering capability in security and trustworthiness. Ad
 
 ModelArts, MindStudio, and Ascend-related toolchains affect environment organization and collaboration. Cloud platforms can carry data storage, training jobs, image environments, resource scheduling, and experiment records. Development toolchains help debug scripts, adapt hardware, and analyze runtime issues. If a data engineering project depends on such platforms, the platform configuration must be part of the reproduction notes: how data buckets or directories are mounted, which image version is used, which driver and CANN versions are required, what training resource specification is used, where model and logs are written, which configurations are variable, and which must remain fixed. Without this information, reproducing an experiment becomes environment guessing even if the code and data exist.
 
-Deployment also belongs in the engineering view of Appendix G. When a MindSpore-trained model enters inference, common tasks include loading checkpoints, exporting models, converting formats, deploying to services or devices, building input preprocessing, performing postprocessing, and validating output consistency. Data engineering should keep a set of deployment replay samples from real or near-real scenarios, including typical samples, boundary samples, historical failures, and high-risk samples. Every model export, inference-backend switch, threshold adjustment, or preprocessing change should run consistency checks on this set.
+Deployment also belongs in the engineering view of Appendix H. When a MindSpore-trained model enters inference, common tasks include loading checkpoints, exporting models, converting formats, deploying to services or devices, building input preprocessing, performing postprocessing, and validating output consistency. Data engineering should keep a set of deployment replay samples from real or near-real scenarios, including typical samples, boundary samples, historical failures, and high-risk samples. Every model export, inference-backend switch, threshold adjustment, or preprocessing change should run consistency checks on this set.
 
 Together, these components form an engineering chain: MindData brings data into training, MindInsight makes training observable, MindArmour gives security and robustness evaluation an entry point, ModelArts and MindStudio support environment and collaboration, and deployment toolchains carry models into applications. If data engineering covers only the first step, the project can merely run. If it covers the whole chain, the project has a chance to run stably over time.
 
-## G.5 Example Extension: MindFace and Face Data Engineering
+## H.5 Example Extension: MindFace and Face Data Engineering
 
 MindFace is an open-source face recognition and detection toolkit based on MindSpore. It targets common computer-vision tasks such as face detection and recognition, provides relatively unified application interfaces, and supports multiple backbones, datasets, and loss-function extensions (MindFace Contributors 2026). From a data engineering perspective, the value of MindFace is not merely that it provides model implementations. It shows how a task-specific toolkit connects framework capability, model structure, data preparation, and evaluation protocols.
 
@@ -112,7 +112,7 @@ MindFace can also serve as a small data-flywheel example. Low-confidence boxes, 
 
 MindFace can therefore be understood in three layers. The model layer provides detection and recognition capabilities such as RetinaFace and ArcFace. The engineering layer uses MindSpore for data loading, network construction, training execution, evaluation, and deployment support. The data-asset layer maintains sources, annotation standards, quality rules, split strategies, version records, compliance boundaries, and failure-sample feedback. Only when all three layers hold can a model library become a sustainable engineering project.
 
-## G.6 Migration Path from Examples to Projects
+## H.6 Migration Path from Examples to Projects
 
 Public examples around MindSpore or MindFace usually emphasize "how to run." Engineering projects emphasize "how to run stably, review, migrate, and iterate." When moving from example to project, the most underestimated issues are not model structures, but implicit assumptions between data and environment. An example may assume fixed directories, fixed data formats, fixed devices, fixed batch sizes, and fixed evaluation scripts. In a real project, these assumptions must become explicit.
 
@@ -130,7 +130,7 @@ The sixth step is to establish a regression evaluation set. A regression set is 
 
 Through this path, MindSpore is no longer merely an `import` statement in a training script, and MindFace is no longer merely a model repository. They become part of the complete data engineering lifecycle: data enters the system, is cleaned and annotated, becomes training input, enters training and evaluation, produces models and failure samples, and then returns to data iteration and deployment validation. This is the data engineering loop emphasized throughout the book.
 
-## G.7 Common Implementation Problems and Debugging Clues
+## H.7 Common Implementation Problems and Debugging Clues
 
 MindSpore-oriented data engineering projects often fail at the boundary between data, environment, and training entry point. The first class of problems is inconsistent data format. Offline cleaning scripts output one field structure, while training scripts expect another; image annotations use `x_min, y_min, x_max, y_max`, while the model entry parses `x, y, width, height`; text samples retain empty labels or abnormal line breaks that only surface after tokenization. Schema, sample previews, and small-batch smoke tests should catch these problems early.
 
@@ -146,7 +146,7 @@ The sixth class is missing compliance material. Whether data is authorized, cont
 
 The seventh class is documentation that covers only "how to train" and not "how to reproduce." Complete documentation should include environment versions, dependency installation, data preparation, training entry, evaluation entry, model export, expected outputs, common errors, and debugging paths. MindSpore-related projects that harden these notes reduce the cost of teaching reproduction, research reproduction, and engineering handoff.
 
-## G.8 Reading and Usage Suggestions
+## H.8 Reading and Usage Suggestions
 
 When using the related companion materials, MindSpore information can be handled at four levels.
 
@@ -160,7 +160,7 @@ Fourth, as an ecosystem-extension entry. MindFace, MindFormers, MindCV, and simi
 
 In this sense, MindSpore is not promotional add-on content. It is part of the implementation context of data engineering: a mature data engineering project must answer where data comes from, how it is processed, how it enters training, how it is evaluated, how it is deployed, and how later maintainers can review it.
 
-## G.9 Acknowledgments
+## H.9 Acknowledgments
 
 Part of the teaching, practice, and companion implementation work related to this book received funding and resource support from the MindSpore ecosystem. This support helped course lab organization, environment setup, implementation validation, and engineering reproduction. The authors gratefully acknowledge the relevant support.
 
