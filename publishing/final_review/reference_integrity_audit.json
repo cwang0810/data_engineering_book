@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-06-14T08:40:32.530599+00:00",
+  "generated_at_utc": "2026-06-15T07:36:19.283413+00:00",
   "scope_roots": [
     "docs/zh"
   ],
@@ -31591,7 +31591,7 @@
       "matched_year": "",
       "score": 0.0,
       "identifier": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
-      "url_status": "200",
+      "url_status": "202",
       "issues": []
     },
     {
@@ -32804,15 +32804,13 @@
       "key": "penedo:2024",
       "title": "The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale",
       "matched_year": "2024",
       "score": 1.0,
       "identifier": "2406.17557",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part1/ch03_data_stack.md",
@@ -33017,15 +33015,13 @@
       "key": "patil:2023",
       "title": "Gorilla: Large Language Model Connected with Massive APIs",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Gorilla: Large Language Model Connected with Massive APIs",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2305.15334",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part10/ch31_agent_architecture.md",
@@ -33085,15 +33081,13 @@
       "key": "wang:2023",
       "title": "A Survey on Large Language Model based Autonomous Agents",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "A Survey on Large Language Model based Autonomous Agents",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2308.11432",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part10/ch31_agent_architecture.md",
@@ -33102,15 +33096,13 @@
       "key": "wu:2023",
       "title": "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2308.08155",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part10/ch31_agent_architecture.md",
@@ -33119,15 +33111,13 @@
       "key": "xi:2023",
       "title": "The Rise and Potential of Large Language Model Based Agents: A Survey",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "The Rise and Potential of Large Language Model Based Agents: A Survey",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2309.07864",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part10/ch31_agent_architecture.md",
@@ -33536,15 +33526,13 @@
       "key": "cui:2023",
       "title": "UltraFeedback: Boosting Language Models with Scaled AI Feedback",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "UltraFeedback: Boosting Language Models with Scaled AI Feedback",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2310.01377",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part10/ch33_labeling_synthesis_evaluation.md",
@@ -33570,15 +33558,13 @@
       "key": "gerstgrasser:2024",
       "title": "Is Model Collapse Inevitable? Breaking the Curse of Recursion by Accumulating Real and Synthetic Data",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Is Model Collapse Inevitable? Breaking the Curse of Recursion by Accumulating Real and Synthetic Data",
       "matched_year": "2024",
       "score": 1.0,
       "identifier": "2404.01413",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part10/ch33_labeling_synthesis_evaluation.md",
@@ -33604,15 +33590,13 @@
       "key": "kim:2024",
       "title": "Prometheus 2: An Open Source Language Model Specialized in Evaluating Other Language Models",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Prometheus 2: An Open Source Language Model Specialized in Evaluating Other Language Models",
       "matched_year": "2024",
       "score": 1.0,
       "identifier": "2405.01535",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part10/ch33_labeling_synthesis_evaluation.md",
@@ -33638,15 +33622,13 @@
       "key": "lambert:2024",
       "title": "RewardBench: Evaluating Reward Models for Language Modeling",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "RewardBench: Evaluating Reward Models for Language Modeling",
       "matched_year": "2024",
       "score": 1.0,
       "identifier": "2403.13787",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part10/ch33_labeling_synthesis_evaluation.md",
@@ -33689,15 +33671,13 @@
       "key": "lin:2024",
       "title": "WildBench: Benchmarking LLMs with Challenging Tasks from Real Users in the Wild",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "WildBench: Benchmarking LLMs with Challenging Tasks from Real Users in the Wild",
       "matched_year": "2024",
       "score": 1.0,
       "identifier": "2406.04770",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part10/ch33_labeling_synthesis_evaluation.md",
@@ -34165,13 +34145,15 @@
       "key": "chen:2024",
       "title": "StruQ: Defending Against Prompt Injection with Structured Queries",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "StruQ: Defending Against Prompt Injection with Structured Queries",
       "matched_year": "2024",
       "score": 1.0,
       "identifier": "2402.06363",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part10/ch35_security_permission_collaboration.md",
@@ -35013,15 +34995,13 @@
       "key": "zhao:2018",
       "title": "Federated Learning with Non-IID Data",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Federated Learning with Non-IID Data",
       "matched_year": "2018",
       "score": 1.0,
       "identifier": "1806.00582",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part11/ch37_federated_learning_and_privacy_preserving_technologies.md",
@@ -35423,15 +35403,13 @@
       "key": "bai:2025",
       "title": "Qwen2.5-VL Technical Report",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Qwen2.5-VL Technical Report",
       "matched_year": "2025",
       "score": 1.0,
       "identifier": "2502.13923",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part12/ch40_visual_document_table_data_engineering.md",
@@ -35640,13 +35618,15 @@
       "key": "schulman:2017",
       "title": "Proximal Policy Optimization Algorithms",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "Proximal Policy Optimization Algorithms",
       "matched_year": "2017",
       "score": 1.0,
       "identifier": "1707.06347",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part12/ch40_visual_document_table_data_engineering.md",
@@ -35872,15 +35852,13 @@
       "key": "poznanski:2025",
       "title": "olmOCR 2: Unit Test Rewards for Document OCR",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "olmOCR 2: Unit Test Rewards for Document OCR",
       "matched_year": "2025",
       "score": 1.0,
       "identifier": "2510.19817",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part12/ch40_visual_document_table_data_engineering.md",
@@ -36396,13 +36374,15 @@
       "key": "du:2024",
       "title": "CosyVoice 2: Scalable Streaming Speech Synthesis with Large Language Models",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "CosyVoice 2: Scalable Streaming Speech Synthesis with Large Language Models",
       "matched_year": "2024",
       "score": 1.0,
       "identifier": "2412.10117",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part12/ch42_speech_audio_interaction_data_engineering.md",
@@ -37106,15 +37086,13 @@
       "key": "touvron:2023",
       "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Llama 2: Open Foundation and Fine-Tuned Chat Models",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2307.09288",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part13/ch46_rl_reasoning_data.md",
@@ -37153,15 +37131,13 @@
       "key": "hendrycks:2021",
       "title": "Measuring Mathematical Problem Solving With the MATH Dataset",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Measuring Mathematical Problem Solving With the MATH Dataset",
       "matched_year": "2021",
       "score": 1.0,
       "identifier": "2103.03874",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part13/ch46_rl_reasoning_data.md",
@@ -37185,13 +37161,15 @@
       "key": "guha:2025",
       "title": "OpenThoughts: Data Recipes for Reasoning Models",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "OpenThoughts: Data Recipes for Reasoning Models",
       "matched_year": "2025",
       "score": 1.0,
       "identifier": "2506.04178",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part13/ch46_rl_reasoning_data.md",
@@ -37421,15 +37399,13 @@
       "key": "chen:2024",
       "title": "InternVL3: Exploring Advanced Training and Test-Time Scaling for Vision-Language Models",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "InternVL3: Exploring Advanced Training and Test-Time Recipes for Open-Source Multimodal Models",
       "matched_year": "2025",
       "score": 0.782,
       "identifier": "2504.10479",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part13/ch47_vlm_data_recipes.md",
@@ -37487,15 +37463,13 @@
       "key": "li:2024",
       "title": "LLaVA-OneVision: Easy Visual Task Transfer",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "LLaVA-OneVision: Easy Visual Task Transfer",
       "matched_year": "2024",
       "score": 1.0,
       "identifier": "2408.03326",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part13/ch47_vlm_data_recipes.md",
@@ -37521,15 +37495,13 @@
       "key": "liu:2023",
       "title": "Grounding DINO: Marrying DINO with Grounded Pre-Training for Open-Set Object Detection",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Grounding DINO: Marrying DINO with Grounded Pre-Training for Open-Set Object Detection",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2303.05499",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part13/ch47_vlm_data_recipes.md",
@@ -37851,15 +37823,13 @@
       "key": "black:2025",
       "title": "FLUX.1 Kontext: Flow Matching for In-Context Image Generation and Editing in Latent Space",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "FLUX.1 Kontext: Flow Matching for In-Context Image Generation and Editing in Latent Space",
       "matched_year": "2025",
       "score": 1.0,
       "identifier": "2506.15742",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part13/ch48_t2i_t2v.md",
@@ -37885,15 +37855,13 @@
       "key": "wanteam:2025",
       "title": "Wan: Open and Advanced Large-Scale Video Generative Models",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Wan: Open and Advanced Large-Scale Video Generative Models",
       "matched_year": "2025",
       "score": 1.0,
       "identifier": "2503.20314",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part13/ch48_t2i_t2v.md",
@@ -37953,13 +37921,15 @@
       "key": "yang:2024",
       "title": "CogVideoX: Text-to-Video Diffusion Models with An Expert Transformer",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "CogVideoX: Text-to-Video Diffusion Models with An Expert Transformer",
       "matched_year": "2024",
       "score": 1.0,
       "identifier": "2408.06072",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part13/ch48_t2i_t2v.md",
@@ -38501,15 +38471,13 @@
       "key": "schick:2023",
       "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2302.04761",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part14/p07_agent_tooluse.md",
@@ -38853,15 +38821,13 @@
       "key": "lozhkov:2024",
       "title": "StarCoder 2 and The Stack v2: The Next Generation (The Stack v2)",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "StarCoder 2 and The Stack v2: The Next Generation",
       "matched_year": "2024",
       "score": 0.881,
       "identifier": "2402.19173",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part14/p11_mini_deepseek.md",
@@ -38904,15 +38870,13 @@
       "key": "penedo:2024",
       "title": "The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale",
       "matched_year": "2024",
       "score": 1.0,
       "identifier": "2406.17557",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part14/p11_mini_deepseek.md",
@@ -39000,13 +38964,15 @@
       "key": "guha:2025",
       "title": "OpenThoughts: Data Recipes for Reasoning Models",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "OpenThoughts: Data Recipes for Reasoning Models",
       "matched_year": "2025",
       "score": 1.0,
       "identifier": "2506.04178",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part14/p12_r1_reasoning_flywheel.md",
@@ -39064,15 +39030,13 @@
       "key": "bai:2025",
       "title": "Qwen2.5-VL Technical Report",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Qwen2.5-VL Technical Report",
       "matched_year": "2025",
       "score": 1.0,
       "identifier": "2502.13923",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part14/p13_multimodal_instruction_factory.md",
@@ -39081,15 +39045,13 @@
       "key": "zhu:2025",
       "title": "InternVL3: Exploring Advanced Training and Test-Time Recipes for Open-Source Multimodal Models",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "InternVL3: Exploring Advanced Training and Test-Time Recipes for Open-Source Multimodal Models",
       "matched_year": "2025",
       "score": 0.782,
       "identifier": "2504.10479",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part14/p13_multimodal_instruction_factory.md",
@@ -39179,15 +39141,13 @@
       "key": "bai:2025",
       "title": "Qwen2.5-VL Technical Report",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Qwen2.5-VL Technical Report",
       "matched_year": "2025",
       "score": 1.0,
       "identifier": "2502.13923",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part14/p14_video_generation.md",
@@ -39196,15 +39156,13 @@
       "key": "zhu:2025",
       "title": "InternVL3: Exploring Advanced Training and Test-Time Recipes for Open-Source Multimodal Models",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "InternVL3: Exploring Advanced Training and Test-Time Recipes for Open-Source Multimodal Models",
       "matched_year": "2025",
       "score": 0.782,
       "identifier": "2504.10479",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part14/p14_video_generation.md",
@@ -39311,15 +39269,13 @@
       "key": "schick:2023",
       "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2302.04761",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
@@ -39484,15 +39440,13 @@
       "key": "penedo:2024",
       "title": "The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale",
       "matched_year": "2024",
       "score": 1.0,
       "identifier": "2406.17557",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part2/ch04_data_sources.md",
@@ -39601,15 +39555,13 @@
       "key": "penedo:2024",
       "title": "The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale",
       "matched_year": "2024",
       "score": 1.0,
       "identifier": "2406.17557",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part2/ch05_cleaning_dedup.md",
@@ -40074,15 +40026,13 @@
       "key": "bai:2023",
       "title": "Qwen-VL: A Versatile Vision-Language Model's Understanding, Localization, Text Reading, and Beyond",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Qwen-VL: A Versatile Vision-Language Model for Understanding, Localization, Text Reading, and Beyond",
       "matched_year": "2023",
       "score": 0.979,
       "identifier": "2308.12966",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
@@ -40091,15 +40041,13 @@
       "key": "bai:2025",
       "title": "Qwen2.5-VL Technical Report",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Qwen2.5-VL Technical Report",
       "matched_year": "2025",
       "score": 1.0,
       "identifier": "2502.13923",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
@@ -40272,15 +40220,13 @@
       "key": "zhu:2025",
       "title": "InternVL3: Exploring Advanced Training and Test-Time Recipes for Open-Source Multimodal Models",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "InternVL3: Exploring Advanced Training and Test-Time Recipes for Open-Source Multimodal Models",
       "matched_year": "2025",
       "score": 0.782,
       "identifier": "2504.10479",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part3/ch08_multimodal_image.md",
@@ -40306,15 +40252,13 @@
       "key": "bai:2023",
       "title": "Qwen-VL: A Versatile Vision-Language Model",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Qwen-VL: A Versatile Vision-Language Model for Understanding, Localization, Text Reading, and Beyond",
       "matched_year": "2023",
       "score": 0.979,
       "identifier": "2308.12966",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part3/ch09_recaptioning_ocr.md",
@@ -40323,15 +40267,13 @@
       "key": "bai:2025",
       "title": "Qwen2.5-VL Technical Report",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Qwen2.5-VL Technical Report",
       "matched_year": "2025",
       "score": 1.0,
       "identifier": "2502.13923",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part3/ch09_recaptioning_ocr.md",
@@ -40474,13 +40416,15 @@
       "key": "liu:2023",
       "title": "MMBench: Is Your Multi-modal Model an All-around Player?",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "MMBench: Is Your Multi-modal Model an All-around Player?",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2307.06281",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part3/ch09_recaptioning_ocr.md",
@@ -40489,15 +40433,13 @@
       "key": "liu:2023",
       "title": "Grounding DINO: Marrying DINO with Grounded Pre-Training for Open-Set Object Detection",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Grounding DINO: Marrying DINO with Grounded Pre-Training for Open-Set Object Detection",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2303.05499",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part3/ch09_recaptioning_ocr.md",
@@ -40589,15 +40531,13 @@
       "key": "zhu:2025",
       "title": "InternVL3: Exploring Advanced Training and Test-Time Recipes for Open-Source Multimodal Models",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "InternVL3: Exploring Advanced Training and Test-Time Recipes for Open-Source Multimodal Models",
       "matched_year": "2025",
       "score": 0.782,
       "identifier": "2504.10479",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part3/ch10_video_audio.md",
@@ -40927,15 +40867,13 @@
       "key": "ouyang:2022",
       "title": "Training Language Models to Follow Instructions with Human Feedback",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Training language models to follow instructions with human feedback",
       "matched_year": "2022",
       "score": 1.0,
       "identifier": "2203.02155",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part4/ch12_sft.md",
@@ -41027,15 +40965,13 @@
       "key": "christiano:2017",
       "title": "Deep Reinforcement Learning from Human Preferences",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Deep reinforcement learning from human preferences",
       "matched_year": "2017",
       "score": 1.0,
       "identifier": "1706.03741",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part4/ch12_sft.md",
@@ -41044,15 +40980,13 @@
       "key": "stiennon:2020",
       "title": "Learning to Summarize from Human Feedback",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Learning to summarize from human feedback",
       "matched_year": "2020",
       "score": 1.0,
       "identifier": "2009.01325",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part4/ch12_sft.md",
@@ -41091,15 +41025,13 @@
       "key": "schick:2023",
       "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2302.04761",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part4/ch12_sft.md",
@@ -41225,13 +41157,15 @@
       "key": "liang:2022",
       "title": "Holistic Evaluation of Language Models",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "Holistic Evaluation of Language Models",
       "matched_year": "2022",
       "score": 1.0,
       "identifier": "2211.09110",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part4/ch12_sft.md",
@@ -41342,15 +41276,13 @@
       "key": "ziegler:2019",
       "title": "Fine-tuning language models from human preferences",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Fine-Tuning Language Models from Human Preferences",
       "matched_year": "2019",
       "score": 1.0,
       "identifier": "1909.08593",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part4/ch13_preference.md",
@@ -41410,13 +41342,15 @@
       "key": "bai:2022",
       "title": "Training a helpful and harmless assistant with reinforcement learning from human feedback",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback",
       "matched_year": "2022",
       "score": 1.0,
       "identifier": "2204.05862",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part4/ch13_preference.md",
@@ -41491,15 +41425,13 @@
       "key": "uesato:2022",
       "title": "Solving math word problems with process- and outcome-based feedback",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Solving math word problems with process- and outcome-based feedback",
       "matched_year": "2022",
       "score": 1.0,
       "identifier": "2211.14275",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part4/ch13_preference.md",
@@ -41695,13 +41627,15 @@
       "key": "liang:2022",
       "title": "Holistic evaluation of language models",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "Holistic Evaluation of Language Models",
       "matched_year": "2022",
       "score": 1.0,
       "identifier": "2211.09110",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part4/ch14_qa.md",
@@ -41757,15 +41691,13 @@
       "key": "ouyang:2022",
       "title": "Training Language Models to Follow Instructions with Human Feedback",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Training language models to follow instructions with human feedback",
       "matched_year": "2022",
       "score": 1.0,
       "identifier": "2203.02155",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part4/ch14_qa.md",
@@ -41791,15 +41723,13 @@
       "key": "stiennon:2020",
       "title": "Learning to Summarize from Human Feedback",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Learning to summarize from human feedback",
       "matched_year": "2020",
       "score": 1.0,
       "identifier": "2009.01325",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part4/ch14_qa.md",
@@ -42222,13 +42152,15 @@
       "key": "mukherjee:2023",
       "title": "Orca: Progressive Learning from Complex Explanation Traces of GPT-4",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "Orca: Progressive Learning from Complex Explanation Traces of GPT-4",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2306.02707",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part5/ch15_data_synthesis.md",
@@ -42473,13 +42405,15 @@
       "key": "mukherjee:2023",
       "title": "Orca: Progressive Learning from Complex Explanation Traces of GPT-4",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "Orca: Progressive Learning from Complex Explanation Traces of GPT-4",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2306.02707",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part5/ch16_distillation.md",
@@ -42911,15 +42845,13 @@
       "key": "gerstgrasser:2024",
       "title": "Is Model Collapse Inevitable? Breaking the Curse of Recursion by Accumulating Real and Synthetic Data",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Is Model Collapse Inevitable? Breaking the Curse of Recursion by Accumulating Real and Synthetic Data",
       "matched_year": "2024",
       "score": 1.0,
       "identifier": "2404.01413",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part5/ch17_quality.md",
@@ -43198,15 +43130,13 @@
       "key": "wang:2023",
       "title": "Self-Consistency Improves Chain of Thought Reasoning in Language Models",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Self-Consistency Improves Chain of Thought Reasoning in Language Models",
       "matched_year": "2022",
       "score": 1.0,
       "identifier": "2203.11171",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part6/ch18_cot.md",
@@ -43215,15 +43145,13 @@
       "key": "zhou:2023",
       "title": "Least-to-Most Prompting Enables Complex Reasoning in Large Language Models",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Least-to-Most Prompting Enables Complex Reasoning in Large Language Models",
       "matched_year": "2022",
       "score": 1.0,
       "identifier": "2205.10625",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part6/ch18_cot.md",
@@ -43332,15 +43260,13 @@
       "key": "hendrycks:2021",
       "title": "Measuring Mathematical Problem Solving With the MATH Dataset",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Measuring Mathematical Problem Solving With the MATH Dataset",
       "matched_year": "2021",
       "score": 1.0,
       "identifier": "2103.03874",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part6/ch18_cot.md",
@@ -43383,15 +43309,13 @@
       "key": "madaan:2023",
       "title": "Self-Refine: Iterative Refinement with Self-Feedback",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Self-Refine: Iterative Refinement with Self-Feedback",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2303.17651",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part6/ch18_cot.md",
@@ -43415,15 +43339,13 @@
       "key": "liu:2023",
       "title": "G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment",
       "matched_year": "2023",
       "score": 1.0,
       "identifier": "2303.16634",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part6/ch18_cot.md",
@@ -43464,15 +43386,13 @@
       "key": "austin:2021",
       "title": "Program Synthesis with Large Language Models",
       "status": "verified",
-      "source": "arxiv-html",
+      "source": "arxiv",
       "matched_title": "Program Synthesis with Large Language Models",
       "matched_year": "2021",
       "score": 1.0,
       "identifier": "2108.07732",
       "url_status": "",
-      "issues": [
-        "arxiv-error:HTTPError"
-      ]
+      "issues": []
     },
     {
       "file": "docs/zh/part6/ch18_cot.md",
@@ -43481,13 +43401,15 @@
       "key": "lu:2021",
       "title": "CodeXGLUE: A Machine Learning Benchmark Dataset for Code Understanding and Generation",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "CodeXGLUE: A Machine Learning Benchmark Dataset for Code Understanding and Generation",
       "matched_year": "2021",
       "score": 1.0,
       "identifier": "2102.04664",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part6/ch18_cot.md",
@@ -43496,13 +43418,15 @@
       "key": "jimenez:2024",
       "title": "SWE-bench: Can Language Models Resolve Real-world GitHub Issues? International Conference on Learning Representations",
       "status": "verified",
-      "source": "arxiv",
+      "source": "arxiv-html",
       "matched_title": "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?",
       "matched_year": "2023",
       "score": 0.701,
       "identifier": "2310.06770",
       "url_status": "",
-      "issues": []
+      "issues": [
+        "arxiv-error:HTTPError"
+      ]
     },
     {
       "file": "docs/zh/part6/ch18_cot.md",
