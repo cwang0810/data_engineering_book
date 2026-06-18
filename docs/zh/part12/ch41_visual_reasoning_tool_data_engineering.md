@@ -1,6 +1,6 @@
 # 第41章：视觉推理数据工程：图表证据、医学图像与工具调用轨迹
 
-<div class="chapter-authors">穆冠霖（Guanlin Mu）；曹旭宏（Xuhong Cao）；於俊（Jun Yu）</div>
+<div class="chapter-authors">徐霖（Lin Xu）；陈昕宇（Xinyu Chen）</div>
 
 ## 摘要
 

@@ -1,6 +1,6 @@
 # 第38章：文本语料数据工程：开放 Web、过滤去重与透明账本
 
-<div class="chapter-authors">刘冠君（Guanjun Liu）；邹月峰（Yuefeng Zou）；於俊（Jun Yu）</div>
+<div class="chapter-authors">穆冠霖（Guanlin Mu）；曹旭宏（Xuhong Cao）</div>
 
 ## 摘要
 

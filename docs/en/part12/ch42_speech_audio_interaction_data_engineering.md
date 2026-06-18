@@ -1,6 +1,6 @@
 # Chapter 42: Speech and Audio Data Engineering: Interaction Control, Style Labels, and Safety Boundaries
 
-<div class="chapter-authors">Guanlin Mu; Xuhong Cao; Jun Yu</div>
+<div class="chapter-authors">Fengxin Chen; Xuan Li</div>
 
 ## Abstract
 

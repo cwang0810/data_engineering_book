@@ -1,6 +1,6 @@
 # Chapter 40: Visual Document and Table Data Engineering: Structured Extraction, Sparse Tables, and Schema Constraints
 
-<div class="chapter-authors">Fengxin Chen; Xuan Li; Jun Yu</div>
+<div class="chapter-authors">Guanjun Liu; Yuefeng Zou</div>
 
 ## Abstract
 

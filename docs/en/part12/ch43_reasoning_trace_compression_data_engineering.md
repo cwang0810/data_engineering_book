@@ -1,6 +1,6 @@
 # Chapter 43: Reasoning Trace Data Engineering: Long-Chain Compression, Implicit Computation, and Supervision Masks
 
-<div class="chapter-authors">Guanlin Mu; Xuhong Cao; Jun Yu</div>
+<div class="chapter-authors">Xuan Li; Fengxin Chen</div>
 
 ## Abstract
 

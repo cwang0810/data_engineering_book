@@ -1,6 +1,6 @@
 # Chapter 41: Visual Reasoning Data Engineering: Chart Evidence, Medical Images, and Tool-Call Trajectories
 
-<div class="chapter-authors">Guanlin Mu; Xuhong Cao; Jun Yu</div>
+<div class="chapter-authors">Lin Xu; Xinyu Chen</div>
 
 ## Abstract
 

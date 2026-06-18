@@ -1,6 +1,6 @@
 # Chapter 38: Text Corpus Data Engineering: Open Web, Filtering, Deduplication, and Transparent Ledgers
 
-<div class="chapter-authors">Guanjun Liu; Yuefeng Zou; Jun Yu</div>
+<div class="chapter-authors">Guanlin Mu; Xuhong Cao</div>
 
 ## Abstract
 
