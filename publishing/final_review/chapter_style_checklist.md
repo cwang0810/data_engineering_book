@@ -12,6 +12,7 @@
 | `docs/zh/appendix_f_terminology_and_chinese_english_mapping.md` | 附录F：术语表与中英文对照 | 13 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
 | `docs/zh/appendix_g_datagallery_note.md` | 附录G：DataGallery 开源生态简介 | 4 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
 | `docs/zh/appendix_h_mindspore_note.md` | 附录H：MindSpore 技术附录与致谢 | 21 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
+| `docs/zh/front_matter_guide.md` | 卷前导读：出版版结构说明与阅读路径 | 1 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
 | `docs/zh/part1/ch01_data_change.md` | 第1章 大模型时代的数据变革 | 8 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
 | `docs/zh/part1/ch02_quality_framework.md` | 第2章：LLM数据生命周期与质量评估框架 | 4 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
 | `docs/zh/part1/ch03_data_stack.md` | 第3章 AI原生数据栈与成本治理 | 4 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |

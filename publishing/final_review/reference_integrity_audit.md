@@ -1,6 +1,6 @@
 # 全书引用完整性与真实性审计报告
 
-- 生成时间：2026-06-16T02:11:29.257251+00:00
+- 生成时间：2026-06-17T02:33:34.150066+00:00
 - 范围：当前 Springer 中文交付稿 `docs/zh` 中的正文章、项目章和附录。
 - 扫描文件：71
 - 参考文献条目：972
@@ -13,13 +13,11 @@
 
 | 状态 | 数量 | 含义 |
 | --- | ---: | --- |
-| `needs-manual-review` | 605 | 缺少可机器核验标识 |
-| `url-reachable` | 87 | URL 可访问，但非论文元数据强校验 |
-| `verified` | 280 | arXiv / DOI / DataCite / Crossref / OpenAlex 强匹配 |
+| `not-checked` | 972 |  |
 
 ## 主要结论
 
-- 需要优先人工复核的外部核验问题：605 条。
+- 需要优先人工复核的外部核验问题：0 条。
 - 缺少 DOI / arXiv / URL 的条目：614 条；其中一部分可由 Crossref/OpenAlex 题名检索确认，但 Springer 终稿仍建议补 DOI 或稳定 URL。
 - `url-reachable` 只能证明网页当前可达，不能证明引文格式、版本日期和题名完全符合出版社要求。
 - 当前报告只确认“同章 author-year 可解析对应关系”；对于一段话是否应该引用更精确来源，仍需人工学术编辑判断。
@@ -160,128 +158,6 @@
 
 | 文件 | 行 | 序号 | 状态 | 来源 | 分数 | 标识 | 问题 | 题名 | 匹配题名 |
 | --- | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- |
-| `docs/zh/appendix_a_tools_and_frameworks_quick_reference.md` | 290 | 1 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Datasheets for Datasets |  |
-| `docs/zh/appendix_a_tools_and_frameworks_quick_reference.md` | 292 | 2 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Model Cards for Model Reporting |  |
-| `docs/zh/appendix_a_tools_and_frameworks_quick_reference.md` | 294 | 3 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Data Cards: Purposeful and Transparent Dataset Documentation for Responsible AI |  |
-| `docs/zh/appendix_b_compliance_and_release_checklist.md` | 322 | 6 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Model Cards for Model Reporting |  |
-| `docs/zh/appendix_c_cost_estimation_and_resource_templates.md` | 318 | 2 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM |  |
-| `docs/zh/appendix_c_cost_estimation_and_resource_templates.md` | 320 | 3 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Efficient Memory Management for Large Language Model Serving with PagedAttention |  |
-| `docs/zh/appendix_d_paper_to_implementation_guide.md` | 397 | 1 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Leakage and the reproducibility crisis in machine-learning-based science |  |
-| `docs/zh/appendix_d_paper_to_implementation_guide.md` | 399 | 2 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Machine Learning Operations (MLOps): Overview, Definition, and Architecture |  |
-| `docs/zh/appendix_d_paper_to_implementation_guide.md` | 401 | 3 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | A large-scale audit of dataset licensing and attribution in AI |  |
-| `docs/zh/appendix_d_paper_to_implementation_guide.md` | 403 | 4 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | DataPerf: Benchmarks for Data-Centric AI Development |  |
-| `docs/zh/appendix_e_common_bug_debugging_manual.md` | 449 | 2 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Data-Juicer: A One-Stop Data Processing System for Large Language Models |  |
-| `docs/zh/appendix_e_common_bug_debugging_manual.md` | 453 | 4 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Leakage and the reproducibility crisis in machine-learning-based science |  |
-| `docs/zh/appendix_e_common_bug_debugging_manual.md` | 455 | 5 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | DocLayNet: A Large Human-Annotated Dataset for Document-Layout Analysis |  |
-| `docs/zh/appendix_f_terminology_and_chinese_english_mapping.md` | 403 | 2 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Holistic Evaluation of Language Models |  |
-| `docs/zh/appendix_f_terminology_and_chinese_english_mapping.md` | 405 | 3 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | DecodingTrust: A Comprehensive Assessment of Trustworthiness in GPT Models |  |
-| `docs/zh/appendix_f_terminology_and_chinese_english_mapping.md` | 407 | 4 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Taxonomy of Risks posed by Language Models |  |
-| `docs/zh/part1/ch01_data_change.md` | 310 | 4 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Language Models are Few-Shot Learners |  |
-| `docs/zh/part1/ch01_data_change.md` | 328 | 13 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | KenLM: Faster and Smaller Language Model Queries |  |
-| `docs/zh/part1/ch01_data_change.md` | 330 | 14 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | On the Resemblance and Containment of Documents |  |
-| `docs/zh/part1/ch01_data_change.md` | 332 | 15 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Data-Juicer: A One-Stop Data Processing System for Large Language Models |  |
-| `docs/zh/part1/ch01_data_change.md` | 336 | 17 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Training Language Models to Follow Instructions with Human Feedback |  |
-| `docs/zh/part1/ch01_data_change.md` | 338 | 18 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Direct Preference Optimization: Your Language Model Is Secretly a Reward Model |  |
-| `docs/zh/part1/ch01_data_change.md` | 340 | 19 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks |  |
-| `docs/zh/part1/ch01_data_change.md` | 342 | 20 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Attention Is All You Need |  |
-| `docs/zh/part1/ch01_data_change.md` | 344 | 21 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | ImageNet Classification with Deep Convolutional Neural Networks |  |
-| `docs/zh/part1/ch01_data_change.md` | 346 | 22 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Deep Residual Learning for Image Recognition |  |
-| `docs/zh/part1/ch01_data_change.md` | 350 | 24 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Measuring Massive Multitask Language Understanding (MMLU) |  |
-| `docs/zh/part1/ch02_quality_framework.md` | 507 | 1 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | A Coefficient of Agreement for Nominal Scales |  |
-| `docs/zh/part1/ch02_quality_framework.md` | 509 | 2 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | A New Generation of Perspective API: Efficient Multilingual Character-level Transformers |  |
-| `docs/zh/part1/ch02_quality_framework.md` | 511 | 3 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | StereoSet: Measuring Stereotypical Bias in Pretrained Language Models |  |
-| `docs/zh/part1/ch02_quality_framework.md` | 513 | 4 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Gender Bias in Coreference Resolution: Evaluation and Debiasing Methods (WinoBias) |  |
-| `docs/zh/part1/ch02_quality_framework.md` | 515 | 5 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Training Language Models to Follow Instructions with Human Feedback |  |
-| `docs/zh/part1/ch02_quality_framework.md` | 517 | 6 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Direct Preference Optimization: Your Language Model Is Secretly a Reward Model |  |
-| `docs/zh/part1/ch02_quality_framework.md` | 524 | 9 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Measuring Massive Multitask Language Understanding (MMLU) |  |
-| `docs/zh/part1/ch02_quality_framework.md` | 532 | 13 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Time Travel in LLMs: Tracing Data Contamination in Large Language Models |  |
-| `docs/zh/part1/ch02_quality_framework.md` | 534 | 14 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Datasheets for Datasets |  |
-| `docs/zh/part1/ch03_data_stack.md` | 341 | 1 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Apache Spark: A Unified Engine for Big Data Processing |  |
-| `docs/zh/part1/ch03_data_stack.md` | 343 | 2 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Ray: A Distributed Framework for Emerging AI Applications |  |
-| `docs/zh/part1/ch03_data_stack.md` | 345 | 3 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | On the Resemblance and Containment of Documents |  |
-| `docs/zh/part1/ch03_data_stack.md` | 347 | 4 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | KenLM: Faster and Smaller Language Model Queries |  |
-| `docs/zh/part1/ch03_data_stack.md` | 349 | 5 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | The Probabilistic Relevance Framework: BM25 and Beyond |  |
-| `docs/zh/part1/ch03_data_stack.md` | 351 | 6 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Efficient and Robust Approximate Nearest Neighbor Search Using Hierarchical Navigable Small World Graphs (HNSW) |  |
-| `docs/zh/part1/ch03_data_stack.md` | 361 | 11 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Hidden Technical Debt in Machine Learning Systems |  |
-| `docs/zh/part1/ch03_data_stack.md` | 363 | 12 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | The Data Provenance Initiative: A Large Scale Audit of Dataset Licensing & Attribution in AI |  |
-| `docs/zh/part10/ch31_agent_architecture.md` | 581 | 1 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Graph of Thoughts: Solving Elaborate Problems with Large Language Models |  |
-| `docs/zh/part10/ch31_agent_architecture.md` | 583 | 2 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | PAL: Program-aided Language Models |  |
-| `docs/zh/part10/ch31_agent_architecture.md` | 587 | 4 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Machine Learning Operations (MLOps): Overview, Definition, and Architecture |  |
-| `docs/zh/part10/ch31_agent_architecture.md` | 589 | 5 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Self-Refine: Iterative Refinement with Self-Feedback |  |
-| `docs/zh/part10/ch31_agent_architecture.md` | 591 | 6 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Augmented Language Models: A Survey |  |
-| `docs/zh/part10/ch31_agent_architecture.md` | 595 | 8 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Generative Agents: Interactive Simulacra of Human Behavior |  |
-| `docs/zh/part10/ch31_agent_architecture.md` | 599 | 10 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | ToolLLM: Facilitating Large Language Models to Master 16000+ Real-world APIs |  |
-| `docs/zh/part10/ch31_agent_architecture.md` | 601 | 11 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Toolformer: Language Models Can Teach Themselves to Use Tools |  |
-| `docs/zh/part10/ch31_agent_architecture.md` | 603 | 12 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Reflexion: Language Agents with Verbal Reinforcement Learning |  |
-| `docs/zh/part10/ch31_agent_architecture.md` | 611 | 16 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | ReAct: Synergizing Reasoning and Acting in Language Models |  |
-| `docs/zh/part10/ch31_agent_architecture.md` | 613 | 17 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Tree of Thoughts: Deliberate Problem Solving with Large Language Models |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 420 | 1 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 424 | 3 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Extracting Training Data from Large Language Models |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 426 | 4 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Data-Juicer: A One-Stop Data Processing System for Large Language Models |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 428 | 5 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | PaLM: Scaling Language Modeling with Pathways |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 430 | 6 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Documenting Large Webtext Corpora: A Case Study on the Colossal Clean Crawled Corpus |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 434 | 8 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | LayoutLMv3: Pre-training for Document AI with Unified Text and Image Masking |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 436 | 9 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | OCR-free Document Understanding Transformer |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 438 | 10 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | The BigScience ROOTS Corpus: A 1.6TB Composite Multilingual Dataset |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 440 | 11 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Deduplicating Training Data Makes Language Models Better |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 442 | 12 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | A large-scale audit of dataset licensing and attribution in AI |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 444 | 13 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | CulturaX: A Cleaned, Enormous, and Multilingual Dataset for Large Language Models in 167 Languages |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 446 | 14 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | A Monolingual Approach to Contextualized Word Embeddings for Mid-Resource Languages |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 448 | 15 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | DocLayNet: A Large Human-Annotated Dataset for Document-Layout Analysis |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 450 | 16 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 452 | 17 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | The RefinedWeb Dataset for Falcon LLM: Outperforming Curated Corpora with Web Data Only |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 454 | 18 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer |  |
-| `docs/zh/part10/ch32_auto_collection_parsing_cleaning.md` | 458 | 20 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 435 | 1 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Self-Consuming Generative Models Go MAD |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 441 | 4 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | AlpacaFarm: A Simulation Framework for Methods that Learn from Human Feedback |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 445 | 6 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Prometheus: Inducing Fine-grained Evaluation Capability in Language Models |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 449 | 8 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | WILDS: A Benchmark of in-the-Wild Distribution Shifts |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 453 | 10 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Holistic Evaluation of Language Models |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 455 | 11 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 459 | 13 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Training language models to follow instructions with human feedback |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 461 | 14 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Red Teaming Language Models with Language Models |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 463 | 15 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Direct Preference Optimization: Your Language Model is Secretly a Reward Model |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 465 | 16 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Beyond Accuracy: Behavioral Testing of NLP Models with CheckList |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 467 | 17 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | AI models collapse when trained on recursively generated data |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 469 | 18 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Self-Instruct: Aligning Language Models with Self-Generated Instructions |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 471 | 19 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena |  |
-| `docs/zh/part10/ch33_labeling_synthesis_evaluation.md` | 475 | 21 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | LIMA: Less Is More for Alignment |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 471 | 1 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Software Engineering for Machine Learning: A Case Study |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 473 | 2 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Data Validation for Machine Learning |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 475 | 3 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | AIOps: Real-World Challenges and Research Innovations |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 477 | 4 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | A Survey on Automated Log Analysis for Reliability Engineering |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 479 | 5 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Designing Machine Learning Systems: An Iterative Process for Production-Ready Applications |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 481 | 6 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Machine Learning Operations (MLOps): Overview, Definition, and Architecture |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 483 | 7 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Who Needs MLOps: What Data Scientists Seek to Accomplish and How Can MLOps Help? In: Proceedings of the 2021 IEEE/ACM... |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 485 | 8 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Large-scale Machine Learning Systems in Real-world Industrial Settings: A Review of Challenges and Solutions |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 487 | 9 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Artificial Intelligence Risk Management Framework (AI RMF 1.0) |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 489 | 10 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 491 | 11 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Challenges in Deploying Machine Learning: A Survey of Case Studies |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 493 | 12 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | "Everyone wants to do the model work, not the data work": Data Cascades in High-Stakes AI |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 495 | 13 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Sustainable MLOps: Trends and Challenges |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 497 | 14 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | MLOps: A Taxonomy and a Methodology |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 499 | 15 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Introducing MLOps: How to Scale Machine Learning in the Enterprise |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 501 | 16 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Temporal quality degradation in AI models |  |
-| `docs/zh/part10/ch34_dataops_agent.md` | 503 | 17 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Tools and Benchmarks for Automated Log Parsing |  |
-| `docs/zh/part10/ch35_security_permission_collaboration.md` | 484 | 3 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | AgentDojo: A Dynamic Environment to Evaluate Prompt Injection Attacks and Defenses for LLM Agents |  |
-| `docs/zh/part10/ch35_security_permission_collaboration.md` | 488 | 5 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Not What You've Signed Up For: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection |  |
-| `docs/zh/part10/ch35_security_permission_collaboration.md` | 490 | 6 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | The Many Faces of Robustness: A Critical Analysis of Out-of-Distribution Generalization |  |
-| `docs/zh/part10/ch35_security_permission_collaboration.md` | 492 | 7 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Catastrophic Jailbreak of Open-source LLMs via Exploiting Generation |  |
-| `docs/zh/part10/ch35_security_permission_collaboration.md` | 498 | 10 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Red Teaming Language Models with Language Models |  |
-| `docs/zh/part10/ch35_security_permission_collaboration.md` | 500 | 11 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Identifying the Risks of LM Agents with an LM-Emulated Sandbox |  |
-| `docs/zh/part10/ch35_security_permission_collaboration.md` | 504 | 13 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Tensor Trust: Interpretable Prompt Injection Attacks from an Online Game |  |
-| `docs/zh/part10/ch35_security_permission_collaboration.md` | 512 | 17 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Large Language Model Agents |  |
-| `docs/zh/part11/ch36_compliance_framework_and_governance.md` | 1180 | 1 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Formalizing Data Deletion in the Context of the Right to Be Forgotten |  |
-| `docs/zh/part11/ch36_compliance_framework_and_governance.md` | 1182 | 2 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Privacy by Design: The 7 Foundational Principles |  |
-| `docs/zh/part11/ch36_compliance_framework_and_governance.md` | 1184 | 3 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Engineering Privacy by Design |  |
-| `docs/zh/part11/ch36_compliance_framework_and_governance.md` | 1186 | 4 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Engineering Privacy |  |
-| `docs/zh/part11/ch36_compliance_framework_and_governance.md` | 1188 | 5 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Data Protection Engineering |  |
-| `docs/zh/part11/ch36_compliance_framework_and_governance.md` | 1190 | 6 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Transparency by Default: GDPR Patterns for Agile Development |  |
-| `docs/zh/part11/ch36_compliance_framework_and_governance.md` | 1192 | 7 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Privacy by Design: Aligning GDPR and Software Engineering Specifications with a Requirements Engineering Approach |  |
-| `docs/zh/part11/ch36_compliance_framework_and_governance.md` | 1194 | 8 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Privacy Design Strategies |  |
-| `docs/zh/part11/ch36_compliance_framework_and_governance.md` | 1196 | 9 | `needs-manual-review` | none | 0.000 |  | no-machine-verifiable-identifier | Privacy-Knowledge Modeling for the Internet of Things: A Look Back |  |
-
-> 其余 485 条见 JSON 明细。
 
 ## 格式问题统计
 

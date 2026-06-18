@@ -1,10 +1,34 @@
 {
-  "generated_at_utc": "2026-06-16T09:30:47.379310+00:00",
+  "generated_at_utc": "2026-06-18T01:31:40.234137+00:00",
   "scope": "English Springer manuscript local image references in mkdocs navigation order",
-  "row_count": 287,
+  "row_count": 288,
   "rows": [
     {
       "row_id": "ALT-0001",
+      "language": "en",
+      "part": "Front Matter",
+      "unit": "front_matter_guide",
+      "unit_title": "Front Matter Guide",
+      "source_markdown": "docs/en/front_matter_guide.md",
+      "line": 7,
+      "figure_number": "front_matter_guide-1",
+      "caption": "Book architecture. Source: original illustration by the authors. The figure organizes the fourteen parts, forty-eight chapters, fifteen projects, and eight appendices around the data lifecycle, with layers for foundations, collection and processing, cross-cutting capabilities, model alignment, application governance, security and compliance, specialized practice, and project delivery; Alt text: book architecture diagram showing the data lifecycle, layered manuscript structure, DataOps flywheel, platform support capabilities, and engineering principles that run through the book. The book's core contributions appear in four areas",
+      "image_alt_in_markdown": "Book architecture of Data Engineering for Large Foundation Models, showing the data lifecycle, foundation layer, data collection and processing layer, cross-cutting capabilities, model alignment and capability enhancement layer, application governance layer, security and specialized practice layer, project case layer, DataOps flywheel, and platform support capabilities",
+      "image_file": "docs/images/book_structure_en.png",
+      "image_exists": "yes",
+      "image_dimensions": "1536x1024",
+      "image_format": "png",
+      "alt_text": "book architecture diagram showing the data lifecycle, layered manuscript structure, DataOps flywheel, platform support capabilities, and engineering principles that run through the book. The book's core contributions appear in four areas.",
+      "long_description": "Review against the figure and surrounding text in Front Matter Guide; expand if Springer requests a longer description for the visual relationships, axes, or sequence.",
+      "decorative": "no",
+      "review_status": "Draft",
+      "reviewer": "",
+      "notes": "",
+      "zh_reference_caption": "全书架构图。来源：本书自绘。该图以数据全生命周期为主线，将十四篇、四十八章、十五个项目和八个附录组织为基础、采集处理、横切能力、模型对齐、应用治理、安全合规、专项实践和项目交付等层级；Alt text：《大模型数据工程》全书架构图，展示数据全生命周期、主体篇章分层、DataOps 飞轮、平台支撑能力和贯穿全书的工程原则。 本书的核心贡献体现在四个方面",
+      "zh_reference_alt_text": "《大模型数据工程》全书架构图，展示数据全生命周期、基础层、数据采集与处理层、横切能力、模型对齐与能力增强层、应用治理层、安全合规与专项实践层、项目实战层、DataOps 飞轮和平台支撑能力之间的关系"
+    },
+    {
+      "row_id": "ALT-0002",
       "language": "en",
       "part": "Part 1: Overview and Infrastructure",
       "unit": "Ch01",
@@ -28,7 +52,7 @@
       "zh_reference_alt_text": "图1-1：大模型时代数据工程职责重构图，展示平台、数据、算法、标注、产品与合规角色之间的闭环接口"
     },
     {
-      "row_id": "ALT-0002",
+      "row_id": "ALT-0003",
       "language": "en",
       "part": "Part 1: Overview and Infrastructure",
       "unit": "Ch01",
@@ -52,7 +76,7 @@
       "zh_reference_alt_text": "图1-2：全书十四篇制生命周期地图，展示从总论、预训练、多模态、对齐、应用、平台、合规到项目实战的知识结构"
     },
     {
-      "row_id": "ALT-0003",
+      "row_id": "ALT-0004",
       "language": "en",
       "part": "Part 1: Overview and Infrastructure",
       "unit": "Ch02",
@@ -76,7 +100,7 @@
       "zh_reference_alt_text": "图2-1：生命周期视角下的多维度质量分层架构，展示不同阶段质量指标权重从规模、多样性转向真实性、帮助性"
     },
     {
-      "row_id": "ALT-0004",
+      "row_id": "ALT-0005",
       "language": "en",
       "part": "Part 1: Overview and Infrastructure",
       "unit": "Ch02",
@@ -100,7 +124,7 @@
       "zh_reference_alt_text": "图2-2：大模型数据缺陷与质量指标交叉映射图，展示六类缺陷与准确度、一致性、多样性、覆盖度和可追溯性之间的关系"
     },
     {
-      "row_id": "ALT-0005",
+      "row_id": "ALT-0006",
       "language": "en",
       "part": "Part 1: Overview and Infrastructure",
       "unit": "Ch02",
@@ -124,7 +148,7 @@
       "zh_reference_alt_text": "图2-3：数据评分卡驱动的自动截断与治理流，展示硬闸门、软闸门、人工复核和回滚动作"
     },
     {
-      "row_id": "ALT-0006",
+      "row_id": "ALT-0007",
       "language": "en",
       "part": "Part 1: Overview and Infrastructure",
       "unit": "Ch03",
@@ -148,7 +172,7 @@
       "zh_reference_alt_text": "图3-1：AI原生数据栈五层架构，展示采集接入、处理编排、存储索引、评测运营和治理安全层之间的数据流"
     },
     {
-      "row_id": "ALT-0007",
+      "row_id": "ALT-0008",
       "language": "en",
       "part": "Part 1: Overview and Infrastructure",
       "unit": "Ch03",
@@ -172,7 +196,7 @@
       "zh_reference_alt_text": "图3-2：训练数据成本治理闭环图，展示预算规划、成本监控、ROI评估、优化决策和预算复盘的循环"
     },
     {
-      "row_id": "ALT-0008",
+      "row_id": "ALT-0009",
       "language": "en",
       "part": "Part 2: Text Pre-training Data Engineering",
       "unit": "Ch04",
@@ -196,7 +220,7 @@
       "zh_reference_alt_text": "图4-1：预训练数据源分层地图"
     },
     {
-      "row_id": "ALT-0009",
+      "row_id": "ALT-0010",
       "language": "en",
       "part": "Part 2: Text Pre-training Data Engineering",
       "unit": "Ch04",
@@ -220,7 +244,7 @@
       "zh_reference_alt_text": "图4-2：数据采集与权属存证流程图"
     },
     {
-      "row_id": "ALT-0010",
+      "row_id": "ALT-0011",
       "language": "en",
       "part": "Part 2: Text Pre-training Data Engineering",
       "unit": "Ch05",
@@ -244,7 +268,7 @@
       "zh_reference_alt_text": "图5-1：清洗与去污染全景流程图"
     },
     {
-      "row_id": "ALT-0011",
+      "row_id": "ALT-0012",
       "language": "en",
       "part": "Part 2: Text Pre-training Data Engineering",
       "unit": "Ch05",
@@ -268,7 +292,7 @@
       "zh_reference_alt_text": "图5-2：质量过滤漏斗与抽检闭环图"
     },
     {
-      "row_id": "ALT-0012",
+      "row_id": "ALT-0013",
       "language": "en",
       "part": "Part 2: Text Pre-training Data Engineering",
       "unit": "Ch06",
@@ -292,7 +316,7 @@
       "zh_reference_alt_text": "图6-1：吞吐瓶颈诊断流程图"
     },
     {
-      "row_id": "ALT-0013",
+      "row_id": "ALT-0014",
       "language": "en",
       "part": "Part 2: Text Pre-training Data Engineering",
       "unit": "Ch06",
@@ -316,7 +340,7 @@
       "zh_reference_alt_text": "图6-2：训练输入管道分层图"
     },
     {
-      "row_id": "ALT-0014",
+      "row_id": "ALT-0015",
       "language": "en",
       "part": "Part 2: Text Pre-training Data Engineering",
       "unit": "Ch07",
@@ -340,7 +364,7 @@
       "zh_reference_alt_text": "图7-1：数据运营飞轮图"
     },
     {
-      "row_id": "ALT-0015",
+      "row_id": "ALT-0016",
       "language": "en",
       "part": "Part 2: Text Pre-training Data Engineering",
       "unit": "Ch07",
@@ -364,7 +388,7 @@
       "zh_reference_alt_text": "图7-2：数据评估闭环图"
     },
     {
-      "row_id": "ALT-0016",
+      "row_id": "ALT-0017",
       "language": "en",
       "part": "Part 3: Multimodal Data Engineering",
       "unit": "Ch08",
@@ -388,7 +412,7 @@
       "zh_reference_alt_text": "图8-1：图文数据工程全景图"
     },
     {
-      "row_id": "ALT-0017",
+      "row_id": "ALT-0018",
       "language": "en",
       "part": "Part 3: Multimodal Data Engineering",
       "unit": "Ch08",
@@ -412,7 +436,7 @@
       "zh_reference_alt_text": "图8-2：图像语义对齐与过滤流程图"
     },
     {
-      "row_id": "ALT-0018",
+      "row_id": "ALT-0019",
       "language": "en",
       "part": "Part 3: Multimodal Data Engineering",
       "unit": "Ch08",
@@ -436,7 +460,7 @@
       "zh_reference_alt_text": "图8-3：AnyRes 动态多分辨率切割算法原理图"
     },
     {
-      "row_id": "ALT-0019",
+      "row_id": "ALT-0020",
       "language": "en",
       "part": "Part 3: Multimodal Data Engineering",
       "unit": "Ch09",
@@ -460,7 +484,7 @@
       "zh_reference_alt_text": "图9-1：重标注与 OCR 双流线增强图"
     },
     {
-      "row_id": "ALT-0020",
+      "row_id": "ALT-0021",
       "language": "en",
       "part": "Part 3: Multimodal Data Engineering",
       "unit": "Ch09",
@@ -484,7 +508,7 @@
       "zh_reference_alt_text": "图9-2：文档结构 Layout-to-Token 映射图"
     },
     {
-      "row_id": "ALT-0021",
+      "row_id": "ALT-0022",
       "language": "en",
       "part": "Part 3: Multimodal Data Engineering",
       "unit": "Ch10",
@@ -508,7 +532,7 @@
       "zh_reference_alt_text": "图10-1：音视频对齐分布式管线图"
     },
     {
-      "row_id": "ALT-0022",
+      "row_id": "ALT-0023",
       "language": "en",
       "part": "Part 3: Multimodal Data Engineering",
       "unit": "Ch10",
@@ -532,7 +556,7 @@
       "zh_reference_alt_text": "图10-2：自适应镜头边界检测与语义防泄漏架构图"
     },
     {
-      "row_id": "ALT-0023",
+      "row_id": "ALT-0024",
       "language": "en",
       "part": "Part 3: Multimodal Data Engineering",
       "unit": "Ch10",
@@ -556,7 +580,7 @@
       "zh_reference_alt_text": "图10-3：大规模 ASR 提取与时间轴动态校准对比图"
     },
     {
-      "row_id": "ALT-0024",
+      "row_id": "ALT-0025",
       "language": "en",
       "part": "Part 3: Multimodal Data Engineering",
       "unit": "Ch10",
@@ -580,7 +604,7 @@
       "zh_reference_alt_text": "图10-4：跨模态时序校准与几何对齐架构图"
     },
     {
-      "row_id": "ALT-0025",
+      "row_id": "ALT-0026",
       "language": "en",
       "part": "Part 3: Multimodal Data Engineering",
       "unit": "Ch11",
@@ -604,7 +628,7 @@
       "zh_reference_alt_text": "图11-1：跨模态对齐的三级金字塔架构"
     },
     {
-      "row_id": "ALT-0026",
+      "row_id": "ALT-0027",
       "language": "en",
       "part": "Part 3: Multimodal Data Engineering",
       "unit": "Ch11",
@@ -628,7 +652,7 @@
       "zh_reference_alt_text": "图11-2：多模态融合与负样本挖掘管线"
     },
     {
-      "row_id": "ALT-0027",
+      "row_id": "ALT-0028",
       "language": "en",
       "part": "Part 4: Instruction Fine-tuning and Preference Data",
       "unit": "Ch12",
@@ -652,7 +676,7 @@
       "zh_reference_alt_text": "图12-1：SFT指令体系的架构示意图"
     },
     {
-      "row_id": "ALT-0028",
+      "row_id": "ALT-0029",
       "language": "en",
       "part": "Part 4: Instruction Fine-tuning and Preference Data",
       "unit": "Ch12",
@@ -676,7 +700,7 @@
       "zh_reference_alt_text": "图12-2：样本生成与验收的闭环示意图"
     },
     {
-      "row_id": "ALT-0029",
+      "row_id": "ALT-0030",
       "language": "en",
       "part": "Part 4: Instruction Fine-tuning and Preference Data",
       "unit": "Ch13",
@@ -700,7 +724,7 @@
       "zh_reference_alt_text": "图13-1：偏好数据到奖励信号流程图"
     },
     {
-      "row_id": "ALT-0030",
+      "row_id": "ALT-0031",
       "language": "en",
       "part": "Part 4: Instruction Fine-tuning and Preference Data",
       "unit": "Ch13",
@@ -724,7 +748,7 @@
       "zh_reference_alt_text": "图13-2：多目标偏好权衡示意图"
     },
     {
-      "row_id": "ALT-0031",
+      "row_id": "ALT-0032",
       "language": "en",
       "part": "Part 4: Instruction Fine-tuning and Preference Data",
       "unit": "Ch14",
@@ -748,7 +772,7 @@
       "zh_reference_alt_text": "图14-1：大模型标注平台工作流图"
     },
     {
-      "row_id": "ALT-0032",
+      "row_id": "ALT-0033",
       "language": "en",
       "part": "Part 4: Instruction Fine-tuning and Preference Data",
       "unit": "Ch14",
@@ -772,7 +796,7 @@
       "zh_reference_alt_text": "图14-2：人机协同 QA 闭环图"
     },
     {
-      "row_id": "ALT-0033",
+      "row_id": "ALT-0034",
       "language": "en",
       "part": "Part 5: Synthetic Data Engineering",
       "unit": "Ch15",
@@ -796,7 +820,7 @@
       "zh_reference_alt_text": "图15-1：合成数据工厂流程图"
     },
     {
-      "row_id": "ALT-0034",
+      "row_id": "ALT-0035",
       "language": "en",
       "part": "Part 5: Synthetic Data Engineering",
       "unit": "Ch15",
@@ -820,7 +844,7 @@
       "zh_reference_alt_text": "图15-2：质量闸门与回流闭环图"
     },
     {
-      "row_id": "ALT-0035",
+      "row_id": "ALT-0036",
       "language": "en",
       "part": "Part 5: Synthetic Data Engineering",
       "unit": "Ch16",
@@ -844,7 +868,7 @@
       "zh_reference_alt_text": "图16-1：模型协作生成时序图"
     },
     {
-      "row_id": "ALT-0036",
+      "row_id": "ALT-0037",
       "language": "en",
       "part": "Part 5: Synthetic Data Engineering",
       "unit": "Ch16",
@@ -868,7 +892,7 @@
       "zh_reference_alt_text": "图16-2：蒸馏样本验证流程图"
     },
     {
-      "row_id": "ALT-0037",
+      "row_id": "ALT-0038",
       "language": "en",
       "part": "Part 5: Synthetic Data Engineering",
       "unit": "Ch17",
@@ -892,7 +916,7 @@
       "zh_reference_alt_text": "图17-1：合成数据风险传播机制图"
     },
     {
-      "row_id": "ALT-0038",
+      "row_id": "ALT-0039",
       "language": "en",
       "part": "Part 5: Synthetic Data Engineering",
       "unit": "Ch17",
@@ -916,7 +940,7 @@
       "zh_reference_alt_text": "图17-2：合成数据质量闸门与回退策略流程图"
     },
     {
-      "row_id": "ALT-0039",
+      "row_id": "ALT-0040",
       "language": "en",
       "part": "Part 6: Reasoning and Agent Data Engineering",
       "unit": "Ch18",
@@ -940,7 +964,7 @@
       "zh_reference_alt_text": "图18-1：推理数据构造与验证流程图"
     },
     {
-      "row_id": "ALT-0040",
+      "row_id": "ALT-0041",
       "language": "en",
       "part": "Part 6: Reasoning and Agent Data Engineering",
       "unit": "Ch18",
@@ -964,7 +988,7 @@
       "zh_reference_alt_text": "图18-2：过程监督标签示意图"
     },
     {
-      "row_id": "ALT-0041",
+      "row_id": "ALT-0042",
       "language": "en",
       "part": "Part 6: Reasoning and Agent Data Engineering",
       "unit": "Ch19",
@@ -988,7 +1012,7 @@
       "zh_reference_alt_text": "图19-1：Tool-Use 数据构造状态机图"
     },
     {
-      "row_id": "ALT-0042",
+      "row_id": "ALT-0043",
       "language": "en",
       "part": "Part 6: Reasoning and Agent Data Engineering",
       "unit": "Ch19",
@@ -1012,7 +1036,7 @@
       "zh_reference_alt_text": "图19-2：调用失败恢复流程图"
     },
     {
-      "row_id": "ALT-0043",
+      "row_id": "ALT-0044",
       "language": "en",
       "part": "Part 6: Reasoning and Agent Data Engineering",
       "unit": "Ch20",
@@ -1036,7 +1060,7 @@
       "zh_reference_alt_text": "图20-1：多轮 Agent 状态转移图"
     },
     {
-      "row_id": "ALT-0044",
+      "row_id": "ALT-0045",
       "language": "en",
       "part": "Part 6: Reasoning and Agent Data Engineering",
       "unit": "Ch20",
@@ -1060,7 +1084,7 @@
       "zh_reference_alt_text": "图20-2：任务型 Agent 的记忆分层与更新流程图"
     },
     {
-      "row_id": "ALT-0045",
+      "row_id": "ALT-0046",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch21",
@@ -1084,7 +1108,7 @@
       "zh_reference_alt_text": "图21-1：RAG 系统中的数据变换链路"
     },
     {
-      "row_id": "ALT-0046",
+      "row_id": "ALT-0047",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch21",
@@ -1108,7 +1132,7 @@
       "zh_reference_alt_text": "图21-2：文档从原始形态到 RAG 可用知识单元的结构变化"
     },
     {
-      "row_id": "ALT-0047",
+      "row_id": "ALT-0048",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch21",
@@ -1132,7 +1156,7 @@
       "zh_reference_alt_text": "图21-3：RAG 错误如何沿数据链路累积"
     },
     {
-      "row_id": "ALT-0048",
+      "row_id": "ALT-0049",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch21",
@@ -1156,7 +1180,7 @@
       "zh_reference_alt_text": "图21-4：RAG 系统性能的短板效应"
     },
     {
-      "row_id": "ALT-0049",
+      "row_id": "ALT-0050",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch21",
@@ -1180,7 +1204,7 @@
       "zh_reference_alt_text": "图21-5：复杂文档的版面解析与结构还原"
     },
     {
-      "row_id": "ALT-0050",
+      "row_id": "ALT-0051",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch21",
@@ -1204,7 +1228,7 @@
       "zh_reference_alt_text": "图21-6：不同切分策略对语义完整性的影响"
     },
     {
-      "row_id": "ALT-0051",
+      "row_id": "ALT-0052",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch21",
@@ -1228,7 +1252,7 @@
       "zh_reference_alt_text": "图21-7：父子索引与多粒度检索结构"
     },
     {
-      "row_id": "ALT-0052",
+      "row_id": "ALT-0053",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch21",
@@ -1252,7 +1276,7 @@
       "zh_reference_alt_text": "图21-8：混合检索与 Rerank 的两阶段检索流程"
     },
     {
-      "row_id": "ALT-0053",
+      "row_id": "ALT-0054",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch21",
@@ -1276,7 +1300,7 @@
       "zh_reference_alt_text": "图21-9：RAG 系统的评测、反馈与优化闭环"
     },
     {
-      "row_id": "ALT-0054",
+      "row_id": "ALT-0055",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch22",
@@ -1300,7 +1324,7 @@
       "zh_reference_alt_text": "图22-1：OCR 与视觉理解的能力边界"
     },
     {
-      "row_id": "ALT-0055",
+      "row_id": "ALT-0056",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch22",
@@ -1324,7 +1348,7 @@
       "zh_reference_alt_text": "图22-2：文本与视觉元素的联合表示与对齐"
     },
     {
-      "row_id": "ALT-0056",
+      "row_id": "ALT-0057",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch22",
@@ -1348,7 +1372,7 @@
       "zh_reference_alt_text": "图22-3：跨模态检索与重排序流程"
     },
     {
-      "row_id": "ALT-0057",
+      "row_id": "ALT-0058",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch22",
@@ -1372,7 +1396,7 @@
       "zh_reference_alt_text": "图22-4：多模态 RAG 评测漏斗"
     },
     {
-      "row_id": "ALT-0058",
+      "row_id": "ALT-0059",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch22",
@@ -1396,7 +1420,7 @@
       "zh_reference_alt_text": "图22-5：错误归因到修复动作的闭环"
     },
     {
-      "row_id": "ALT-0059",
+      "row_id": "ALT-0060",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch23",
@@ -1420,7 +1444,7 @@
       "zh_reference_alt_text": "图23-1：从离线评测到线上真实问题分布"
     },
     {
-      "row_id": "ALT-0060",
+      "row_id": "ALT-0061",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch23",
@@ -1444,7 +1468,7 @@
       "zh_reference_alt_text": "图23-2：大模型应用的在线反馈数据飞轮"
     },
     {
-      "row_id": "ALT-0061",
+      "row_id": "ALT-0062",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch23",
@@ -1468,7 +1492,7 @@
       "zh_reference_alt_text": "图23-3：在线反馈事件采集与分流链路"
     },
     {
-      "row_id": "ALT-0062",
+      "row_id": "ALT-0063",
       "language": "en",
       "part": "Part 7: Application-Level Data Engineering",
       "unit": "Ch23",
@@ -1492,7 +1516,7 @@
       "zh_reference_alt_text": "图23-4：知识更新、灰度发布与回滚治理流程"
     },
     {
-      "row_id": "ALT-0063",
+      "row_id": "ALT-0064",
       "language": "en",
       "part": "Part 8: Data Operations and Platform Development",
       "unit": "Ch24",
@@ -1516,7 +1540,7 @@
       "zh_reference_alt_text": "图24-1：LLM数据团队组织演进路径"
     },
     {
-      "row_id": "ALT-0064",
+      "row_id": "ALT-0065",
       "language": "en",
       "part": "Part 8: Data Operations and Platform Development",
       "unit": "Ch24",
@@ -1540,7 +1564,7 @@
       "zh_reference_alt_text": "图24-2：DataOps团队组织全景图"
     },
     {
-      "row_id": "ALT-0065",
+      "row_id": "ALT-0066",
       "language": "en",
       "part": "Part 8: Data Operations and Platform Development",
       "unit": "Ch24",
@@ -1564,7 +1588,7 @@
       "zh_reference_alt_text": "图24-3：DataOps飞轮四池协同示意图"
     },
     {
-      "row_id": "ALT-0066",
+      "row_id": "ALT-0067",
       "language": "en",
       "part": "Part 8: Data Operations and Platform Development",
       "unit": "Ch25",
@@ -1588,7 +1612,7 @@
       "zh_reference_alt_text": "图25-1：版本管理体系全景图"
     },
     {
-      "row_id": "ALT-0067",
+      "row_id": "ALT-0068",
       "language": "en",
       "part": "Part 8: Data Operations and Platform Development",
       "unit": "Ch25",
@@ -1612,7 +1636,7 @@
       "zh_reference_alt_text": "图25-2：数据谱系与实验追踪图"
     },
     {
-      "row_id": "ALT-0068",
+      "row_id": "ALT-0069",
       "language": "en",
       "part": "Part 8: Data Operations and Platform Development",
       "unit": "Ch26",
@@ -1636,7 +1660,7 @@
       "zh_reference_alt_text": "图26-1：异常归因决策树"
     },
     {
-      "row_id": "ALT-0069",
+      "row_id": "ALT-0070",
       "language": "en",
       "part": "Part 8: Data Operations and Platform Development",
       "unit": "Ch26",
@@ -1660,7 +1684,7 @@
       "zh_reference_alt_text": "图26-2：平台可观测性全景图"
     },
     {
-      "row_id": "ALT-0070",
+      "row_id": "ALT-0071",
       "language": "en",
       "part": "Part 9: Data Assets, Data Products, and Data Contracts",
       "unit": "Ch27",
@@ -1684,7 +1708,7 @@
       "zh_reference_alt_text": "数据资产从创建到使用的完整流程"
     },
     {
-      "row_id": "ALT-0071",
+      "row_id": "ALT-0072",
       "language": "en",
       "part": "Part 9: Data Assets, Data Products, and Data Contracts",
       "unit": "Ch27",
@@ -1708,7 +1732,7 @@
       "zh_reference_alt_text": "数据血缘关系图"
     },
     {
-      "row_id": "ALT-0072",
+      "row_id": "ALT-0073",
       "language": "en",
       "part": "Part 9: Data Assets, Data Products, and Data Contracts",
       "unit": "Ch27",
@@ -1732,7 +1756,7 @@
       "zh_reference_alt_text": "数据资产生命周期状态转移图"
     },
     {
-      "row_id": "ALT-0073",
+      "row_id": "ALT-0074",
       "language": "en",
       "part": "Part 9: Data Assets, Data Products, and Data Contracts",
       "unit": "Ch27",
@@ -1756,7 +1780,7 @@
       "zh_reference_alt_text": "基于角色和用途的权限管理矩阵"
     },
     {
-      "row_id": "ALT-0074",
+      "row_id": "ALT-0075",
       "language": "en",
       "part": "Part 9: Data Assets, Data Products, and Data Contracts",
       "unit": "Ch28",
@@ -1780,7 +1804,7 @@
       "zh_reference_alt_text": "数据产品画布"
     },
     {
-      "row_id": "ALT-0075",
+      "row_id": "ALT-0076",
       "language": "en",
       "part": "Part 9: Data Assets, Data Products, and Data Contracts",
       "unit": "Ch28",
@@ -1804,7 +1828,7 @@
       "zh_reference_alt_text": "Data Contract 模板：五类条款的结构"
     },
     {
-      "row_id": "ALT-0076",
+      "row_id": "ALT-0077",
       "language": "en",
       "part": "Part 9: Data Assets, Data Products, and Data Contracts",
       "unit": "Ch28",
@@ -1828,7 +1852,7 @@
       "zh_reference_alt_text": "变更兼容性决策树"
     },
     {
-      "row_id": "ALT-0077",
+      "row_id": "ALT-0078",
       "language": "en",
       "part": "Part 9: Data Assets, Data Products, and Data Contracts",
       "unit": "Ch28",
@@ -1852,7 +1876,7 @@
       "zh_reference_alt_text": "消费者影响分析"
     },
     {
-      "row_id": "ALT-0078",
+      "row_id": "ALT-0079",
       "language": "en",
       "part": "Part 9: Data Assets, Data Products, and Data Contracts",
       "unit": "Ch29",
@@ -1876,7 +1900,7 @@
       "zh_reference_alt_text": "数据资产的多场景复用路径"
     },
     {
-      "row_id": "ALT-0079",
+      "row_id": "ALT-0080",
       "language": "en",
       "part": "Part 9: Data Assets, Data Products, and Data Contracts",
       "unit": "Ch29",
@@ -1900,7 +1924,7 @@
       "zh_reference_alt_text": "数据资产成本—收益矩阵"
     },
     {
-      "row_id": "ALT-0080",
+      "row_id": "ALT-0081",
       "language": "en",
       "part": "Part 9: Data Assets, Data Products, and Data Contracts",
       "unit": "Ch29",
@@ -1924,7 +1948,7 @@
       "zh_reference_alt_text": "数据资产复盘卡"
     },
     {
-      "row_id": "ALT-0081",
+      "row_id": "ALT-0082",
       "language": "en",
       "part": "Part 9: Data Assets, Data Products, and Data Contracts",
       "unit": "Ch30",
@@ -1948,7 +1972,7 @@
       "zh_reference_alt_text": "内部数据市场架构图"
     },
     {
-      "row_id": "ALT-0082",
+      "row_id": "ALT-0083",
       "language": "en",
       "part": "Part 9: Data Assets, Data Products, and Data Contracts",
       "unit": "Ch30",
@@ -1972,7 +1996,7 @@
       "zh_reference_alt_text": "授权审批流程"
     },
     {
-      "row_id": "ALT-0083",
+      "row_id": "ALT-0084",
       "language": "en",
       "part": "Part 10: Intelligent Data Engineering and Data Engineering Agents",
       "unit": "Ch31",
@@ -1996,7 +2020,7 @@
       "zh_reference_alt_text": "数据工程 Agent 六层架构图"
     },
     {
-      "row_id": "ALT-0084",
+      "row_id": "ALT-0085",
       "language": "en",
       "part": "Part 10: Intelligent Data Engineering and Data Engineering Agents",
       "unit": "Ch31",
@@ -2020,7 +2044,7 @@
       "zh_reference_alt_text": "人机协同流程图——按风险等级分流"
     },
     {
-      "row_id": "ALT-0085",
+      "row_id": "ALT-0086",
       "language": "en",
       "part": "Part 10: Intelligent Data Engineering and Data Engineering Agents",
       "unit": "Ch32",
@@ -2044,7 +2068,7 @@
       "zh_reference_alt_text": "四源采集 Agent 统一架构"
     },
     {
-      "row_id": "ALT-0086",
+      "row_id": "ALT-0087",
       "language": "en",
       "part": "Part 10: Intelligent Data Engineering and Data Engineering Agents",
       "unit": "Ch32",
@@ -2068,7 +2092,7 @@
       "zh_reference_alt_text": "解析异常处理决策流程"
     },
     {
-      "row_id": "ALT-0087",
+      "row_id": "ALT-0088",
       "language": "en",
       "part": "Part 10: Intelligent Data Engineering and Data Engineering Agents",
       "unit": "Ch32",
@@ -2092,7 +2116,7 @@
       "zh_reference_alt_text": "质量过滤分级流水线"
     },
     {
-      "row_id": "ALT-0088",
+      "row_id": "ALT-0089",
       "language": "en",
       "part": "Part 10: Intelligent Data Engineering and Data Engineering Agents",
       "unit": "Ch33",
@@ -2116,7 +2140,7 @@
       "zh_reference_alt_text": "标注辅助 Agent 的四个维度"
     },
     {
-      "row_id": "ALT-0089",
+      "row_id": "ALT-0090",
       "language": "en",
       "part": "Part 10: Intelligent Data Engineering and Data Engineering Agents",
       "unit": "Ch33",
@@ -2140,7 +2164,7 @@
       "zh_reference_alt_text": "合成数据 Agent 闭环流水线"
     },
     {
-      "row_id": "ALT-0090",
+      "row_id": "ALT-0091",
       "language": "en",
       "part": "Part 10: Intelligent Data Engineering and Data Engineering Agents",
       "unit": "Ch34",
@@ -2164,7 +2188,7 @@
       "zh_reference_alt_text": "告警到根因定位 Agent 流程"
     },
     {
-      "row_id": "ALT-0091",
+      "row_id": "ALT-0092",
       "language": "en",
       "part": "Part 10: Intelligent Data Engineering and Data Engineering Agents",
       "unit": "Ch34",
@@ -2188,7 +2212,7 @@
       "zh_reference_alt_text": "回滚审批流程"
     },
     {
-      "row_id": "ALT-0092",
+      "row_id": "ALT-0093",
       "language": "en",
       "part": "Part 10: Intelligent Data Engineering and Data Engineering Agents",
       "unit": "Ch34",
@@ -2212,7 +2236,7 @@
       "zh_reference_alt_text": "流水线自愈决策流程"
     },
     {
-      "row_id": "ALT-0093",
+      "row_id": "ALT-0094",
       "language": "en",
       "part": "Part 10: Intelligent Data Engineering and Data Engineering Agents",
       "unit": "Ch35",
@@ -2236,7 +2260,7 @@
       "zh_reference_alt_text": "Agent 权限分层审批流程"
     },
     {
-      "row_id": "ALT-0094",
+      "row_id": "ALT-0095",
       "language": "en",
       "part": "Part 10: Intelligent Data Engineering and Data Engineering Agents",
       "unit": "Ch35",
@@ -2260,7 +2284,7 @@
       "zh_reference_alt_text": "提示注入分层防御流程"
     },
     {
-      "row_id": "ALT-0095",
+      "row_id": "ALT-0096",
       "language": "en",
       "part": "Part 10: Intelligent Data Engineering and Data Engineering Agents",
       "unit": "Ch35",
@@ -2284,7 +2308,7 @@
       "zh_reference_alt_text": "Agent 安全事件应急响应流程"
     },
     {
-      "row_id": "ALT-0096",
+      "row_id": "ALT-0097",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch36",
@@ -2308,7 +2332,7 @@
       "zh_reference_alt_text": "图36-1：合规左移与治理协同架构图"
     },
     {
-      "row_id": "ALT-0097",
+      "row_id": "ALT-0098",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch36",
@@ -2332,7 +2356,7 @@
       "zh_reference_alt_text": "图36-2：数据分级、用途和处理动作构成的风险矩阵图"
     },
     {
-      "row_id": "ALT-0098",
+      "row_id": "ALT-0099",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch36",
@@ -2356,7 +2380,7 @@
       "zh_reference_alt_text": "图36-3：从数据接入到模型训练的合规门禁流程图"
     },
     {
-      "row_id": "ALT-0099",
+      "row_id": "ALT-0100",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch36",
@@ -2380,7 +2404,7 @@
       "zh_reference_alt_text": "图36-4：隐私规格与策略生成流程图"
     },
     {
-      "row_id": "ALT-0100",
+      "row_id": "ALT-0101",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch36",
@@ -2404,7 +2428,7 @@
       "zh_reference_alt_text": "图36-5：DPIA与RoPA工程化审批流"
     },
     {
-      "row_id": "ALT-0101",
+      "row_id": "ALT-0102",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch36",
@@ -2428,7 +2452,7 @@
       "zh_reference_alt_text": "图36-6：审计日志、告警、事件响应与复盘闭环图"
     },
     {
-      "row_id": "ALT-0102",
+      "row_id": "ALT-0103",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch36",
@@ -2452,7 +2476,7 @@
       "zh_reference_alt_text": "图36-7：第三方 API / 大模型调用边界网关图"
     },
     {
-      "row_id": "ALT-0103",
+      "row_id": "ALT-0104",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch36",
@@ -2476,7 +2500,7 @@
       "zh_reference_alt_text": "图36-8：用户删除请求的全链路传播与清理示意图"
     },
     {
-      "row_id": "ALT-0104",
+      "row_id": "ALT-0105",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch37",
@@ -2500,7 +2524,7 @@
       "zh_reference_alt_text": "图37-1：跨机构医疗数据协作中的隐私与合规冲突示意图"
     },
     {
-      "row_id": "ALT-0105",
+      "row_id": "ALT-0106",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch37",
@@ -2524,7 +2548,7 @@
       "zh_reference_alt_text": "图37-2：数据可用性与隐私保护的结构性矛盾示意图"
     },
     {
-      "row_id": "ALT-0106",
+      "row_id": "ALT-0107",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch37",
@@ -2548,7 +2572,7 @@
       "zh_reference_alt_text": "图37-3：从数据安全到训练安全的治理重心迁移图"
     },
     {
-      "row_id": "ALT-0107",
+      "row_id": "ALT-0108",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch37",
@@ -2572,7 +2596,7 @@
       "zh_reference_alt_text": "图37-4：隐私增强技术全景矩阵图"
     },
     {
-      "row_id": "ALT-0108",
+      "row_id": "ALT-0109",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch37",
@@ -2596,7 +2620,7 @@
       "zh_reference_alt_text": "图37-5：联邦学习基本训练闭环"
     },
     {
-      "row_id": "ALT-0109",
+      "row_id": "ALT-0110",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch37",
@@ -2620,7 +2644,7 @@
       "zh_reference_alt_text": "图37-6：DP-SGD 训练流程示意图"
     },
     {
-      "row_id": "ALT-0110",
+      "row_id": "ALT-0111",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch37",
@@ -2644,7 +2668,7 @@
       "zh_reference_alt_text": "图37-7：联邦训练中的通信成本分解图"
     },
     {
-      "row_id": "ALT-0111",
+      "row_id": "ALT-0112",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch37",
@@ -2668,7 +2692,7 @@
       "zh_reference_alt_text": "图37-8：横向联邦与纵向联邦对比示意图"
     },
     {
-      "row_id": "ALT-0112",
+      "row_id": "ALT-0113",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch37",
@@ -2692,7 +2716,7 @@
       "zh_reference_alt_text": "图37-9：梯度反演攻击示意图"
     },
     {
-      "row_id": "ALT-0113",
+      "row_id": "ALT-0114",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch37",
@@ -2716,7 +2740,7 @@
       "zh_reference_alt_text": "图37-10：联邦系统整体架构图"
     },
     {
-      "row_id": "ALT-0114",
+      "row_id": "ALT-0115",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch37",
@@ -2740,7 +2764,7 @@
       "zh_reference_alt_text": "图37-11：合规治理、隐私流水线、联邦训练与应用能力闭环图"
     },
     {
-      "row_id": "ALT-0115",
+      "row_id": "ALT-0116",
       "language": "en",
       "part": "Part 11: Privacy Compliance and Data Security",
       "unit": "Ch37",
@@ -2764,7 +2788,7 @@
       "zh_reference_alt_text": "图37-12：医疗与金融场景的隐私技术路线对比图"
     },
     {
-      "row_id": "ALT-0116",
+      "row_id": "ALT-0117",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch38",
@@ -2788,7 +2812,7 @@
       "zh_reference_alt_text": "图38-1 FineWeb MinHash 去重和 PII 处理流程"
     },
     {
-      "row_id": "ALT-0117",
+      "row_id": "ALT-0118",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch38",
@@ -2812,7 +2836,7 @@
       "zh_reference_alt_text": "图38-2 FineWeb 数据处理选择的消融评估回路"
     },
     {
-      "row_id": "ALT-0118",
+      "row_id": "ALT-0119",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch38",
@@ -2836,7 +2860,7 @@
       "zh_reference_alt_text": "图38-3 Dolma 透明语料证据链"
     },
     {
-      "row_id": "ALT-0119",
+      "row_id": "ALT-0120",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch38",
@@ -2860,7 +2884,7 @@
       "zh_reference_alt_text": "图38-4 Dolma source mix 与训练诊断回路"
     },
     {
-      "row_id": "ALT-0120",
+      "row_id": "ALT-0121",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch39",
@@ -2884,7 +2908,7 @@
       "zh_reference_alt_text": "图39-1 LAION-5B 图文候选记录的多通道 schema"
     },
     {
-      "row_id": "ALT-0121",
+      "row_id": "ALT-0122",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch39",
@@ -2908,7 +2932,7 @@
       "zh_reference_alt_text": "图39-2 图文候选池质量评估与闭环修复"
     },
     {
-      "row_id": "ALT-0122",
+      "row_id": "ALT-0123",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch40",
@@ -2932,7 +2956,7 @@
       "zh_reference_alt_text": "图40-1：Schema 到 JSON 的结构化映射"
     },
     {
-      "row_id": "ALT-0123",
+      "row_id": "ALT-0124",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch40",
@@ -2956,7 +2980,7 @@
       "zh_reference_alt_text": "图40-2：StructBill-CN 数据集构建流水线"
     },
     {
-      "row_id": "ALT-0124",
+      "row_id": "ALT-0125",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch40",
@@ -2980,7 +3004,7 @@
       "zh_reference_alt_text": "图40-3：结构一致性校验门禁"
     },
     {
-      "row_id": "ALT-0125",
+      "row_id": "ALT-0126",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch40",
@@ -3004,7 +3028,7 @@
       "zh_reference_alt_text": "图40-4：表格样本三类监督信号结构图"
     },
     {
-      "row_id": "ALT-0126",
+      "row_id": "ALT-0127",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch40",
@@ -3028,7 +3052,7 @@
       "zh_reference_alt_text": "图40-5：SparseTable-Bench 四阶段构建流水线图"
     },
     {
-      "row_id": "ALT-0127",
+      "row_id": "ALT-0128",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch40",
@@ -3052,7 +3076,7 @@
       "zh_reference_alt_text": "图40-6：STB-Mask-Stress 遮挡生成与评测流程图"
     },
     {
-      "row_id": "ALT-0128",
+      "row_id": "ALT-0129",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch41",
@@ -3076,7 +3100,7 @@
       "zh_reference_alt_text": "图41-1：多图表信息图推理数据集领域覆盖分布"
     },
     {
-      "row_id": "ALT-0129",
+      "row_id": "ALT-0130",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch41",
@@ -3100,7 +3124,7 @@
       "zh_reference_alt_text": "图41-2：多图表信息图推理数据集子图表类型分布"
     },
     {
-      "row_id": "ALT-0130",
+      "row_id": "ALT-0131",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch41",
@@ -3124,7 +3148,7 @@
       "zh_reference_alt_text": "图41-3：多图表信息图推理数据集子问题类型分布"
     },
     {
-      "row_id": "ALT-0131",
+      "row_id": "ALT-0132",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch41",
@@ -3148,7 +3172,7 @@
       "zh_reference_alt_text": "图41-4：多图表信息图样本（鲨鱼袭击）"
     },
     {
-      "row_id": "ALT-0132",
+      "row_id": "ALT-0133",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch41",
@@ -3172,7 +3196,7 @@
       "zh_reference_alt_text": "图41-5：多图标信息图推理数据集四阶段构建流水线图"
     },
     {
-      "row_id": "ALT-0133",
+      "row_id": "ALT-0134",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch41",
@@ -3196,7 +3220,7 @@
       "zh_reference_alt_text": "图41-6：MedImage-ToolVQA 数据构建概念流程"
     },
     {
-      "row_id": "ALT-0134",
+      "row_id": "ALT-0135",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch41",
@@ -3220,7 +3244,7 @@
       "zh_reference_alt_text": "图41-7：工具调用多轮轨迹结构"
     },
     {
-      "row_id": "ALT-0135",
+      "row_id": "ALT-0136",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch41",
@@ -3244,7 +3268,7 @@
       "zh_reference_alt_text": "图41-8：SFT schema 中的真实图像与 bbox 证据"
     },
     {
-      "row_id": "ALT-0136",
+      "row_id": "ALT-0137",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch41",
@@ -3268,7 +3292,7 @@
       "zh_reference_alt_text": "图41-9：质量控制与人工复核门禁"
     },
     {
-      "row_id": "ALT-0137",
+      "row_id": "ALT-0138",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch42",
@@ -3292,7 +3316,7 @@
       "zh_reference_alt_text": "图42-1：语义响应与风格控制双通道 schema"
     },
     {
-      "row_id": "ALT-0138",
+      "row_id": "ALT-0139",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch42",
@@ -3316,7 +3340,7 @@
       "zh_reference_alt_text": "图42-2：VoiceStyleControl 数据构建流水线"
     },
     {
-      "row_id": "ALT-0139",
+      "row_id": "ALT-0140",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch42",
@@ -3340,7 +3364,7 @@
       "zh_reference_alt_text": "图42-3：质量评估与数据飞轮闭环"
     },
     {
-      "row_id": "ALT-0140",
+      "row_id": "ALT-0141",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch43",
@@ -3364,7 +3388,7 @@
       "zh_reference_alt_text": "图43-1：Latent-Switch-69K 构建流水线图"
     },
     {
-      "row_id": "ALT-0141",
+      "row_id": "ALT-0142",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch43",
@@ -3388,7 +3412,7 @@
       "zh_reference_alt_text": "图43-2：Latent-Switch-69K 数据来源与领域组成"
     },
     {
-      "row_id": "ALT-0142",
+      "row_id": "ALT-0143",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch43",
@@ -3412,7 +3436,7 @@
       "zh_reference_alt_text": "图43-3：原始 CoT、压缩 CoT 与 latent placeholder 对比"
     },
     {
-      "row_id": "ALT-0143",
+      "row_id": "ALT-0144",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch43",
@@ -3436,7 +3460,7 @@
       "zh_reference_alt_text": "图43-4：原始与蒸馏后推理长度及压缩率统计"
     },
     {
-      "row_id": "ALT-0144",
+      "row_id": "ALT-0145",
       "language": "en",
       "part": "Part 12: Specialized Datasets and Multimodal Data Engineering Practice",
       "unit": "Ch43",
@@ -3460,7 +3484,7 @@
       "zh_reference_alt_text": "图43-5：Supervision mask 示意图"
     },
     {
-      "row_id": "ALT-0145",
+      "row_id": "ALT-0146",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch44",
@@ -3484,7 +3508,7 @@
       "zh_reference_alt_text": "图44-1：数据配方漏斗 (Data Recipe Funnel)"
     },
     {
-      "row_id": "ALT-0146",
+      "row_id": "ALT-0147",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch44",
@@ -3508,7 +3532,7 @@
       "zh_reference_alt_text": "图44-2：大模型数据透明度光谱 (Data Transparency Spectrum)"
     },
     {
-      "row_id": "ALT-0147",
+      "row_id": "ALT-0148",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch44",
@@ -3532,7 +3556,7 @@
       "zh_reference_alt_text": "图44-3：预训练数据源分层地图"
     },
     {
-      "row_id": "ALT-0148",
+      "row_id": "ALT-0149",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch44",
@@ -3556,7 +3580,7 @@
       "zh_reference_alt_text": "图44-4：三模型数据组成饼图对比 (Estimated Data Mixture Ratios)"
     },
     {
-      "row_id": "ALT-0149",
+      "row_id": "ALT-0150",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch44",
@@ -3580,7 +3604,7 @@
       "zh_reference_alt_text": "图44-5：Llama-3 退火期数据组成时间轴 (Curriculum Learning Schedule)"
     },
     {
-      "row_id": "ALT-0150",
+      "row_id": "ALT-0151",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch45",
@@ -3604,7 +3628,7 @@
       "zh_reference_alt_text": "图45-1：LLM 后训练三阶段流水线示意图"
     },
     {
-      "row_id": "ALT-0151",
+      "row_id": "ALT-0152",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch45",
@@ -3628,7 +3652,7 @@
       "zh_reference_alt_text": "图45-2：Self-Instruct、Evol-Instruct 与 Magpie 三流派 pipeline 对比"
     },
     {
-      "row_id": "ALT-0152",
+      "row_id": "ALT-0153",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch45",
@@ -3652,7 +3676,7 @@
       "zh_reference_alt_text": "图45-3：Tülu-3 三阶段数据流与规模示意"
     },
     {
-      "row_id": "ALT-0153",
+      "row_id": "ALT-0154",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch46",
@@ -3676,7 +3700,7 @@
       "zh_reference_alt_text": "图46-1：R1 风格推理数据飞轮四阶段"
     },
     {
-      "row_id": "ALT-0154",
+      "row_id": "ALT-0155",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch46",
@@ -3700,7 +3724,7 @@
       "zh_reference_alt_text": "图46-2：推理数据奖励信号与验证器结构"
     },
     {
-      "row_id": "ALT-0155",
+      "row_id": "ALT-0156",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch46",
@@ -3724,7 +3748,7 @@
       "zh_reference_alt_text": "图46-3：Long-CoT 数据样例剖面"
     },
     {
-      "row_id": "ALT-0156",
+      "row_id": "ALT-0157",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch47",
@@ -3748,7 +3772,7 @@
       "zh_reference_alt_text": "图47-1：多模态数据工程全景图"
     },
     {
-      "row_id": "ALT-0157",
+      "row_id": "ALT-0158",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch47",
@@ -3772,7 +3796,7 @@
       "zh_reference_alt_text": "图47-2：VLM 数据三阶段流水线 (3-Stage VLM Data Engineering Pipeline)"
     },
     {
-      "row_id": "ALT-0158",
+      "row_id": "ALT-0159",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch47",
@@ -3796,7 +3820,7 @@
       "zh_reference_alt_text": "图47-3：Native vs Dynamic Resolution 数据 pipeline 对比 (Resolution Handling)"
     },
     {
-      "row_id": "ALT-0159",
+      "row_id": "ALT-0160",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch47",
@@ -3820,7 +3844,7 @@
       "zh_reference_alt_text": "图47-4：多模态指令合成 pipeline (Multi-modal Instruction Synthesis)"
     },
     {
-      "row_id": "ALT-0160",
+      "row_id": "ALT-0161",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch48",
@@ -3844,7 +3868,7 @@
       "zh_reference_alt_text": "图48-1：T2I 数据流水线"
     },
     {
-      "row_id": "ALT-0161",
+      "row_id": "ALT-0162",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch48",
@@ -3868,7 +3892,7 @@
       "zh_reference_alt_text": "图48-2：T2V 数据流水线"
     },
     {
-      "row_id": "ALT-0162",
+      "row_id": "ALT-0163",
       "language": "en",
       "part": "Part 13: Open-source LLM Data Engineering Recipes and Paradigms",
       "unit": "Ch48",
@@ -3892,7 +3916,7 @@
       "zh_reference_alt_text": "图48-3：美学/版权/安全多级过滤架构"
     },
     {
-      "row_id": "ALT-0163",
+      "row_id": "ALT-0164",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P01",
@@ -3916,7 +3940,7 @@
       "zh_reference_alt_text": "图 P01-1"
     },
     {
-      "row_id": "ALT-0164",
+      "row_id": "ALT-0165",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P01",
@@ -3940,7 +3964,7 @@
       "zh_reference_alt_text": "图 P01-2"
     },
     {
-      "row_id": "ALT-0165",
+      "row_id": "ALT-0166",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P01",
@@ -3964,7 +3988,7 @@
       "zh_reference_alt_text": "图 P01-3"
     },
     {
-      "row_id": "ALT-0166",
+      "row_id": "ALT-0167",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P01",
@@ -3988,7 +4012,7 @@
       "zh_reference_alt_text": "图 P01-4"
     },
     {
-      "row_id": "ALT-0167",
+      "row_id": "ALT-0168",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P01",
@@ -4012,7 +4036,7 @@
       "zh_reference_alt_text": "图 P01-5"
     },
     {
-      "row_id": "ALT-0168",
+      "row_id": "ALT-0169",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P01",
@@ -4036,7 +4060,7 @@
       "zh_reference_alt_text": "图 P01-6"
     },
     {
-      "row_id": "ALT-0169",
+      "row_id": "ALT-0170",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P01",
@@ -4060,7 +4084,7 @@
       "zh_reference_alt_text": "图 P01-7"
     },
     {
-      "row_id": "ALT-0170",
+      "row_id": "ALT-0171",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P01",
@@ -4084,7 +4108,7 @@
       "zh_reference_alt_text": "图 P01-8"
     },
     {
-      "row_id": "ALT-0171",
+      "row_id": "ALT-0172",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P01",
@@ -4108,7 +4132,7 @@
       "zh_reference_alt_text": "图 P01-9"
     },
     {
-      "row_id": "ALT-0172",
+      "row_id": "ALT-0173",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P01",
@@ -4132,7 +4156,7 @@
       "zh_reference_alt_text": "图 P01-10"
     },
     {
-      "row_id": "ALT-0173",
+      "row_id": "ALT-0174",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P01",
@@ -4156,7 +4180,7 @@
       "zh_reference_alt_text": "图 P01-11"
     },
     {
-      "row_id": "ALT-0174",
+      "row_id": "ALT-0175",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4180,7 +4204,7 @@
       "zh_reference_alt_text": "图 P02-1"
     },
     {
-      "row_id": "ALT-0175",
+      "row_id": "ALT-0176",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4204,7 +4228,7 @@
       "zh_reference_alt_text": "图 P02-2"
     },
     {
-      "row_id": "ALT-0176",
+      "row_id": "ALT-0177",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4228,7 +4252,7 @@
       "zh_reference_alt_text": "图 P02-3"
     },
     {
-      "row_id": "ALT-0177",
+      "row_id": "ALT-0178",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4252,7 +4276,7 @@
       "zh_reference_alt_text": "图 P02-4"
     },
     {
-      "row_id": "ALT-0178",
+      "row_id": "ALT-0179",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4276,7 +4300,7 @@
       "zh_reference_alt_text": "图 P02-5"
     },
     {
-      "row_id": "ALT-0179",
+      "row_id": "ALT-0180",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4300,7 +4324,7 @@
       "zh_reference_alt_text": "图 P02-6"
     },
     {
-      "row_id": "ALT-0180",
+      "row_id": "ALT-0181",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4324,7 +4348,7 @@
       "zh_reference_alt_text": "图 P02-7"
     },
     {
-      "row_id": "ALT-0181",
+      "row_id": "ALT-0182",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4348,7 +4372,7 @@
       "zh_reference_alt_text": "图 P02-8"
     },
     {
-      "row_id": "ALT-0182",
+      "row_id": "ALT-0183",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4372,7 +4396,7 @@
       "zh_reference_alt_text": "图 P02-9"
     },
     {
-      "row_id": "ALT-0183",
+      "row_id": "ALT-0184",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4396,7 +4420,7 @@
       "zh_reference_alt_text": "图 P02-10"
     },
     {
-      "row_id": "ALT-0184",
+      "row_id": "ALT-0185",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4420,7 +4444,7 @@
       "zh_reference_alt_text": "图 P02-11"
     },
     {
-      "row_id": "ALT-0185",
+      "row_id": "ALT-0186",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4444,7 +4468,7 @@
       "zh_reference_alt_text": "图 P02-12"
     },
     {
-      "row_id": "ALT-0186",
+      "row_id": "ALT-0187",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4468,7 +4492,7 @@
       "zh_reference_alt_text": "图 P02-13"
     },
     {
-      "row_id": "ALT-0187",
+      "row_id": "ALT-0188",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4492,7 +4516,7 @@
       "zh_reference_alt_text": "图 P02-14"
     },
     {
-      "row_id": "ALT-0188",
+      "row_id": "ALT-0189",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4516,7 +4540,7 @@
       "zh_reference_alt_text": "图 P02-15"
     },
     {
-      "row_id": "ALT-0189",
+      "row_id": "ALT-0190",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4540,7 +4564,7 @@
       "zh_reference_alt_text": "图 P02-16"
     },
     {
-      "row_id": "ALT-0190",
+      "row_id": "ALT-0191",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4564,7 +4588,7 @@
       "zh_reference_alt_text": "图 P02-17"
     },
     {
-      "row_id": "ALT-0191",
+      "row_id": "ALT-0192",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4588,7 +4612,7 @@
       "zh_reference_alt_text": "图 P02-18"
     },
     {
-      "row_id": "ALT-0192",
+      "row_id": "ALT-0193",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4612,7 +4636,7 @@
       "zh_reference_alt_text": "图 P02-19"
     },
     {
-      "row_id": "ALT-0193",
+      "row_id": "ALT-0194",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P02",
@@ -4636,7 +4660,7 @@
       "zh_reference_alt_text": "图 P02-20"
     },
     {
-      "row_id": "ALT-0194",
+      "row_id": "ALT-0195",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P03",
@@ -4660,7 +4684,7 @@
       "zh_reference_alt_text": "图 P03-1"
     },
     {
-      "row_id": "ALT-0195",
+      "row_id": "ALT-0196",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P03",
@@ -4684,7 +4708,7 @@
       "zh_reference_alt_text": "图 P03-2"
     },
     {
-      "row_id": "ALT-0196",
+      "row_id": "ALT-0197",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P03",
@@ -4708,7 +4732,7 @@
       "zh_reference_alt_text": "图 P03-3"
     },
     {
-      "row_id": "ALT-0197",
+      "row_id": "ALT-0198",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P03",
@@ -4732,7 +4756,7 @@
       "zh_reference_alt_text": "图 P03-4"
     },
     {
-      "row_id": "ALT-0198",
+      "row_id": "ALT-0199",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P03",
@@ -4756,7 +4780,7 @@
       "zh_reference_alt_text": "图 P03-5"
     },
     {
-      "row_id": "ALT-0199",
+      "row_id": "ALT-0200",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P03",
@@ -4780,7 +4804,7 @@
       "zh_reference_alt_text": "图 P03-6"
     },
     {
-      "row_id": "ALT-0200",
+      "row_id": "ALT-0201",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P03",
@@ -4804,7 +4828,7 @@
       "zh_reference_alt_text": "图 P03-7"
     },
     {
-      "row_id": "ALT-0201",
+      "row_id": "ALT-0202",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P03",
@@ -4828,7 +4852,7 @@
       "zh_reference_alt_text": "图 P03-8"
     },
     {
-      "row_id": "ALT-0202",
+      "row_id": "ALT-0203",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P04",
@@ -4852,7 +4876,7 @@
       "zh_reference_alt_text": "图 P04-1"
     },
     {
-      "row_id": "ALT-0203",
+      "row_id": "ALT-0204",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P04",
@@ -4876,7 +4900,7 @@
       "zh_reference_alt_text": "图 P04-2"
     },
     {
-      "row_id": "ALT-0204",
+      "row_id": "ALT-0205",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P04",
@@ -4900,7 +4924,7 @@
       "zh_reference_alt_text": "图 P04-3"
     },
     {
-      "row_id": "ALT-0205",
+      "row_id": "ALT-0206",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P04",
@@ -4924,7 +4948,7 @@
       "zh_reference_alt_text": "图 P04-4"
     },
     {
-      "row_id": "ALT-0206",
+      "row_id": "ALT-0207",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P04",
@@ -4948,7 +4972,7 @@
       "zh_reference_alt_text": "图 P04-5"
     },
     {
-      "row_id": "ALT-0207",
+      "row_id": "ALT-0208",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P04",
@@ -4972,7 +4996,7 @@
       "zh_reference_alt_text": "图 P04-6"
     },
     {
-      "row_id": "ALT-0208",
+      "row_id": "ALT-0209",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P04",
@@ -4996,7 +5020,7 @@
       "zh_reference_alt_text": "图 P04-7"
     },
     {
-      "row_id": "ALT-0209",
+      "row_id": "ALT-0210",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P04",
@@ -5020,7 +5044,7 @@
       "zh_reference_alt_text": "图 P04-8"
     },
     {
-      "row_id": "ALT-0210",
+      "row_id": "ALT-0211",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P04",
@@ -5044,7 +5068,7 @@
       "zh_reference_alt_text": "图 P04-9"
     },
     {
-      "row_id": "ALT-0211",
+      "row_id": "ALT-0212",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P04",
@@ -5068,7 +5092,7 @@
       "zh_reference_alt_text": "图 P04-10"
     },
     {
-      "row_id": "ALT-0212",
+      "row_id": "ALT-0213",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P04",
@@ -5092,7 +5116,7 @@
       "zh_reference_alt_text": "图 P04-11"
     },
     {
-      "row_id": "ALT-0213",
+      "row_id": "ALT-0214",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P05",
@@ -5116,7 +5140,7 @@
       "zh_reference_alt_text": "图 P05-1"
     },
     {
-      "row_id": "ALT-0214",
+      "row_id": "ALT-0215",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P05",
@@ -5140,7 +5164,7 @@
       "zh_reference_alt_text": "图 P05-2"
     },
     {
-      "row_id": "ALT-0215",
+      "row_id": "ALT-0216",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P05",
@@ -5164,7 +5188,7 @@
       "zh_reference_alt_text": "图 P05-3"
     },
     {
-      "row_id": "ALT-0216",
+      "row_id": "ALT-0217",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P05",
@@ -5188,7 +5212,7 @@
       "zh_reference_alt_text": "图 P05-4"
     },
     {
-      "row_id": "ALT-0217",
+      "row_id": "ALT-0218",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P05",
@@ -5212,7 +5236,7 @@
       "zh_reference_alt_text": "图 P05-5"
     },
     {
-      "row_id": "ALT-0218",
+      "row_id": "ALT-0219",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P05",
@@ -5236,7 +5260,7 @@
       "zh_reference_alt_text": "图 P05-6"
     },
     {
-      "row_id": "ALT-0219",
+      "row_id": "ALT-0220",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P05",
@@ -5260,7 +5284,7 @@
       "zh_reference_alt_text": "图 P05-7"
     },
     {
-      "row_id": "ALT-0220",
+      "row_id": "ALT-0221",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P05",
@@ -5284,7 +5308,7 @@
       "zh_reference_alt_text": "图 P05-8"
     },
     {
-      "row_id": "ALT-0221",
+      "row_id": "ALT-0222",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P05",
@@ -5308,7 +5332,7 @@
       "zh_reference_alt_text": "图 P05-9"
     },
     {
-      "row_id": "ALT-0222",
+      "row_id": "ALT-0223",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P06",
@@ -5332,7 +5356,7 @@
       "zh_reference_alt_text": "图 P06-1"
     },
     {
-      "row_id": "ALT-0223",
+      "row_id": "ALT-0224",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P06",
@@ -5356,7 +5380,7 @@
       "zh_reference_alt_text": "图 P06-2"
     },
     {
-      "row_id": "ALT-0224",
+      "row_id": "ALT-0225",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P06",
@@ -5380,7 +5404,7 @@
       "zh_reference_alt_text": "图 P06-3"
     },
     {
-      "row_id": "ALT-0225",
+      "row_id": "ALT-0226",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P06",
@@ -5404,7 +5428,7 @@
       "zh_reference_alt_text": "图 P06-4"
     },
     {
-      "row_id": "ALT-0226",
+      "row_id": "ALT-0227",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P06",
@@ -5428,7 +5452,7 @@
       "zh_reference_alt_text": "图 P06-5"
     },
     {
-      "row_id": "ALT-0227",
+      "row_id": "ALT-0228",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P06",
@@ -5452,7 +5476,7 @@
       "zh_reference_alt_text": "图 P06-6"
     },
     {
-      "row_id": "ALT-0228",
+      "row_id": "ALT-0229",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P06",
@@ -5476,7 +5500,7 @@
       "zh_reference_alt_text": "图 P06-7"
     },
     {
-      "row_id": "ALT-0229",
+      "row_id": "ALT-0230",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P06",
@@ -5500,7 +5524,7 @@
       "zh_reference_alt_text": "图 P06-8"
     },
     {
-      "row_id": "ALT-0230",
+      "row_id": "ALT-0231",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P06",
@@ -5524,7 +5548,7 @@
       "zh_reference_alt_text": "图 P06-9"
     },
     {
-      "row_id": "ALT-0231",
+      "row_id": "ALT-0232",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P06",
@@ -5548,7 +5572,7 @@
       "zh_reference_alt_text": "图 P06-10"
     },
     {
-      "row_id": "ALT-0232",
+      "row_id": "ALT-0233",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5572,7 +5596,7 @@
       "zh_reference_alt_text": "图 P07-1"
     },
     {
-      "row_id": "ALT-0233",
+      "row_id": "ALT-0234",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5596,7 +5620,7 @@
       "zh_reference_alt_text": "图 P07-2"
     },
     {
-      "row_id": "ALT-0234",
+      "row_id": "ALT-0235",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5620,7 +5644,7 @@
       "zh_reference_alt_text": "图 P07-3"
     },
     {
-      "row_id": "ALT-0235",
+      "row_id": "ALT-0236",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5644,7 +5668,7 @@
       "zh_reference_alt_text": "图 P07-4"
     },
     {
-      "row_id": "ALT-0236",
+      "row_id": "ALT-0237",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5668,7 +5692,7 @@
       "zh_reference_alt_text": "图 P07-5"
     },
     {
-      "row_id": "ALT-0237",
+      "row_id": "ALT-0238",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5692,7 +5716,7 @@
       "zh_reference_alt_text": "图 P07-6"
     },
     {
-      "row_id": "ALT-0238",
+      "row_id": "ALT-0239",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5716,7 +5740,7 @@
       "zh_reference_alt_text": "图 P07-7"
     },
     {
-      "row_id": "ALT-0239",
+      "row_id": "ALT-0240",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5740,7 +5764,7 @@
       "zh_reference_alt_text": "图 P07-8"
     },
     {
-      "row_id": "ALT-0240",
+      "row_id": "ALT-0241",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5764,7 +5788,7 @@
       "zh_reference_alt_text": "图 P07-9"
     },
     {
-      "row_id": "ALT-0241",
+      "row_id": "ALT-0242",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5788,7 +5812,7 @@
       "zh_reference_alt_text": "图 P07-10"
     },
     {
-      "row_id": "ALT-0242",
+      "row_id": "ALT-0243",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5812,7 +5836,7 @@
       "zh_reference_alt_text": "图 P07-11"
     },
     {
-      "row_id": "ALT-0243",
+      "row_id": "ALT-0244",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5836,7 +5860,7 @@
       "zh_reference_alt_text": "图 P07-12"
     },
     {
-      "row_id": "ALT-0244",
+      "row_id": "ALT-0245",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5860,7 +5884,7 @@
       "zh_reference_alt_text": "图 P07-13"
     },
     {
-      "row_id": "ALT-0245",
+      "row_id": "ALT-0246",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P07",
@@ -5884,7 +5908,7 @@
       "zh_reference_alt_text": "图 P07-14"
     },
     {
-      "row_id": "ALT-0246",
+      "row_id": "ALT-0247",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P08",
@@ -5908,7 +5932,7 @@
       "zh_reference_alt_text": "图 P08-1"
     },
     {
-      "row_id": "ALT-0247",
+      "row_id": "ALT-0248",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P08",
@@ -5932,7 +5956,7 @@
       "zh_reference_alt_text": "图 P08-2"
     },
     {
-      "row_id": "ALT-0248",
+      "row_id": "ALT-0249",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P08",
@@ -5956,7 +5980,7 @@
       "zh_reference_alt_text": "图 P08-3"
     },
     {
-      "row_id": "ALT-0249",
+      "row_id": "ALT-0250",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P08",
@@ -5980,7 +6004,7 @@
       "zh_reference_alt_text": "图 P08-4"
     },
     {
-      "row_id": "ALT-0250",
+      "row_id": "ALT-0251",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P08",
@@ -6004,7 +6028,7 @@
       "zh_reference_alt_text": "图 P08-5"
     },
     {
-      "row_id": "ALT-0251",
+      "row_id": "ALT-0252",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P08",
@@ -6028,7 +6052,7 @@
       "zh_reference_alt_text": "图 P08-6"
     },
     {
-      "row_id": "ALT-0252",
+      "row_id": "ALT-0253",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P08",
@@ -6052,7 +6076,7 @@
       "zh_reference_alt_text": "图 P08-7"
     },
     {
-      "row_id": "ALT-0253",
+      "row_id": "ALT-0254",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P08",
@@ -6076,7 +6100,7 @@
       "zh_reference_alt_text": "图 P08-8"
     },
     {
-      "row_id": "ALT-0254",
+      "row_id": "ALT-0255",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P08",
@@ -6100,7 +6124,7 @@
       "zh_reference_alt_text": "图 P08-9"
     },
     {
-      "row_id": "ALT-0255",
+      "row_id": "ALT-0256",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P08",
@@ -6124,7 +6148,7 @@
       "zh_reference_alt_text": "图 P08-10"
     },
     {
-      "row_id": "ALT-0256",
+      "row_id": "ALT-0257",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P08",
@@ -6148,7 +6172,7 @@
       "zh_reference_alt_text": "图 P08-11"
     },
     {
-      "row_id": "ALT-0257",
+      "row_id": "ALT-0258",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P09",
@@ -6172,7 +6196,7 @@
       "zh_reference_alt_text": "图 P09-1"
     },
     {
-      "row_id": "ALT-0258",
+      "row_id": "ALT-0259",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P09",
@@ -6196,7 +6220,7 @@
       "zh_reference_alt_text": "图 P09-2"
     },
     {
-      "row_id": "ALT-0259",
+      "row_id": "ALT-0260",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P09",
@@ -6220,7 +6244,7 @@
       "zh_reference_alt_text": "图 P09-3"
     },
     {
-      "row_id": "ALT-0260",
+      "row_id": "ALT-0261",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P09",
@@ -6244,7 +6268,7 @@
       "zh_reference_alt_text": "图 P09-4"
     },
     {
-      "row_id": "ALT-0261",
+      "row_id": "ALT-0262",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P09",
@@ -6268,7 +6292,7 @@
       "zh_reference_alt_text": "图 P09-5"
     },
     {
-      "row_id": "ALT-0262",
+      "row_id": "ALT-0263",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P09",
@@ -6292,7 +6316,7 @@
       "zh_reference_alt_text": "图 P09-6"
     },
     {
-      "row_id": "ALT-0263",
+      "row_id": "ALT-0264",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P09",
@@ -6316,7 +6340,7 @@
       "zh_reference_alt_text": "图 P09-7"
     },
     {
-      "row_id": "ALT-0264",
+      "row_id": "ALT-0265",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P09",
@@ -6340,7 +6364,7 @@
       "zh_reference_alt_text": "图 P09-8"
     },
     {
-      "row_id": "ALT-0265",
+      "row_id": "ALT-0266",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P09",
@@ -6364,7 +6388,7 @@
       "zh_reference_alt_text": "图 P09-9"
     },
     {
-      "row_id": "ALT-0266",
+      "row_id": "ALT-0267",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P09",
@@ -6388,7 +6412,7 @@
       "zh_reference_alt_text": "图 P09-10"
     },
     {
-      "row_id": "ALT-0267",
+      "row_id": "ALT-0268",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P09",
@@ -6412,7 +6436,7 @@
       "zh_reference_alt_text": "图 P09-11"
     },
     {
-      "row_id": "ALT-0268",
+      "row_id": "ALT-0269",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P09",
@@ -6436,7 +6460,7 @@
       "zh_reference_alt_text": "图 P09-12"
     },
     {
-      "row_id": "ALT-0269",
+      "row_id": "ALT-0270",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P10",
@@ -6460,7 +6484,7 @@
       "zh_reference_alt_text": "图 P10-1"
     },
     {
-      "row_id": "ALT-0270",
+      "row_id": "ALT-0271",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P10",
@@ -6484,7 +6508,7 @@
       "zh_reference_alt_text": "图 P10-2"
     },
     {
-      "row_id": "ALT-0271",
+      "row_id": "ALT-0272",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P10",
@@ -6508,7 +6532,7 @@
       "zh_reference_alt_text": "图 P10-3"
     },
     {
-      "row_id": "ALT-0272",
+      "row_id": "ALT-0273",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P10",
@@ -6532,7 +6556,7 @@
       "zh_reference_alt_text": "图 P10-4"
     },
     {
-      "row_id": "ALT-0273",
+      "row_id": "ALT-0274",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P10",
@@ -6556,7 +6580,7 @@
       "zh_reference_alt_text": "图 P10-5"
     },
     {
-      "row_id": "ALT-0274",
+      "row_id": "ALT-0275",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P10",
@@ -6580,7 +6604,7 @@
       "zh_reference_alt_text": "图 P10-6"
     },
     {
-      "row_id": "ALT-0275",
+      "row_id": "ALT-0276",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P10",
@@ -6604,7 +6628,7 @@
       "zh_reference_alt_text": "图 P10-7"
     },
     {
-      "row_id": "ALT-0276",
+      "row_id": "ALT-0277",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P10",
@@ -6628,7 +6652,7 @@
       "zh_reference_alt_text": "图 P10-8"
     },
     {
-      "row_id": "ALT-0277",
+      "row_id": "ALT-0278",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P10",
@@ -6652,7 +6676,7 @@
       "zh_reference_alt_text": "图 P10-9"
     },
     {
-      "row_id": "ALT-0278",
+      "row_id": "ALT-0279",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P10",
@@ -6676,7 +6700,7 @@
       "zh_reference_alt_text": "图 P10-10"
     },
     {
-      "row_id": "ALT-0279",
+      "row_id": "ALT-0280",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P11",
@@ -6700,7 +6724,7 @@
       "zh_reference_alt_text": "Mini-DeepSeek Data Pipeline"
     },
     {
-      "row_id": "ALT-0280",
+      "row_id": "ALT-0281",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P12",
@@ -6724,7 +6748,7 @@
       "zh_reference_alt_text": "图 P12-1"
     },
     {
-      "row_id": "ALT-0281",
+      "row_id": "ALT-0282",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P13",
@@ -6748,7 +6772,7 @@
       "zh_reference_alt_text": "Multimodal Instruction Factory"
     },
     {
-      "row_id": "ALT-0282",
+      "row_id": "ALT-0283",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P14",
@@ -6772,7 +6796,7 @@
       "zh_reference_alt_text": "P14 Video Generation Data Pipeline"
     },
     {
-      "row_id": "ALT-0283",
+      "row_id": "ALT-0284",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P14",
@@ -6796,7 +6820,7 @@
       "zh_reference_alt_text": "frame1"
     },
     {
-      "row_id": "ALT-0284",
+      "row_id": "ALT-0285",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P14",
@@ -6820,7 +6844,7 @@
       "zh_reference_alt_text": ""
     },
     {
-      "row_id": "ALT-0285",
+      "row_id": "ALT-0286",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P15",
@@ -6844,7 +6868,7 @@
       "zh_reference_alt_text": "DataAgent 企业语义问数助手分层架构"
     },
     {
-      "row_id": "ALT-0286",
+      "row_id": "ALT-0287",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P15",
@@ -6868,7 +6892,7 @@
       "zh_reference_alt_text": "DataAgent 整体架构图"
     },
     {
-      "row_id": "ALT-0287",
+      "row_id": "ALT-0288",
       "language": "en",
       "part": "Part 14: Practical Projects",
       "unit": "P15",

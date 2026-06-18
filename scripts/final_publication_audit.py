@@ -106,7 +106,7 @@ def book_files() -> list[Path]:
         if "superpowers" in path.parts or path.name in {"translation-status.md", "index.md"}:
             continue
         name = path.name
-        if name.startswith("ch") or re.match(r"p\d+", name) or "appendix" in name:
+        if name == "front_matter_guide.md" or name.startswith("ch") or re.match(r"p\d+", name) or "appendix" in name:
             files.append(path)
     return files
 
@@ -167,7 +167,7 @@ def parse_figure_register() -> dict[str, tuple[str, str]]:
         return {}
     mapping: dict[str, tuple[str, str]] = {}
     for line in read_text(FIGURE_REGISTER).splitlines():
-        if not line.startswith("| 图"):
+        if not line.startswith("| ") or "`" not in line or "文件路径" in line:
             continue
         cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
         if len(cells) < 9:
@@ -380,7 +380,11 @@ def main() -> int:
     style_hits = scan_style(files)
     figures = scan_figures(files)
     references = scan_references(files)
-    missing_reference_files = [rel(path) for path in files if not extract_references(path)]
+    missing_reference_files = [
+        rel(path)
+        for path in files
+        if path.name != "front_matter_guide.md" and not extract_references(path)
+    ]
     broken_figures = [row for row in figures if not row.exists]
 
     generated_at = datetime.now(timezone.utc).isoformat()

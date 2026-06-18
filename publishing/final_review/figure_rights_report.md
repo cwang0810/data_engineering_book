@@ -1,11 +1,12 @@
 # 图表版权、AI 声明与高清源文件终审报告
 
-- 图片引用总数：287
-- 需要人工确认：287
+- 图片引用总数：288
+- 需要人工确认：288
 - 说明：每一行都需要图表编辑最终确认；`needs-rights-ai-review` 表示台账仍要求终稿阶段复核权属或 AI 使用声明；`needs-high-res-confirmation` 表示需确认高清源文件或出版社可用分辨率。
 
 | 文件 | 行 | 图片 | 尺寸 | 大小 KB | 台账权属状态 | 高清源状态 | 问题 |
 | --- | ---: | --- | --- | ---: | --- | --- | --- |
+| `docs/zh/front_matter_guide.md` | 7 | `docs/images/book_structure.png` | 1536x1024 | 1582.7 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
 | `docs/zh/part1/ch01_data_change.md` | 145 | `docs/images/part1/data_engineering_roles_1775830393574.svg` | unknown | 68.5 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
 | `docs/zh/part1/ch01_data_change.md` | 216 | `docs/images/part1/data_lifecycle_map_1775830407042.svg` | unknown | 126.2 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
 | `docs/zh/part1/ch02_quality_framework.md` | 103 | `docs/images/part1/data_quality_hierarchy_1775835516841.svg` | unknown | 120.3 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
@@ -92,7 +93,7 @@
 | `docs/zh/part13/ch47_vlm_data_recipes.md` | 145 | `docs/images/part13/ch47_04_instruction_synthesis_en.svg` | unknown | 5.3 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
 | `docs/zh/part13/ch48_t2i_t2v.md` | 158 | `docs/images/part13/ch48_01_t2i_data_pipeline.svg` | unknown | 638.1 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
 | `docs/zh/part13/ch48_t2i_t2v.md` | 264 | `docs/images/part13/ch48_02_t2v_data_pipeline.svg` | unknown | 656.2 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
-| `docs/zh/part13/ch48_t2i_t2v.md` | 369 | `docs/images/part13/ch48_03_multistage_filtering_architecture.svg` | unknown | 578.1 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
+| `docs/zh/part13/ch48_t2i_t2v.md` | 369 | `docs/images/part13/ch48_03_multistage_filtering_architecture.svg` | unknown | 578.8 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
 | `docs/zh/part14/p01_mini_c4.md` | 130 | `docs/images/part14/p01/p01_01_mini_c4_pipeline_overview.svg` | unknown | 85.5 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
 | `docs/zh/part14/p01_mini_c4.md` | 228 | `docs/images/part14/p01/p01_02_warc_to_text.svg` | unknown | 52.2 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
 | `docs/zh/part14/p01_mini_c4.md` | 296 | `docs/images/part14/p01/p01_03_cleaning_rules.svg` | unknown | 47.3 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
@@ -124,14 +125,14 @@
 | `docs/zh/part14/p02_legal_sft.md` | 1006 | `docs/images/part14/p02/p02_18_version_timeline.svg` | unknown | 83.0 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
 | `docs/zh/part14/p02_legal_sft.md` | 1067 | `docs/images/part14/p02/p02_19_validation_chain.svg` | unknown | 21.1 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
 | `docs/zh/part14/p02_legal_sft.md` | 1127 | `docs/images/part14/p02/p02_20_cross_domain_transfer.svg` | unknown | 61.4 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
-| `docs/zh/part14/p03_llava_instruct.md` | 183 | `docs/images/part14/p03_01_llava_factory_overview.png` | 1800x982 | 741.9 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
-| `docs/zh/part14/p03_llava_instruct.md` | 263 | `docs/images/part14/p03_02_roles_and_responsibilities.png` | 1800x982 | 679.4 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
-| `docs/zh/part14/p03_llava_instruct.md` | 304 | `docs/images/part14/p03_03_asset_layers.png` | 2816x1332 | 1507.2 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
-| `docs/zh/part14/p03_llava_instruct.md` | 442 | `docs/images/part14/p03_04_document_tasks.png` | 1800x982 | 474.2 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
-| `docs/zh/part14/p03_llava_instruct.md` | 542 | `docs/images/part14/p03_05_bbox_alignment.png` | 1800x1005 | 691.0 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
-| `docs/zh/part14/p03_llava_instruct.md` | 711 | `docs/images/part14/p03_06_quality_loop.png` | 1800x982 | 752.8 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
-| `docs/zh/part14/p03_llava_instruct.md` | 925 | `docs/images/part14/p03_07_failure_attribution.png` | 1800x1005 | 729.7 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
-| `docs/zh/part14/p03_llava_instruct.md` | 980 | `docs/images/part14/p03_08_validation_loop.png` | 1800x982 | 757.4 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
+| `docs/zh/part14/p03_llava_instruct.md` | 183 | `docs/images/part14/p03/p03_01_llava_factory_overview.svg` | unknown | 135.5 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
+| `docs/zh/part14/p03_llava_instruct.md` | 263 | `docs/images/part14/p03/p03_02_roles_and_responsibilities.svg` | unknown | 95.3 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
+| `docs/zh/part14/p03_llava_instruct.md` | 304 | `docs/images/part14/p03/p03_03_asset_layers.svg` | unknown | 159.2 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
+| `docs/zh/part14/p03_llava_instruct.md` | 442 | `docs/images/part14/p03/p03_04_document_tasks.svg` | unknown | 12.6 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
+| `docs/zh/part14/p03_llava_instruct.md` | 542 | `docs/images/part14/p03/p03_05_bbox_alignment.svg` | unknown | 363.6 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
+| `docs/zh/part14/p03_llava_instruct.md` | 711 | `docs/images/part14/p03/p03_06_quality_loop.svg` | unknown | 46.1 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
+| `docs/zh/part14/p03_llava_instruct.md` | 925 | `docs/images/part14/p03/p03_07_failure_attribution.svg` | unknown | 55.2 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
+| `docs/zh/part14/p03_llava_instruct.md` | 980 | `docs/images/part14/p03/p03_08_validation_loop.svg` | unknown | 58.0 | missing-register | unknown | missing-figure-register, needs-high-res-confirmation |
 | `docs/zh/part14/p04_synthetic_textbook.md` | 84 | `docs/images/part14/p04_01_project_positioning.png` | 1800x982 | 561.3 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
 | `docs/zh/part14/p04_synthetic_textbook.md` | 109 | `docs/images/part14/p04_02_goals_and_scope.png` | 1800x982 | 569.8 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |
 | `docs/zh/part14/p04_synthetic_textbook.md` | 189 | `docs/images/part14/p04_03_pipeline_overview.png` | 1800x982 | 576.8 | 内部自绘/改绘资源；终稿复核高清源与 AI 使用声明 | 是 | needs-rights-ai-review, needs-high-res-confirmation |

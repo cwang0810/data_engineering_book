@@ -117,12 +117,13 @@ def flatten_nav(nodes: list[Any], level: int = 1, group: str = "Front Matter", g
 
 
 def prepare_items(items: list[NavItem]) -> list[NavItem]:
-    excluded = {"title_page.md", "index.md", "translation-status.md", "front_matter_guide.md"}
+    excluded = {"title_page.md", "index.md", "translation-status.md"}
     front_order = {
         "preface.md": 1,
         "acknowledgments.md": 2,
-        "contributors.md": 3,
-        "abbreviations.md": 4,
+        "front_matter_guide.md": 3,
+        "contributors.md": 4,
+        "abbreviations.md": 5,
     }
     kept = [item for item in items if item.path not in excluded and not re.search(r"part\d+/index\.md$", item.path)]
     front = [item for item in kept if item.path in front_order]

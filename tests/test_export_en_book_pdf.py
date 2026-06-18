@@ -5,6 +5,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import yaml
 
@@ -137,7 +138,7 @@ class ExportEnglishBookPdfTest(unittest.TestCase):
         self.assertNotIn("part1/index.md", paths)
         self.assertNotIn("index.md", paths)
 
-    def test_formal_pdf_front_matter_excludes_web_reading_guide(self):
+    def test_formal_pdf_front_matter_includes_publication_reading_guide(self):
         exporter = load_exporter()
         config = yaml.safe_load((ROOT / "mkdocs.yml").read_text(encoding="utf-8"))
         items = exporter.flatten_nav(exporter.find_en_nav(config))
@@ -146,9 +147,9 @@ class ExportEnglishBookPdfTest(unittest.TestCase):
 
         self.assertIn("preface.md", paths)
         self.assertIn("acknowledgments.md", paths)
+        self.assertIn("front_matter_guide.md", paths)
         self.assertIn("contributors.md", paths)
         self.assertIn("abbreviations.md", paths)
-        self.assertNotIn("front_matter_guide.md", paths)
 
     def test_formal_pdf_front_matter_follows_springer_manuscript_order(self):
         exporter = load_exporter()
@@ -181,11 +182,54 @@ class ExportEnglishBookPdfTest(unittest.TestCase):
 
         self.assertIn("preface.md", front_paths)
         self.assertIn("acknowledgments.md", front_paths)
+        self.assertIn("front_matter_guide.md", front_paths)
         self.assertIn("contributors.md", front_paths)
         self.assertIn("abbreviations.md", front_paths)
         self.assertIn("afterword.md", back_paths)
         self.assertNotIn("part10/ch31_agent_architecture.md", front_paths)
         self.assertNotIn("part10/ch31_agent_architecture.md", back_paths)
+
+    def test_submission_front_matter_uses_formal_contents_pdf(self):
+        exporter = load_exporter()
+        config = yaml.safe_load((ROOT / "mkdocs.yml").read_text(encoding="utf-8"))
+        items = exporter.flatten_nav(exporter.find_en_nav(config))
+
+        with tempfile.TemporaryDirectory(dir=ROOT / "output") as tmp:
+            tmp_path = Path(tmp)
+            submission_dir = tmp_path / "submission"
+            parts_dir = tmp_path / "parts"
+            submission_dir.mkdir()
+            parts_dir.mkdir()
+            opening_pdf = parts_dir / "00a-opening-front-matter.pdf"
+            contents_pdf = parts_dir / "00b-contents.pdf"
+            before_pdf = parts_dir / "01-front-matter-before-contents.pdf"
+            after_pdf = parts_dir / "02-front-matter-after-contents.pdf"
+            for pdf in [opening_pdf, contents_pdf, before_pdf, after_pdf]:
+                pdf.write_bytes(b"%PDF-1.4\n%test\n")
+
+            calls: list[tuple[list[Path], Path]] = []
+
+            def fake_merge(parts, output):
+                calls.append((list(parts), output))
+                output.write_bytes(b"%PDF-1.4\n%merged\n")
+
+            with patch.object(exporter, "SUBMISSION_PDF_DIR", submission_dir), \
+                patch.object(exporter, "PARTS_DIR", parts_dir), \
+                patch.object(exporter, "OPENING_FRONT_PDF", opening_pdf), \
+                patch.object(exporter, "CONTENTS_PDF", contents_pdf), \
+                patch.object(exporter, "OUT_PDF", tmp_path / "missing-full-book.pdf"), \
+                patch.object(exporter, "merge_plain_pdfs", side_effect=fake_merge, create=True), \
+                patch.object(exporter, "export_pdf") as export_pdf:
+                exporter.export_submission_pdfs(items, timeout=1, include_mathjax=False)
+
+            front_call = next(
+                (parts, output) for parts, output in calls if output.name == "00_front_matter.pdf"
+            )
+            self.assertEqual([opening_pdf, before_pdf, contents_pdf, after_pdf], front_call[0])
+            generated_pdf_names = [call.args[1].name for call in export_pdf.call_args_list]
+            generated_html_names = [call.args[0].name for call in export_pdf.call_args_list]
+            self.assertNotIn("00_front_matter.pdf", generated_pdf_names)
+            self.assertNotIn("00_front_matter.html", generated_html_names)
 
     def test_toc_entry_for_chapter_includes_author_line(self):
         exporter = load_exporter()

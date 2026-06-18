@@ -47,8 +47,8 @@ CONTENTS_AUTHOR_ENTRY_GAP_MM = 5.2
 CONTENTS_ENTRY_GAP_MM = 6.2
 CONTENTS_SUBENTRY_GAP_MM = 5.2
 
-EXCLUDED_FROM_FORMAL_PDF = {"title_page.md", "index.md", "translation-status.md", "front_matter_guide.md"}
-PRE_CONTENTS_FRONT_PATHS = {"preface.md", "acknowledgments.md"}
+EXCLUDED_FROM_FORMAL_PDF = {"title_page.md", "index.md", "translation-status.md"}
+PRE_CONTENTS_FRONT_PATHS = {"preface.md", "acknowledgments.md", "front_matter_guide.md"}
 POST_CONTENTS_FRONT_PATHS = {"contributors.md", "abbreviations.md"}
 
 BOOK_AUTHORS = (
@@ -810,7 +810,7 @@ def transform_section_opening(html_body: str, source_path: str) -> str:
     patterns = [
         (r"<h1>Chapter\s+\d+:\s*([^<]+)</h1>", r"<h1>\1</h1>"),
         (r"<h1>Project\s+\d+:\s*([^<]+)</h1>", r"<h1>\1</h1>"),
-        (r"<h1>Appendix\s+[A-G]:\s*([^<]+)</h1>", r"<h1>\1</h1>"),
+        (r"<h1>Appendix\s+[A-H]:\s*([^<]+)</h1>", r"<h1>\1</h1>"),
     ]
     for pattern, replacement in patterns:
         html_body, count = re.subn(pattern, replacement, html_body, count=1)
@@ -1256,6 +1256,48 @@ def merge_pdfs(parts: list[Path], output: Path, items: list[NavItem] | None = No
     with output.open("wb") as handle:
         writer.write(handle)
     print(f"[ok] merged PDF written: {output} ({output.stat().st_size / 1024 / 1024:.1f} MB)")
+
+
+def merge_plain_pdfs(parts: list[Path], output: Path) -> None:
+    try:
+        from pypdf import PdfWriter
+    except Exception as exc:  # pragma: no cover - dependency check
+        raise RuntimeError("pypdf is required to merge PDF files") from exc
+
+    writer = PdfWriter()
+    for part in parts:
+        writer.append(str(part))
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with output.open("wb") as handle:
+        writer.write(handle)
+    print(f"[ok] merged PDF written: {output} ({output.stat().st_size / 1024 / 1024:.1f} MB)")
+
+
+def formal_front_matter_part_pdf(slug: str) -> Path:
+    matches = sorted(PARTS_DIR.glob(f"*-{slug}.pdf"))
+    if not matches:
+        raise FileNotFoundError(
+            f"formal front-matter part PDF is missing for {slug!r}; run the full PDF export before submission PDFs"
+        )
+    return matches[0]
+
+
+def export_submission_front_matter_pdf(output: Path) -> list[Path]:
+    front_parts = [
+        OPENING_FRONT_PDF,
+        formal_front_matter_part_pdf("front-matter-before-contents"),
+        CONTENTS_PDF,
+        formal_front_matter_part_pdf("front-matter-after-contents"),
+    ]
+    missing = [part for part in front_parts if not part.exists()]
+    if missing:
+        missing_list = ", ".join(str(part) for part in missing)
+        raise FileNotFoundError(
+            "formal front matter PDF assets are missing; run the full PDF export before submission PDFs: "
+            + missing_list
+        )
+    merge_plain_pdfs(front_parts, output)
+    return front_parts
 
 
 def merge_formal_book_pdf(
@@ -1739,12 +1781,10 @@ def export_submission_pdfs(items: list[NavItem], timeout: int, include_mathjax: 
         "| No. | Title | Source | PDF |",
         "| --- | --- | --- | --- |",
     ]
-    front_html_path = SUBMISSION_PDF_DIR / "00_front_matter.html"
     front_pdf_path = SUBMISSION_PDF_DIR / "00_front_matter.pdf"
-    write_html(front_html_path, build_front_matter_reference_html(items, include_mathjax))
-    export_pdf(front_html_path, front_pdf_path, timeout, min_size=10_000)
+    front_parts = export_submission_front_matter_pdf(front_pdf_path)
     manifest_lines.append(
-        f"| Front | Front matter | generated title page plus `{', '.join(item.path for item in front_matter_pdf_items(items))}` | `{front_pdf_path.name}` |"
+        f"| Front | Front matter | formal opening front matter, contents, and `{', '.join(item.path for item in front_matter_pdf_items(items))}` | `{front_pdf_path.name}` |"
     )
 
     manuscript_items = submission_pdf_items(items)
