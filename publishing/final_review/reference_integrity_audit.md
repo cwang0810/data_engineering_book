@@ -1,6 +1,6 @@
 # 全书引用完整性与真实性审计报告
 
-- 生成时间：2026-06-22T08:46:49.424273+00:00
+- 生成时间：2026-06-22T10:59:00.904292+00:00
 - 范围：当前 Springer 中文交付稿 `docs/zh` 中的正文章、项目章和附录。
 - 扫描文件：71
 - 参考文献条目：980
@@ -178,9 +178,9 @@
 | `docs/zh/part14/p14_video_generation.md` | 538 | 1 | `pyscenedetect:2026` | PySceneDetect Documentation | PySceneDetect Contributors (2026) PySceneDetect Documentation. Available at: https://www.scenedetect.com/docs/latest/. |
 | `docs/zh/part14/p14_video_generation.md` | 544 | 4 | `farneback:2003` | Two-Frame Motion Estimation Based on Polynomial Expansion | Farnebäck G (2003) Two-Frame Motion Estimation Based on Polynomial Expansion. In: Proceedings of the 13th Scandinavian Conference on Image Analysis, pp 363-370. |
 | `docs/zh/part14/p14_video_generation.md` | 546 | 5 | `pexels:2014` | Pexels: Free Stock Photos, Royalty Free Images & Videos | Pexels (2014) Pexels: Free Stock Photos, Royalty Free Images & Videos. Available at: https://www.pexels.com. |
-| `docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md` | 908 | 5 | `dbt:2026` | dbt Documentation | 5. dbt Labs. (2026). dbt Documentation. https://docs.getdbt.com/. |
-| `docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md` | 909 | 6 | `datagallery:2026` | DataGallery organization page | 6. DataGallery Contributors. (2026). DataGallery organization page. https://gitcode.com/datagallery. |
-| `docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md` | 910 | 7 | `datagallery:2026` | DataAgent source repository | 7. DataGallery Contributors. (2026). DataAgent source repository. https://gitcode.com/datagallery/DataAgent. |
+| `docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md` | 901 | 5 | `dbt:2026` | dbt Documentation | 5. dbt Labs. (2026). dbt Documentation. https://docs.getdbt.com/. |
+| `docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md` | 902 | 6 | `datagallery:2026` | DataGallery organization page | 6. DataGallery Contributors. (2026a). DataGallery organization page. https://gitcode.com/datagallery. |
+| `docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md` | 903 | 7 | `datagallery:2026` | DataAgent source repository | 7. DataGallery Contributors. (2026b). DataAgent source repository. https://gitcode.com/datagallery/dataagent. |
 | `docs/zh/part2/ch04_data_sources.md` | 403 | 1 | `barbaresi:2021` | Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction | Barbaresi A (2021) Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction. In: Proceedings of the ACL-IJCNLP 2021 System Demonstrations, pp 122-131. |
 | `docs/zh/part2/ch04_data_sources.md` | 409 | 4 | `joulin:2017` | FastText.zip: Compressing Text Classification Models | Joulin A, Grave E, Bojanowski P, Douze M, Jegou H, Mikolov T (2017) FastText.zip: Compressing Text Classification Models. arXiv preprint arXiv:1612.03651. |
 | `docs/zh/part2/ch04_data_sources.md` | 412 | 5 | `lopez:2009` | GROBID: Combining Automatic Bibliographic Data Recognition and Term Extraction for Scholarship Publications | Lopez P (2009) GROBID: Combining Automatic Bibliographic Data Recognition and Term Extraction for Scholarship Publications. In: Proceedings of the 13th European Conference on Digital Libraries, pp 473-474. |

@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-06-22T08:46:49.390824+00:00",
+  "generated_at_utc": "2026-06-22T10:59:00.868640+00:00",
   "scope_roots": [
     "docs/zh"
   ],
@@ -7619,7 +7619,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 904,
+      "line": 897,
       "entry_no": 1,
       "entry": "1. Yu, T., Zhang, R., Yang, K., Yasunaga, M., Wang, D., Li, Z., et al. (2018). Spider: A Large-Scale Human-Labeled Dataset for Complex and Cross-Domain Semantic Parsing and Text-to-SQL Task. EMNLP 2018.",
       "first_author": "Yu",
@@ -7636,7 +7636,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 905,
+      "line": 898,
       "entry_no": 2,
       "entry": "2. Wang, B., Shin, R., Liu, X., Polozov, O., & Richardson, M. (2020). RAT-SQL: Relation-Aware Schema Encoding and Linking for Text-to-SQL Parsers. ACL 2020. https://doi.org/10.18653/v1/2020.acl-main.677.",
       "first_author": "Wang",
@@ -7651,7 +7651,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 906,
+      "line": 899,
       "entry_no": 3,
       "entry": "3. Schick, T., Dwivedi-Yu, J., Dessì, R., Raileanu, R., Lomeli, M., Hambro, E., Zettlemoyer, L., Cancedda, N., & Scialom, T. (2023). Toolformer: Language Models Can Teach Themselves to Use Tools. arXiv:2302.04761.",
       "first_author": "Schick",
@@ -7666,7 +7666,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 907,
+      "line": 900,
       "entry_no": 4,
       "entry": "4. Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K., & Cao, Y. (2023). ReAct: Synergizing Reasoning and Acting in Language Models. arXiv:2210.03629.",
       "first_author": "Yao",
@@ -7681,7 +7681,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 908,
+      "line": 901,
       "entry_no": 5,
       "entry": "5. dbt Labs. (2026). dbt Documentation. https://docs.getdbt.com/.",
       "first_author": "dbt",
@@ -7696,9 +7696,9 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 909,
+      "line": 902,
       "entry_no": 6,
-      "entry": "6. DataGallery Contributors. (2026). DataGallery organization page. https://gitcode.com/datagallery.",
+      "entry": "6. DataGallery Contributors. (2026a). DataGallery organization page. https://gitcode.com/datagallery.",
       "first_author": "DataGallery",
       "year": "2026",
       "title": "DataGallery organization page",
@@ -7711,15 +7711,15 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 910,
+      "line": 903,
       "entry_no": 7,
-      "entry": "7. DataGallery Contributors. (2026). DataAgent source repository. https://gitcode.com/datagallery/DataAgent.",
+      "entry": "7. DataGallery Contributors. (2026b). DataAgent source repository. https://gitcode.com/datagallery/dataagent.",
       "first_author": "DataGallery",
       "year": "2026",
       "title": "DataAgent source repository",
       "doi": "",
       "arxiv": "",
-      "url": "https://gitcode.com/datagallery/DataAgent",
+      "url": "https://gitcode.com/datagallery/dataagent",
       "key": "datagallery:2026",
       "fingerprint": "dataagent source repository",
       "format_issues": []
@@ -19404,7 +19404,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 44,
+      "line": 37,
       "author": "Yao",
       "year": "2023",
       "text": "Yao et al. 2023)",
@@ -19413,7 +19413,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 44,
+      "line": 37,
       "author": "Schick",
       "year": "2023",
       "text": "Schick et al. 2023)",
@@ -19422,7 +19422,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 44,
+      "line": 37,
       "author": "Yu",
       "year": "2018",
       "text": "Yu et al. 2018)",
@@ -19431,7 +19431,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 44,
+      "line": 37,
       "author": "Wang",
       "year": "2020",
       "text": "Wang et al. 2020)",
@@ -29984,7 +29984,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 908,
+      "line": 901,
       "entry_no": 5,
       "entry": "5. dbt Labs. (2026). dbt Documentation. https://docs.getdbt.com/.",
       "first_author": "dbt",
@@ -29999,9 +29999,9 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 909,
+      "line": 902,
       "entry_no": 6,
-      "entry": "6. DataGallery Contributors. (2026). DataGallery organization page. https://gitcode.com/datagallery.",
+      "entry": "6. DataGallery Contributors. (2026a). DataGallery organization page. https://gitcode.com/datagallery.",
       "first_author": "DataGallery",
       "year": "2026",
       "title": "DataGallery organization page",
@@ -30014,15 +30014,15 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 910,
+      "line": 903,
       "entry_no": 7,
-      "entry": "7. DataGallery Contributors. (2026). DataAgent source repository. https://gitcode.com/datagallery/DataAgent.",
+      "entry": "7. DataGallery Contributors. (2026b). DataAgent source repository. https://gitcode.com/datagallery/dataagent.",
       "first_author": "DataGallery",
       "year": "2026",
       "title": "DataAgent source repository",
       "doi": "",
       "arxiv": "",
-      "url": "https://gitcode.com/datagallery/DataAgent",
+      "url": "https://gitcode.com/datagallery/dataagent",
       "key": "datagallery:2026",
       "fingerprint": "dataagent source repository",
       "format_issues": []
@@ -38232,7 +38232,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 904,
+      "line": 897,
       "entry_no": 1,
       "key": "yu:2018",
       "title": "Spider: A Large-Scale Human-Labeled Dataset for Complex and Cross-Domain Semantic Parsing and Text-to-SQL Task",
@@ -38247,7 +38247,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 905,
+      "line": 898,
       "entry_no": 2,
       "key": "wang:2020",
       "title": "RAT-SQL: Relation-Aware Schema Encoding and Linking for Text-to-SQL Parsers",
@@ -38262,7 +38262,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 906,
+      "line": 899,
       "entry_no": 3,
       "key": "schick:2023",
       "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
@@ -38277,7 +38277,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 907,
+      "line": 900,
       "entry_no": 4,
       "key": "yao:2023",
       "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
@@ -38292,7 +38292,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 908,
+      "line": 901,
       "entry_no": 5,
       "key": "dbt:2026",
       "title": "dbt Documentation",
@@ -38307,7 +38307,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 909,
+      "line": 902,
       "entry_no": 6,
       "key": "datagallery:2026",
       "title": "DataGallery organization page",
@@ -38322,7 +38322,7 @@
     },
     {
       "file": "docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md",
-      "line": 910,
+      "line": 903,
       "entry_no": 7,
       "key": "datagallery:2026",
       "title": "DataAgent source repository",

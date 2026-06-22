@@ -111,6 +111,7 @@ def rewrite_latex_package_paths(package_dir: Path) -> None:
         "../latex_assets_en/": "../assets/",
         "latex_assets_en/": "assets/",
         "../data_engineering_book_en_16k_latex_chapters/": "../chapters/",
+        "data_engineering_book_en_16k_latex_chapters/": "chapters/",
     }
     for tex_file in sorted(latex_root.rglob("*.tex")):
         text = tex_file.read_text(encoding="utf-8")

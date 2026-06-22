@@ -778,6 +778,7 @@ def latex_preamble(stats: ExportStats) -> str:
 \usepackage[table]{{xcolor}}
 \usepackage{{fancyvrb}}
 \usepackage{{hyperref}}
+\usepackage{{import}}
 \hypersetup{{colorlinks=true,linkcolor=black,urlcolor=blue,citecolor=black}}
 \definecolor{{tablehead}}{{RGB}}{{238,243,248}}
 \definecolor{{codeframe}}{{RGB}}{{190,198,210}}
@@ -862,7 +863,15 @@ def build_latex_body(items: list[NavItem], assets: AssetManager, stats: ExportSt
 
 
 def build_latex_wrapper(input_paths: list[Path], stats: ExportStats, base_dir: Path) -> str:
-    includes = [rf"\input{{{Path(os.path.relpath(path, base_dir)).as_posix()}}}" for path in input_paths]
+    includes: list[str] = []
+    for path in input_paths:
+        relative_path = Path(os.path.relpath(path, base_dir))
+        relative_dir = relative_path.parent.as_posix()
+        relative_name = relative_path.name
+        if relative_dir in ("", "."):
+            includes.append(rf"\input{{{relative_name}}}")
+        else:
+            includes.append(rf"\subimport{{{relative_dir}/}}{{{relative_name}}}")
     return "\n".join(
         [
             latex_preamble(stats),
@@ -1009,6 +1018,8 @@ def export_split(items: list[NavItem], compile_output: bool, timeout: int) -> No
     main_stats.files = len(chapter_paths)
     main_tex = build_latex_wrapper(chapter_paths, main_stats, PARTS_DIR)
     write_outputs(main_tex, main_stats, PARTS_DIR / "00-manuscript.tex", PARTS_DIR / "00-manuscript.warnings.txt")
+    root_tex = build_latex_wrapper(chapter_paths, main_stats, OUT_DIR)
+    write_outputs(root_tex, main_stats, OUT_TEX, OUT_WARNINGS)
 
     for index, (key, grouped_items) in enumerate(groups, 1):
         part_stats = ExportStats()

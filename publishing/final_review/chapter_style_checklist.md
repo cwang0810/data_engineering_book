@@ -48,7 +48,7 @@
 | `docs/zh/part14/p12_r1_reasoning_flywheel.md` | 项目十二：教学化 R1 推理数据飞轮 | 6 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
 | `docs/zh/part14/p13_multimodal_instruction_factory.md` | 项目十三：Qwen-VL 多模态指令工厂 | 5 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
 | `docs/zh/part14/p14_video_generation.md` | 项目十四：视频生成数据集：从视频源到可用于 T2V 训练的数据流水线 | 8 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
-| `docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md` | 项目十五：基于 DataAgent 构建企业级语义问数助手 | 9 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
+| `docs/zh/part14/p15_dataagent_semantic_nl2sql_agent.md` | 项目十五：基于 DataAgent 构建企业级语义问数助手 | 10 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
 | `docs/zh/part2/ch04_data_sources.md` | 第4章 数据源、采集与版权 | 5 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
 | `docs/zh/part2/ch05_cleaning_dedup.md` | 第5章 清洗、去重与去污染 | 5 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
 | `docs/zh/part2/ch06_tokenization_loading.md` | 第6章 分词、序列化与高效加载 | 0 | 语言风格；术语统一；章节逻辑；图表引用；参考文献；Springer 体例 | 待人工签核 |
