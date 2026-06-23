@@ -138,7 +138,7 @@ This case highlights DataAgent's distinctive capabilities: NL2SQL, Semantic Serv
 
 ## 4. Overall Architecture: From Business Question to Auditable Data Asset
 
-The semantic BI assistant in this chapter is not an isolated NL2SQL component. It is an application form inside the broader DataGallery ecosystem. It uses DataAgent for task understanding, tool orchestration, and execution control; Semantic Service for metadata, metric definitions, and semantic retrieval; and Data Studio and Data Ops to connect BI capability with applications, evaluation, observation, and continuous improvement. Figure P15-2 shows the architectural relationships that support this project.
+The semantic BI assistant in this chapter is not an isolated NL2SQL component. It is an application form inside the broader DataGallery ecosystem. It uses DataAgent for task understanding, tool orchestration, and execution control; Semantic Service for metadata, metric definitions, and semantic retrieval; and Data Studio and Data Ops to connect BI capability with applications, evaluation, observation, and continuous improvement. Appendix G provides a fuller discussion of DataGallery's four-pillar technical map: the currently open-source DataAgent execution engine, the unified semantic layer, agent-semantic self-evolution, and the evaluation framework. Figure P15-2 shows the architectural relationships that support this project.
 
 ![DataGallery ecosystem architecture around DataAgent, Semantic Service, Data Studio, Data Ops, and foundation infrastructure](../../images/part14/p15_datagallery_architecture_vector.svg)
 
@@ -238,7 +238,7 @@ This chapter depends on DataAgent, Semantic Service, a value-match service, and 
 
 ### 5.2 Install the Project
 
-DataAgent is an agent data engineering framework in the DataGallery open-source ecosystem (DataGallery Contributors, 2026a). The DataGallery open-source entry is [https://gitcode.com/datagallery](https://gitcode.com/datagallery), and the DataAgent source repository is [https://gitcode.com/datagallery/dataagent](https://gitcode.com/datagallery/dataagent) (DataGallery Contributors, 2026b). For DataGallery's role in this book, reproduction boundaries, and project-governance usage, see [Appendix G: DataGallery Open-source Ecosystem Overview](../appendix_g_datagallery_note.md).
+DataAgent is the currently open-source execution engine in the DataGallery open-source ecosystem (DataGallery Contributors, 2026a). The DataGallery open-source entry is [https://gitcode.com/datagallery](https://gitcode.com/datagallery), and the DataAgent source repository is [https://gitcode.com/datagallery/dataagent](https://gitcode.com/datagallery/dataagent) (DataGallery Contributors, 2026b). For DataGallery's broader technical map, reproduction boundaries, and project-governance usage, see [Appendix G: DataGallery Open-source Ecosystem Overview](../appendix_g_datagallery_note.md).
 
 First pin the version, then install dependencies from the repository root:
 

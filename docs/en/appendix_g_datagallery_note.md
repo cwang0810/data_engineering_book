@@ -24,7 +24,39 @@ DataGallery also reminds readers that the key assets of an open-source data-agen
 
 In team collaboration, DataGallery can also serve as a cross-role communication entry. Algorithm engineers care about models, prompts, and tool choices. Data engineers care about schemas, samples, sources, quality gates, and result assets. Platform engineers care about environments, permissions, service interfaces, and runtime audit. Business users care about metric definitions, query boundaries, and result interpretation. An open repository and organization entry let these roles collaborate around the same versions, documents, and issue records instead of scattered temporary notes.
 
-## G.4 Reproduction Principles for DataGallery Projects
+## G.4 Technical Map of the DataGallery Ecosystem
+
+The DataGallery organization profile describes the ecosystem as a Data + AI open-source organization that reconstructs the data engineering chain through an agentic paradigm (DataGallery Contributors 2026a). In engineering terms, it can be read as a layered system rather than a single executable package. Its technical map contains four pillars.
+
+The first pillar is **DataAgent**, which is the currently open-source execution engine. It carries NL2SQL, data analysis, feature engineering, tool calling, workspace asset persistence, and service exposure. This is the part most directly used by Project 15.
+
+The second pillar is a **unified semantic layer**, including ontology modeling and enriched metadata. Its role is to make tables, columns, metrics, business concepts, and relationships machine-understandable before an agent generates SQL or calls tools. In DataAgent's current public materials, this direction appears through Semantic Service, MetaVisor-style metadata enhancement, vector retrieval, schema recall, and metric matching.
+
+The third pillar is **agent and semantic self-evolution**. The basic idea is that execution traces, failure cases, schema-matching errors, query corrections, and business feedback should not remain transient logs. They should flow back into semantic assets, prompts, tools, evaluation cases, and data-governance rules. This is the bridge from a runnable agent to a continuously improving data system.
+
+The fourth pillar is an **evaluation framework** for data-intelligence tasks. For enterprise BI and data-agent scenarios, evaluation should not only measure final-answer fluency. It should measure schema hit rate, execution accuracy, validation pass rate, reflection success rate, artifact persistence, trace completeness, permission interception, latency, and regression stability.
+
+These four pillars correspond closely to the structure of this book. The semantic layer connects to the chapters on metadata, data catalogs, RAG, and data products. DataAgent connects to the chapters on tool use, multi-turn interaction, agent architecture, and project delivery. Self-evolution connects to DataOps and feedback loops. Evaluation connects to data quality, benchmark construction, acceptance gates, and reproducibility.
+
+## G.5 DataAgent as the First Open-source Entry
+
+DataAgent is the open-source project that currently gives readers the most concrete way to reproduce DataGallery's engineering ideas. Its public README presents it as an enterprise Data + AI agent platform with Python 3.11+, Apache License 2.0, LangGraph integration, openJiuwen integration, GaussVector-oriented semantic retrieval support, and a versioned open-source package entry (DataGallery Contributors 2026b).
+
+From the repository structure and documentation, DataAgent can be understood through five engineering layers.
+
+The first layer is the **interface layer**. DataAgent provides a CLI, a Python SDK, REST service components, and A2A server mode. This allows the same capability to be used in local experiments, tests, internal applications, or multi-agent platforms.
+
+The second layer is the **configuration and runtime layer**. The "YAML as Agent" design lets teams declare models, tools, memory, workflow, workspace paths, environment-variable references, and scenario prompts in configuration files. This is important for book reproduction because a configuration file is easier to review, diff, pin, and share than a hidden notebook state.
+
+The third layer is the **agent orchestration layer**. The project contains flexible agent runtime components, planning and execution nodes, hooks, context management, history persistence, trajectory tools, and workspace organization. For readers, these components explain why an enterprise data assistant is not just an LLM prompt. It is a runtime that must decide, call, observe, revise, and preserve evidence.
+
+The fourth layer is the **data-action layer**. The repository exposes local tools, MCP tools, A2A tools, semantic tools, SQL readers, sandbox tools, document recall, and NL2SQL-specific nodes such as perceptor, generator, validator, reflector, executor, and selector. These modules are the practical bridge between natural-language intent and controlled data operations.
+
+The fifth layer is the **scenario and documentation layer**. Example configurations cover quickstart, NL2SQL sub-agent execution, data analysis, e-commerce, manufacturing, finance-like scenarios, and ontology-oriented cases. The documentation covers installation, quick start, database setup, Semantic Service, architecture, APIs, application cases, and milestones. This makes DataAgent useful not only as code, but also as a teachable and auditable project artifact.
+
+For this book, the safest wording is to treat DataAgent as an actively evolving open-source implementation of DataGallery's first pillar, not as a fixed specification for the entire DataGallery roadmap. The public repository is the source of truth for install commands, exact module names, dependency versions, and currently supported databases or services.
+
+## G.6 Reproduction Principles for DataGallery Projects
 
 When reproducing a project under DataGallery, first pin the version and then run examples. Minimal reproduction material should include the repository URL, commit or tag, dependency installation method, environment variables, example configuration, example data or mock data, run command, output directory, and expected artifacts. For Project 15, this information should cover the DataAgent main-agent configuration, database connection, Semantic Service, NL2SQL sub-agent, workspace path, and result files.
 
@@ -34,13 +66,13 @@ Third, distinguish public examples from enterprise deployment. DataGallery's pub
 
 Fourth, keep migration records. Open-source projects evolve over time, and configuration fields, dependency versions, service interfaces, and example paths may change. When reproducing experiments, readers should record the repository URL, commit, key dependency versions, and local modifications in the report. If a chapter example differs from the latest repository, the repository documentation should be treated as authoritative and the difference should be written into the reproduction notes.
 
-## G.5 Connections to Other Chapters
+## G.7 Connections to Other Chapters
 
 DataGallery naturally connects to several parts of this book. Part 6 discusses reasoning and agent data engineering, which provides the conceptual basis for DataAgent's tool calls, memory, traces, and multi-turn interaction. Part 7 discusses RAG and application-level data engineering, which provides method background for semantic retrieval, context construction, and application loops. Part 8 discusses DataOps, which provides the governance framework for versions, observability, experiment tracking, and team collaboration. Part 9 discusses data assets and data products, allowing DataAgent's SQL, CSV, reports, and runtime records to be understood as manageable assets. Project 15 in Part 14 then brings these threads together in an enterprise semantic BI scenario.
 
 This appendix is therefore not a tool introduction detached from Project 15. It adds open-source ecosystem context to that project. Readers who only want to run the case should start with Project 15. Readers who need to migrate the case into team projects, course labs, open-source reproduction, or internal enterprise validation should continue with this appendix to confirm version, permission, asset, evaluation, and maintenance boundaries.
 
-## G.6 Common Misuses and Boundaries
+## G.8 Common Misuses and Boundaries
 
 The first misuse is treating DataAgent as an "automatic SQL generator." Project 15 already emphasizes that enterprise BI should not rely on direct schema guessing. It should build an auditable chain through the semantic layer, sub-agents, validation, execution, and artifact persistence. DataGallery provides the open-source entry, but it does not change this engineering principle.
 
@@ -50,7 +82,7 @@ The third misuse is ignoring version changes. Agent frameworks, semantic service
 
 The fourth misuse is keeping only the natural-language answer and discarding intermediate assets. For projects such as DataAgent, SQL, CSV files, logs, tool-call parameters, schema-retrieval results, and failure samples are equally important. Together they determine whether a project can be reviewed, regressed, and iterated.
 
-## G.7 Reading and Usage Suggestions
+## G.9 Reading and Usage Suggestions
 
 DataGallery-related projects can be used in four steps.
 
