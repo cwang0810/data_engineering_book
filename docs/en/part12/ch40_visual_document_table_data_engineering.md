@@ -83,7 +83,66 @@ StructBill-CN contains **2,300 high-resolution bill images** across **six busine
 
 Using public academic sources is a deliberate compliance choice. A publishable benchmark should be built on public sources, while real private production data should enter only through a governed production process. This public benchmark / private production split is a baseline principle for high-risk document data engineering.
 
-**Code and data resources.** The StructBill-CN dataset, schema definitions, annotation tools, and SRPO training code are available at [github.com/vanvan6992/StructBill-CN](https://github.com/vanvan6992/StructBill-CN). The SRPO algorithm implementation (including MindSpore-based GRPO and SCL-Reward) is available at [github.com/Yuefeng-Zou/SRPO_CODE](https://github.com/Yuefeng-Zou/SRPO_CODE). 
+**Code and data resources.** The StructBill-CN dataset, schema definitions and annotation tools are available at [github.com/vanvan6992/StructBill-CN](https://github.com/vanvan6992/StructBill-CN). The SRPO algorithm implementation (including MindSpore-based GRPO and SCL-Reward) is available at [github.com/Yuefeng-Zou/SRPO_CODE](https://github.com/Yuefeng-Zou/SRPO_CODE). 
+
+The code below sketches how the dataset connects to the SRPO training loop in MindSpore. It traces the full data-consumption path — load samples, sample candidate outputs, score each with SCL-Reward, compute group-relative advantages, and update the policy via the GRPO loss — making concrete how the dataset's schema and logic constraints become trainable signals. 
+
+```python
+import mindspore as ms
+from mindspore import nn, ops
+from mindspore.dataset import GeneratorDataset
+
+# ---- 1. Dataset: yields (image, schema_id, ground_truth_json) per sample ----
+class StructBillDataset:
+    def __init__(self, manifest_path):
+        self.records = load_manifest(manifest_path)    # image path + schema id + GT
+    def __len__(self):
+        return len(self.records)
+    def __getitem__(self, i):
+        r = self.records[i]
+        image = preprocess(load_image(r["image_path"]))
+        return image, r["schema_id"], r["gt_json"]
+
+train_set = GeneratorDataset(
+    StructBillDataset("train_manifest.json"),
+    column_names=["image", "schema_id", "gt_json"],
+    shuffle=True,
+).batch(BATCH_SIZE)
+
+# ---- 2. SCL-Reward: turn one prediction into a scalar reward ----
+def scl_reward(pred_text, gt_json, schema, lam=0.4, gamma=0.6):
+    gate, row_acr, doc_acr = validate_logic(pred_text, schema)    # Code Example 2
+    if not gate:                        # structure / hallucination veto
+        return 0.0                      # I_gate = 0 -> reward zeroed
+    r_content = content_alignment(pred_text, gt_json, schema)     # Hungarian match
+    r_logic = gamma * row_acr + (1 - gamma) * doc_acr
+    return lam * r_content + (1 - lam) * r_logic                  # Eq. (6)
+
+# ---- 3. GRPO step: group sampling -> advantages -> policy update ----
+def grpo_train_step(policy, batch, G=8):
+    images, schema_ids, gts = batch
+    advantages, logp_list = [], []
+    for image, sid, gt in zip(images, schema_ids, gts):
+        schema = SCHEMA_REGISTRY[sid]
+        cands = policy.sample(image, schema, num=G)              # G candidates
+        rewards = ms.Tensor([scl_reward(c.text, gt, schema) for c in cands])
+        adv = (rewards - rewards.mean()) / (rewards.std() + 1e-4)   # Eq. (4)
+        advantages.append(adv)
+        logp_list.append(ops.stack([c.logp for c in cands]))
+
+    def forward():
+        return grpo_loss(logp_list, advantages, clip_eps=0.2, kl_beta=0.04)  # Eq.(5)
+    loss, grads = ms.value_and_grad(forward, None, policy.trainable_params())()
+    optimizer(grads)
+    return loss
+
+# ---- 4. Training loop (after SFT warmup produces the reference policy) ----
+policy = load_sft_warmup_model("qwen3-vl-2b")
+optimizer = nn.AdamWeightDecay(policy.trainable_params(), learning_rate=1e-5)
+for epoch in range(EPOCHS):
+    for batch in train_set.create_tuple_iterator():
+        loss = grpo_train_step(policy, batch, G=8)
+```
 
 #### 40.2.2 Task Definition
 
