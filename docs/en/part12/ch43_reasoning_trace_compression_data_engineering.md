@@ -4,7 +4,7 @@
 
 ## Abstract
 
-This chapter uses Latent-Switch-69K as the case study to explain how reasoning-trace data moves from explicit long chain-of-thought to compressible, supervisable, and transferable implicit computation records. The chapter focuses on teacher traces, latent budgets, student sequences, supervision masks, compression boundaries, and quality control, showing that reasoning traces are not ordinary text fields but key data assets connecting reasoning models, post-training, RL data engineering, and reasoning flywheels.
+This chapter uses Latent-Switch-69K as the case study to explain how reasoning-trace data moves from explicit long chain-of-thought to compressible, supervisable, and transferable implicit computation records. The chapter focuses on teacher traces, latent budgets, student sequences, supervision masks, compression boundaries, and quality control, showing that reasoning traces are not ordinary text fields but key data assets connecting reasoning models, post-training, RL data engineering, and reasoning flywheels. It also uses the Latent-Switch MindSpore data pipeline to show how distilled records become training batches consumable by `mindspore.dataset.GeneratorDataset`.
 
 ## Keywords
 
@@ -28,7 +28,7 @@ Chapters 18 through 20 have already covered the basic forms of Chain-of-Thought 
 
 First, long CoT carries a high token cost. Derivations in mathematics, code, and science problems typically dominate the output length, while the actual final answer occupies only a small fraction. If all intermediate reasoning enters training and inference as visible text, the model must spend context window capacity, training memory, and inference time on large amounts of repetitive, unrolled, exploratory, and self-correcting text. Second, long CoT does not naturally equate to high-quality reasoning. Some traces merely decompose simple conclusions into many steps; some contain erroneous branches; and some produce redundant or even inconsistent intermediate explanations while still arriving at a correct final answer. Third, standard SFT has difficulty distinguishing "high-level problem-solving intent that should be internalized by the model" from "verification steps that must be written out explicitly for the user." If the entire CoT is treated as ordinary target tokens, models tend to learn the writing habit of lengthy elaboration rather than a more effective reasoning scheduling strategy.
 
-Latent-Switch-69K emerged against this backdrop. It is neither a simple "shorter CoT dataset" nor a collection of Long-CoT samples summarized and directly used for SFT. It serves [LaTER](https://github.com/TioeAre/LaTER)-style latent-then-explicit reasoning systems: the model first passes through a bounded latent reasoning interval, completing high-level planning and compressed thinking in continuous hidden states, then switches back to visible text and uses a shorter explicit CoT for symbolic verification, before generating the final answer. The data engineering objective therefore shifts: samples must answer not only "what is the answer" but also "which content is appropriate for the hidden planning budget and which content still needs to serve as visible verification supervision."
+Latent-Switch-69K emerged against this backdrop. It is neither a simple "shorter CoT dataset" nor a collection of Long-CoT samples summarized and directly used for SFT. It serves LaTER-style latent-then-explicit reasoning systems, while [Latent-Switch MindSpore](https://github.com/yuki10033/latent_switch_mindspore) implements the data loading, span materialization, and mask construction pieces as a MindSpore data pipeline: the model first passes through a bounded latent reasoning interval, completing high-level planning and compressed thinking in continuous hidden states, then switches back to visible text and uses a shorter explicit CoT for symbolic verification, before generating the final answer. The data engineering objective therefore shifts: samples must answer not only "what is the answer" but also "which content is appropriate for the hidden planning budget and which content still needs to serve as visible verification supervision."
 
 ![Figure 43-1: Latent-Switch-69K Construction Pipeline](../../images/part12/ch43_01_latent_switch_pipeline.svg)
 
@@ -75,7 +75,7 @@ The fourth group is supervision fields, including `prompt_mask`, `latent_interna
 
 The starting point for constructing Latent-Switch-69K is reasoning traces sampled from Dolci-Think-SFT-32B. These original traces, understood as source reasoning traces, contain the question, one or more assistant outputs, a possible ground truth or extractable answer, and source and metadata. The construction process does not directly filter for short answers; instead, it first decomposes long traces into two complementary objectives: a high-level problem-solving intent and a shorter explicit verification chain.
 
-The following pedagogical example shows the simplest way to extract source traces: load Dolci-Think-SFT-32B from Hugging Face, shuffle it with a fixed random seed, select a batch of records, and normalize the conversations into the minimum fields required for subsequent distillation. In the production LaTER pipeline, `sample_Dolci-Think-SFT-32B.py` reads local Parquet shards and applies source-stratified reservoir sampling to prevent simple random sampling from shifting the proportions of different data sources.
+The following pedagogical example shows the simplest way to extract source traces: load Dolci-Think-SFT-32B from Hugging Face, shuffle it with a fixed random seed, select a batch of records, and normalize the conversations into the minimum fields required for subsequent distillation. Within the responsibility boundary of Latent-Switch MindSpore, this step and the subsequent teacher API call are upstream data preparation; the MindSpore repository consumes already-distilled rows containing `stage1.correct_insight`, `stage2.distilled_cot`, and `stage2.answer`.
 
 ```python
 from datasets import load_dataset
@@ -217,7 +217,7 @@ Stage six is mask materialization. The data loader re-locates boundaries based o
 
 One of the key fields in Latent-Switch-69K is `n_latent_steps`. It determines how many latent placeholders are placed between `<latent_think>` and `</latent_think>` in the student sequence. The basic heuristic adopted in the paper and code is: if the retained solution intuition contains \(L\) tokens, the latent budget is approximately \(L/2\), clipped by a maximum latent length and tokenizer constraints. In the final data, the mean latent step count is 41.49 and the median is 40.00.
 
-This budget rule carries two implications. First, latent steps are not arbitrary padding; they are correlated with the compressed high-level reasoning content. A longer intuition suggests that the high-level planning for this problem may be more complex, and the model therefore requires more hidden computation slots. Second, more latent steps are not unconditionally better. An excessively long latent interval increases training and inference costs and may allow the model's hidden state to drift. LaTER's training degree-of-freedom experiments observed a favorable accuracy–token-efficiency tradeoff around 40 to 50 steps, so the latent-step distribution in the final samples is concentrated in that range.
+This budget rule carries two implications. First, latent steps are not arbitrary padding; they are correlated with the compressed high-level reasoning content. A longer intuition suggests that the high-level planning for this problem may be more complex, and the model therefore requires more hidden computation slots. Second, more latent steps are not unconditionally better. An excessively long latent interval increases training and inference costs and may allow the model's hidden state to drift. In Latent-Switch-69K, the final samples concentrate around roughly 40 latent steps; the MindSpore data pipeline constrains this budget through `latent_min`, `latent_max`, and a hard 256-step ceiling in `SFTBuildConfig`.
 
 In the student sequence, a sample can be abstractly written as:
 
@@ -233,59 +233,70 @@ In the student sequence, a sample can be abstractly written as:
 
 Here $(l_1,\dots,l_m)$ are latent placeholder positions, $(t_1,\dots,t_n)$ are the distilled explicit CoT tokens, and $(a_1,\dots,a_r)$ are the final answer tokens. In the code implementation, latent placeholders can be filled with repeated `latent_pad_token` entries; however, during training these positions are not treated as ordinary language targets. In the model's forward pass, the input embeddings at placeholder positions are replaced by recurrent latent states produced by a latent projector. In other words, these positions have token boundaries and a defined length in the sequence, but they are semantically hidden computation slots.
 
-The record-rendering function below mirrors the core logic of `build_sft_record` in LaTER's `preprocess.py`. It first uses the student tokenizer to measure the solution intuition, clips approximately \(L/2\) latent steps to the allowed range, and then stores both the structured fields and the rendered assistant sequence. The example uses `<|endoftext|>` as the placeholder token; an actual training pipeline must ensure that it exactly matches the `latent_pad_token` configured for the tokenizer and model.
+The example below follows the real `build_sft_record` call pattern in Latent-Switch MindSpore `records.py`. The upstream distilled result enters through `stage1` and `stage2`, while `SFTBuildConfig` controls compression-ratio filtering, latent budget, loss weights, and the placeholder token. `validate_tokenizer_contract` in `tokens.py` first checks that `<latent_think>`, `</latent_think>`, `<think>`, `</think>`, `<|im_start|>`, `<|im_end|>`, and `<|endoftext|>` are encoded stably.
 
 ```python
 import os
 
 from transformers import AutoTokenizer
 
+from latent_switch_mindspore.records import SFTBuildConfig, build_sft_record
+from latent_switch_mindspore.tokens import validate_tokenizer_contract
+
 
 tokenizer = AutoTokenizer.from_pretrained(os.environ["STUDENT_TOKENIZER"])
+validate_tokenizer_contract(tokenizer)
 
+distilled_row = {
+    "uid": record.get("record_id", "demo-row"),
+    "question": record["problem"],
+    "stage1": {"correct_insight": record["solution_intuition"]},
+    "stage2": {
+        "distilled_cot": record["distilled_cot"],
+        "answer": record["answer"],
+        "validation": {"is_correct": True},
+    },
+    "token_stats": {"compression_ratio_vs_primary_output": 0.612},
+}
 
-def build_sft_record(problem, intuition, distilled_cot, answer):
-    intuition_tokens = tokenizer.encode(intuition, add_special_tokens=False)
-    n_latent_steps = min(128, max(1, len(intuition_tokens) // 2))
-    latent_pad_token = "<|endoftext|>"
-    latent_placeholder = latent_pad_token * n_latent_steps
-
-    assistant_content = (
-        f"<latent_think>{latent_placeholder}</latent_think>"
-        f"<think>{distilled_cot}</think>{answer}"
-    )
-    return {
-        "messages": [
-            {"role": "user", "content": problem},
-            {"role": "assistant", "content": assistant_content},
-        ],
-        "assistant_cot": distilled_cot,
-        "assistant_answer": answer,
-        "solution_intuition": intuition,
-        "n_latent_steps": n_latent_steps,
-        "latent_pad_token": latent_pad_token,
-        "state_align_reference_messages": [
-            {
-                "role": "user",
-                "content": f"Problem:\n{problem}\n\nSolution intuition:\n{intuition}",
-            },
-            {
-                "role": "assistant",
-                "content": f"<think>{distilled_cot}</think>{answer}",
-            },
-        ],
-    }
-
-
-sft_record = build_sft_record(
-    record["problem"],
-    record["solution_intuition"],
-    record["distilled_cot"],
-    record["answer"],
+config = SFTBuildConfig(
+    latent_min=1,
+    latent_max=128,
+    latent_pad_token="<|endoftext|>",
+    cot_loss_weight=0.0,
+    answer_loss_weight=1.0,
 )
+sft_record, reason = build_sft_record(distilled_row, tokenizer, config)
+if reason != "ok":
+    raise ValueError(f"sample filtered during SFT build: {reason}")
 ```
 
-Production preprocessing additionally filters samples according to compression ratio and field completeness and records the loss weights for the CoT and answer. More importantly, the rendered record must still be passed to the data loader to relocate special-token spans and construct supervision masks. Concatenating this string alone does not make the sample safe for training.
+Production preprocessing additionally filters samples according to compression ratio and field completeness and records the loss weights for the CoT and answer. More importantly, the rendered record must still be passed to `materialize_sample` or `LatentSwitchSFTSource` in `dataset.py` to relocate special-token spans and construct supervision masks. Concatenating this string alone does not make the sample safe for training.
+
+If MindSpore is installed in the runtime, the constructed JSONL can be wrapped directly as a `mindspore.dataset.GeneratorDataset`. The minimal loading example below shows the training-side columns such as `input_ids`, `labels`, `teacher_kl_mask`, and `latent_positions`.
+
+```python
+import os
+
+from transformers import AutoTokenizer
+
+from latent_switch_mindspore import create_mindspore_dataset
+
+
+tokenizer = AutoTokenizer.from_pretrained(os.environ["STUDENT_TOKENIZER"], use_fast=True)
+dataset = create_mindspore_dataset(
+    "data/sft_train.jsonl",
+    tokenizer=tokenizer,
+    batch_size=2,
+    max_length=4096,
+    shuffle=False,
+)
+
+for batch in dataset.create_dict_iterator(output_numpy=True, num_epochs=1):
+    print(batch["input_ids"].shape)
+    print(batch["teacher_kl_mask"].shape)
+    break
+```
 
 Below is a pedagogical, simplified sample sequence. It is intended only to illustrate the schema and mask relationships and is not an actual training sample from the dataset.
 
@@ -308,7 +319,7 @@ The final answer is 67.
 <|im_end|>
 ```
 
-In this example, `<latent_think>` and `</latent_think>` are structural boundaries; the four `<|endoftext|>` tokens in between are merely placeholders, and their count in real samples is determined by `n_latent_steps`; the region from `<think>` to `</think>` is the visible compressed CoT; and the following text is the answer. For training purposes, what matters is not whether this text looks like natural conversation, but whether each token span can be stably located. The `build_spans` function in the [LaTER training code](https://github.com/TioeAre/LaTER) checks that a sample contains exactly one `<latent_think>`, one `</latent_think>`, one `<think>`, and one `</think>`, and verifies that they satisfy:
+In this example, `<latent_think>` and `</latent_think>` are structural boundaries; the four `<|endoftext|>` tokens in between are merely placeholders, and their count in real samples is determined by `n_latent_steps`; the region from `<think>` to `</think>` is the visible compressed CoT; and the following text is the answer. For training purposes, what matters is not whether this text looks like natural conversation, but whether each token span can be stably located. `build_spans` in [Latent-Switch MindSpore](https://github.com/yuki10033/latent_switch_mindspore) checks that a sample contains exactly one `<latent_think>`, one `</latent_think>`, one `<think>`, and one `</think>`, and verifies that they satisfy:
 
 ```text
 assistant_content_start <= latent_start < latent_end < think_start < think_end
@@ -316,7 +327,7 @@ assistant_content_start <= latent_start < latent_end < think_start < think_end
 
 This ordering constraint is critical. If a boundary token is missing, duplicated, or out of order, masks will be misaligned: latent placeholders may be mistakenly treated as ordinary answer tokens, or the answer span may be truncated. For ordinary SFT data, a boundary error may be merely a formatting issue; for latent-switch data, a boundary misalignment directly changes the training objective.
 
-In a production data warehouse, student sequences should not be stored solely as long strings. A more robust approach is to save both structured fields and rendered text in parallel. Structured fields include `messages`, `assistant_cot`, `assistant_answer`, `n_latent_steps`, `latent_pad_token`, and `state_align_reference_messages`; rendered text is used for quick inspection and compatibility with standard training frameworks. The `LatentSFTDataset` in the code preferentially uses structured fields to construct token IDs and falls back to string re-encoding only when fields are missing. This design reflects an empirical lesson: latent special-token boundaries are too important to depend entirely on pre-concatenated text.
+In a production data warehouse, student sequences should not be stored solely as long strings. A more robust approach is to save both structured fields and rendered text in parallel. Structured fields include `messages`, `assistant_cot`, `assistant_answer`, `n_latent_steps`, `latent_pad_token`, and `state_align_reference_messages`; rendered text is used for quick inspection and compatibility with standard training frameworks. `LatentSwitchSFTSource` uses structured fields to construct token IDs, and `materialize_sample` then creates labels, loss weights, and the mask columns. This design reflects an empirical lesson: latent special-token boundaries are too important to depend entirely on pre-concatenated text.
 
 `latent_pad_token` also deserves separate attention. Its role in the sequence is to occupy space rather than carry semantic content. If the tokenizer has already registered this token, the data loader can directly repeat its ID; if not, the string must be repeated and then re-encoded, introducing length uncertainty. For an ordinary padding token this discrepancy may be acceptable; for the latent budget, it changes the actual token count \(m\) and consequently the number of steps in the hidden rollout. Datasets should therefore explicitly document the tokenizer version, special-token registration method, and the semantics of the latent pad token at release time.
 
@@ -338,7 +349,7 @@ x_i, & \text{otherwise}.
 \end{cases}
 \]
 
-Here \(\mathcal{S}_{\mathrm{prompt}}\) denotes positions in the user prompt and the context preceding the assistant prefix, and \(\mathcal{S}_{\mathrm{latent\_inner}}\) denotes the interior placeholder positions between `<latent_think>` and `</latent_think>`. Tokens set to `-100` are not directly fitted by ordinary CE. This avoids an erroneous objective: requiring the model to predict a specific fixed text token at latent interior positions. For LaTER, the value of latent interior positions lies not in outputting `<|endoftext|>` tokens but in allowing the model to execute a number of hidden state updates.
+Here \(\mathcal{S}_{\mathrm{prompt}}\) denotes positions in the user prompt and the context preceding the assistant prefix, and \(\mathcal{S}_{\mathrm{latent\_inner}}\) denotes the interior placeholder positions between `<latent_think>` and `</latent_think>`. Tokens set to `-100` are not directly fitted by ordinary CE. This avoids an erroneous objective: requiring the model to predict a specific fixed text token at latent interior positions. For latent-switch data, the value of latent interior positions lies not in outputting `<|endoftext|>` tokens but in reserving slots for hidden state updates; the MindSpore data pipeline writes these positions explicitly into `latent_internal_mask`, `latent_positions`, and `latent_slot_mask`.
 
 ![Figure 43-5: Supervision Mask Schematic](../../images/part12/ch43_05_supervision_mask.svg)
 
@@ -364,7 +375,7 @@ Here \(\mathcal{S}_{\mathrm{prompt}}\) denotes positions in the user prompt and 
 
 This mask design explains why Latent-Switch-69K cannot be arbitrarily re-encoded by ordinary data loaders. Ordinary chat data loaders typically care only about the boundary between prompt and response, whereas a latent-switch data loader must know the precise positions of `latent_start`, `latent_end`, `think_start`, `think_end`, `answer_start`, and `im_end`. Any inconsistency in special-token registration or any string re-encoding that shifts boundary token positions will corrupt the masks.
 
-More precisely, the masks also decouple different training objectives. The CE objective trains the model to output structural boundaries, explicit reasoning, and answers; the latent internal mask protects hidden computation slots, preventing the model from learning them as ordinary text; the teacher KL objective brings explicit CoT and answers closer to the teacher's distribution; and halt or boundary-related supervision helps the model terminate latent reasoning at appropriate positions. Although this chapter does not reproduce LaTER's complete training algorithm, the dataset must provide a stable interface for all of these objectives.
+More precisely, the masks also decouple different training objectives. The CE objective trains the model to output structural boundaries, explicit reasoning, and answers; the latent internal mask protects hidden computation slots, preventing the model from learning them as ordinary text; the teacher KL objective brings explicit CoT and answers closer to the teacher's distribution; and halt or boundary-related supervision helps the model terminate latent reasoning at appropriate positions.
 
 For data engineers, the most practical check is not to re-derive the loss function but to confirm that each sample's masks satisfy several invariants. First, all labels in the prompt span should be `-100`. Second, all labels in the latent interior span should be `-100`, but latent boundary tokens should not be treated as ordinary prompt masks. Third, `cot_mask` should cover the positions associated with `<think>` through `</think>`, and `answer_start` must come after `think_end`. Fourth, `answer_mask` should not include `<|im_end|>`, since the end token can be supervised independently. Fifth, the teacher KL mask should not cover the latent interior, because the teacher reference itself contains no such placeholders.
 
